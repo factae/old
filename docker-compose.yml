@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  web:
+    image: node:11.8.0-alpine
+    container_name: factae-web
+    command: yarn start
+    working_dir: /home/node/web
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node
+
+  api:
+    image: node:11.8.0-alpine
+    container_name: factae-api
+    command: yarn start:dev
+    working_dir: /home/node/api
+    links:
+      - database
+    ports:
+      - 3001:3001
+    volumes:
+      - .:/home/node
+
+  database:
+    image: mysql:5.7.25
+    container_name: factae-database
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=factae
+      - MYSQL_PASSWORD=factae
+      - MYSQL_DATABASE=factae

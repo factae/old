@@ -1,0 +1,52 @@
+import React, {useContext} from 'react'
+import noop from 'lodash/fp/noop'
+import Fab from '@material-ui/core/Fab'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import {SvgIconProps} from '@material-ui/core/SvgIcon'
+import IconBack from '@material-ui/icons/ArrowBack'
+
+import useRouting from '../../../hooks/routing'
+import AsyncContext from '../../../contexts/async'
+
+import {useStyles} from './styles'
+
+interface Props {
+  title: string
+  tooltip: string
+  icon: React.ComponentType<SvgIconProps>
+  onClick?: () => void
+}
+
+export default function(props: Props) {
+  const {title, tooltip, icon: Icon} = props
+  const handleClick = props.onClick || noop
+  const {loading} = useContext(AsyncContext)
+  const {goBack} = useRouting()
+  const classes = useStyles()
+
+  return (
+    <Typography variant="h3" component="h1" className={classes.title}>
+      <IconButton onClick={goBack} disabled={loading}>
+        <IconBack />
+      </IconButton>
+      {title}
+      <div className={classes.action}>
+        <Tooltip placement="left" title={tooltip} aria-label={tooltip}>
+          <Fab
+            type="submit"
+            aria-owns="menu-appbar"
+            aria-haspopup="true"
+            size="medium"
+            color="secondary"
+            disabled={loading}
+            onClick={handleClick}
+          >
+            <Icon />
+          </Fab>
+        </Tooltip>
+      </div>
+    </Typography>
+  )
+}

@@ -1,0 +1,19 @@
+{
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "plugins": [{
+      "name": "typescript-tslint-plugin",
+      "ignoreDefinitionFiles": true,
+      "configFile": "./tslint.json"
+    }],
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "extends": ["tslint-config-airbnb", "soywod-tslint-rules"],
+  "rules": {
+    "align": false,
+    "eofline": false,
+    "function-name": false,
+    "import-name": false,
+    "ordered-imports": true,
+    "ter-arrow-parens": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+  }
+}
