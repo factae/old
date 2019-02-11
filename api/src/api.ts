@@ -4,6 +4,7 @@ import {handle} from './handler'
 import middlewares from './middlewares'
 import * as auth from './controllers/Auth'
 import * as client from './controllers/Client'
+import * as quotation from './quotation/controller'
 import * as user from './controllers/User'
 import {authByLoginPassword} from './strategies/Local'
 import {authByCookie} from './strategies/Cookie'
@@ -26,6 +27,10 @@ api.post('/login', authByLoginPassword, handle(auth.login))
 api.get('/client', authByCookie, handle(client.readAll))
 api.post('/client', authByCookie, handle(client.create))
 api.put('/client', authByCookie, handle(client.update))
+
+// Quotation
+api.get('/quotation', authByCookie, handle(quotation.readAll))
+api.post('/quotation', authByCookie, handle(quotation.create))
 
 // User
 api.get('/user', authByCookie, handle(user.read))

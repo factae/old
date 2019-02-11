@@ -1,15 +1,21 @@
-import {Entity, Column, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
+import {Entity, Column, OneToMany} from 'typeorm'
+
+import {Quotation} from '../quotation/model'
 import {Client} from './Client'
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @Column({primary: true, generated: true})
   // @ts-ignore
   id: number
 
   @OneToMany(type => Client, client => client.user)
   // @ts-ignore
   clients: Client[]
+
+  @OneToMany(type => Quotation, quotation => quotation.user)
+  // @ts-ignore
+  quotation: Quotation[]
 
   @Column({unique: true})
   // @ts-ignore

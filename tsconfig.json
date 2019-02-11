@@ -2,7 +2,9 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "plugins": [{
