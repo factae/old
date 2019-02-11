@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useReducer} from 'react'
 import noop from 'lodash/fp/noop'
 
 import Client from '../models/Client'
@@ -18,14 +18,9 @@ type ActionUpdate = {
   client: Client
 }
 
-export type Action = ActionUpdateAll | ActionCreate | ActionUpdate
-
-export type State = Client[] | null
-
-interface Context {
-  state: State
-  dispatch: React.Dispatch<Action>
-}
+type Action = ActionUpdateAll | ActionCreate | ActionUpdate
+type State = Client[] | null
+type Context = [State, React.Dispatch<Action>]
 
 function reducer(state: State, action: Action) {
   const clients = state || []
@@ -42,11 +37,10 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const context = React.createContext<Context>({state: null, dispatch: noop})
+const context = React.createContext<Context>([null, noop])
 
 export function useClientReducer() {
-  const [state, dispatch] = React.useReducer(reducer, null)
-  return {state, dispatch}
+  return useReducer(reducer, null)
 }
 
 export default context

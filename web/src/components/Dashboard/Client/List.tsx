@@ -6,11 +6,11 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import ClientContext from '../../../../contexts/client'
-import ClientListItem from '../ListItem'
+import ClientContext from '../../../contexts/client'
+import ClientListItem from './ListItem'
 
 export default function() {
-  const {state: clients} = useContext(ClientContext)
+  const [clients] = useContext(ClientContext)
 
   if (isNull(clients)) {
     return null

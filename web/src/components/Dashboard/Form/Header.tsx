@@ -34,17 +34,19 @@ export default function(props: Props) {
       {title}
       <div className={classes.action}>
         <Tooltip placement="left" title={tooltip} aria-label={tooltip}>
-          <Fab
-            type="submit"
-            aria-owns="menu-appbar"
-            aria-haspopup="true"
-            size="medium"
-            color="secondary"
-            disabled={loading}
-            onClick={handleClick}
-          >
-            <Icon />
-          </Fab>
+          <div>
+            <Fab
+              type="submit"
+              aria-owns="menu-appbar"
+              aria-haspopup="true"
+              size="medium"
+              color="secondary"
+              disabled={loading}
+              onClick={handleClick}
+            >
+              <Icon />
+            </Fab>
+          </div>
         </Tooltip>
       </div>
     </Typography>

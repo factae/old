@@ -16,7 +16,7 @@ export async function read() {
 
 // ------------------------------------------------------------------ # Update #
 
-export async function update(profile: Partial<User>) {
+export async function update(profile: User) {
   const res = await post('/user', profile)
 
   if (res.status !== 204) {

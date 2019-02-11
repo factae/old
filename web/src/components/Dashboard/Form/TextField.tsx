@@ -1,20 +1,18 @@
 import React, {useContext} from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
+import {OutlinedTextFieldProps} from '@material-ui/core/TextField'
 
 import AsyncContext from '../../../contexts/async'
 
-export type TextFieldProps<T> = {
-  name: keyof T
-  defaultValue?: any
+export type TextFieldProps<T> = Partial<OutlinedTextFieldProps> & {
+  name: string & keyof T
   label: string
+  defaultValue?: any
   optional?: boolean
 }
 
-type Props<T> = MuiTextFieldProps & TextFieldProps<T>
-
-export default function<T>(props: Props<T>) {
+export default function<T>(props: TextFieldProps<T>) {
   const {name, label, optional, ...inputProps} = props
   const {loading} = useContext(AsyncContext)
 

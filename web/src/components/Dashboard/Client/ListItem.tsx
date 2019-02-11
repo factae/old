@@ -2,8 +2,8 @@ import React from 'react'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 
-import Client from '../../../../models/Client'
-import useRouting from '../../../../hooks/routing'
+import Client from '../../../models/Client'
+import useRouting from '../../../hooks/routing'
 
 import {useStyles} from './styles'
 

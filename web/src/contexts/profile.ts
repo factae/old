@@ -9,14 +9,9 @@ type ActionUpdate = {
   profile: User
 }
 
-export type Action = ActionUpdate
-
-export type State = User | null
-
-interface Context {
-  state: State
-  dispatch: React.Dispatch<Action>
-}
+type Action = ActionUpdate
+type State = User | null
+type Context = [State, React.Dispatch<Action>]
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -27,11 +22,10 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const context = React.createContext<Context>({state: null, dispatch: noop})
+const context = React.createContext<Context>([null, noop])
 
 export function useProfileReducer() {
-  const [state, dispatch] = React.useReducer(reducer, null)
-  return {state, dispatch}
+  return React.useReducer(reducer, null)
 }
 
 export default context

@@ -12,18 +12,18 @@ import {useStyles} from './styles'
 
 export default function() {
   const async = useContext(AsyncContext)
-  const $profile = useProfileReducer()
-  const $client = useClientReducer()
+  const [profileState, profileDispatch] = useProfileReducer()
+  const [clientState, clientDispatch] = useClientReducer()
   const classes = useStyles()
 
   async function fetchProfile() {
     const profile = await userService.read()
-    $profile.dispatch({type: 'update', profile})
+    profileDispatch({type: 'update', profile})
   }
 
   async function fetchClients() {
     const clients = await clientService.readAll()
-    $client.dispatch({type: 'update-all', clients})
+    clientDispatch({type: 'update-all', clients})
   }
 
   async function fetchData() {
@@ -47,8 +47,8 @@ export default function() {
   return (
     <Grid container justify="center" className={classes.container}>
       <Grid item xs={12} md={10} lg={9} xl={8}>
-        <ProfileContext.Provider value={$profile}>
-          <ClientContext.Provider value={$client}>
+        <ProfileContext.Provider value={[profileState, profileDispatch]}>
+          <ClientContext.Provider value={[clientState, clientDispatch]}>
             <DashboardRoutes />
           </ClientContext.Provider>
         </ProfileContext.Provider>

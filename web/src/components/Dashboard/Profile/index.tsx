@@ -1,6 +1,4 @@
 import React, {useContext} from 'react'
-import flow from 'lodash/fp/flow'
-import fromPairs from 'lodash/fp/fromPairs'
 import isNull from 'lodash/fp/isNull'
 import IconSave from '@material-ui/icons/Save'
 
@@ -11,66 +9,55 @@ import useRouting from '../../../hooks/routing'
 import User from '../../../models/User'
 import Header from '../Form/Header'
 import Section from '../Form/Section'
-import TextField from '../Form/TextField'
-import {bindModel} from '../Form'
+import useForm from '../Form'
 
 export default function() {
-  const {loading, ...async} = useContext(AsyncContext)
-  const {state: profile, dispatch} = useContext(ProfileContext)
   const {goBack} = useRouting()
+  const {loading, ...async} = useContext(AsyncContext)
+  const [profile, dispatch] = useContext(ProfileContext)
+  const {Form, Field} = useForm(profile)
 
   async function updateProfile(profile: User) {
-    try {
-      await userService.update(profile)
-      dispatch({type: 'update', profile})
-      goBack()
-      async.stop('Profil mis à jour.')
-    } catch (error) {
-      console.error(error.message)
-      async.stop('Erreur lors de la mise à jour du profil !')
-    }
-  }
-
-  function submit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
     async.start()
 
-    const profile = flow(
-      Array.from,
-      fromPairs,
-    )(new FormData(event.currentTarget)) as User
+    try {
+      await userService.update(profile)
+    } catch (error) {
+      console.error(error.message)
+      return async.stop('Erreur lors de la mise à jour du profil !')
+    }
 
-    updateProfile(profile)
+    dispatch({type: 'update', profile})
+    async.stop('Profil mis à jour.')
+    goBack()
   }
 
   if (isNull(profile)) {
     return null
   }
 
-  const setProp = bindModel<User>(profile)
-
   return (
-    <form onSubmit={submit}>
+    <Form onSubmit={updateProfile}>
       <Header title="Profil" tooltip="Sauvegarder" icon={IconSave} />
 
       <Section title="Informations personnelles">
-        <TextField {...setProp('firstName', 'Nom')} autoFocus />
-        <TextField {...setProp('lastName', 'Prénom')} />
-        <TextField {...setProp('email', 'Email')} type="email" disabled />
-        <TextField {...setProp('phone', 'Téléphone')} />
+        <Field name="firstName" label="Prénom" autoFocus />
+        <Field name="lastName" label="Nom" />
+        <Field name="email" label="Email" type="email" disabled />
+        <Field name="phone" label="Téléphone" />
       </Section>
 
       <Section title="Adresse postale">
-        <TextField {...setProp('address', 'Adresse')} />
-        <TextField {...setProp('zip', 'Code postal')} type="number" />
-        <TextField {...setProp('city', 'Ville')} />
+        <Field name="address" label="Adresse" />
+        <Field name="zip" label="Code postal" type="number" />
+        <Field name="city" label="Ville" />
       </Section>
 
       <Section title="Auto-entrepreneur">
-        <TextField {...setProp('siren', 'Siren')} />
-        <TextField {...setProp('apeCode', 'Code APE')} />
-        <TextField {...setProp('tvaNumber', 'Numéro de TVA')} optional />
+        <Field name="siren" label="Siren" />
+        <Field name="apeCode" label="Code APE" optional />
+        <Field name="tvaNumber" label="Numéro de TVA" optional />
       </Section>
-    </form>
+    </Form>
   )
 }

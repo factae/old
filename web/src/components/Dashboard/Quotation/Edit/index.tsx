@@ -1,98 +1,81 @@
 import React, {useContext} from 'react'
+import assign from 'lodash/fp/assign'
 import find from 'lodash/fp/find'
 import flow from 'lodash/fp/flow'
 import fromPairs from 'lodash/fp/fromPairs'
 import isNil from 'lodash/fp/isNil'
 import IconSave from '@material-ui/icons/Save'
+import Grid from '@material-ui/core/Grid'
+import MuiTextField from '@material-ui/core/TextField'
 
-import * as clientService from '../../../../services/client'
+import * as quotationService from '../../../../services/quotation'
 import AsyncContext from '../../../../contexts/async'
-import ClientContext from '../../../../contexts/client'
+import QuotationContext from '../../../../contexts/quotation'
 import useRouting from '../../../../hooks/routing'
-import Client from '../../../../models/Client'
-import {bindModel} from '../../Form'
+import Quotation from '../../../../models/Quotation'
 import Header from '../../Form/Header'
 import Section from '../../Form/Section'
 import TextField from '../../Form/TextField'
 
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
-
 export default function() {
   const async = useContext(AsyncContext)
-  const {state: clients, dispatch} = useContext(ClientContext)
+  const {state: quotations, dispatch} = useContext(QuotationContext)
   const {match, goBack} = useRouting()
   const id = isNil(match.params.id) ? null : +match.params.id
-  const client = isNil(id) ? null : find({id: +id})(clients)
+  const quotation = isNil(id) ? null : find({id: +id})(quotations)
 
-  async function create(client: Client) {
-    try {
-      const clientWithId = await clientService.create(client)
-      dispatch({type: 'create', client: clientWithId})
-      goBack()
-      async.stop('Client ajouté.')
-    } catch (error) {
-      console.error(error.message)
-      async.stop(`Erreur lors de l'ajout du client !`)
-    }
-  }
-
-  async function update(client: Client) {
-    try {
-      await clientService.update(client)
-      dispatch({type: 'update', client})
-      goBack()
-      async.stop('Client modifié.')
-    } catch (error) {
-      console.error(error.message)
-      async.stop(`Erreur lors de la modification du client !`)
-    }
-  }
-
-  function submit(event: React.FormEvent<HTMLFormElement>) {
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     async.start()
 
-    const client = flow(
+    const quotationWithoutId = flow(
       Array.from,
       fromPairs,
-    )(new FormData(event.currentTarget)) as Omit<Client, 'id'>
+      assign({id: -1}),
+    )(new FormData(event.currentTarget)) as Quotation
 
-    if (isNil(id)) {
-      create({...client, id: -1})
-    } else {
-      update({...client, id})
+    console.log(Array.from(new FormData(event.currentTarget)))
+    return
+
+    try {
+      const quotation = await quotationService.create(quotationWithoutId)
+      dispatch({type: 'create', quotation})
+      goBack()
+      async.stop('Devis créé.')
+    } catch (error) {
+      console.error(error.message)
+      async.stop('Erreur lors de la création du devis !')
     }
   }
 
-  if (!isNil(id) && isNil(client)) {
+  if (!isNil(id) && isNil(quotation)) {
     return null
   }
-
-  const setProp = bindModel<Client>(client)
 
   return (
     <form onSubmit={submit}>
       <Header
-        title={isNil(id) ? 'Créer un devis' : 'Modifier un client'}
+        title={isNil(id) ? 'Créer un devis' : 'Modifier un quotation'}
         tooltip="Sauvegarder"
         icon={IconSave}
       />
 
-      <Section title="Informations personnelles">
-        <TextField {...setProp('firstName', 'Prénom')} autoFocus />
-        <TextField {...setProp('lastName', 'Nom')} />
-        <TextField {...setProp('email', 'Email')} type="email" />
-        <TextField {...setProp('phone', 'Téléphone')} />
+      <Section title="Informations générales">
+        <TextField name="number" label="Numéro" autoFocus />
+        <TextField name="deposit" label="Acompte" autoFocus />
+        <TextField name="taxeRate" label="TVA" autoFocus />
       </Section>
 
-      <Section title="Adresse postale">
-        <TextField {...setProp('address', 'Adresse')} />
-        <TextField {...setProp('zip', 'Code postal')} type="number" />
-        <TextField {...setProp('city', 'Ville')} />
-      </Section>
-
-      <Section title="Autre">
-        <TextField {...setProp('tvaNumber', 'Numéro de TVA')} optional />
+      <Section title="Liste des produits/services">
+        <Grid item xs={4}>
+          <MuiTextField name="designation[]" fullWidth variant="outlined" />
+        </Grid>
+        <Grid item xs={4}>
+          <MuiTextField name="designation[]" fullWidth variant="outlined" />
+        </Grid>
+        <Grid item xs={4}>
+          <MuiTextField name="designation[]" fullWidth variant="outlined" />
+        </Grid>
       </Section>
     </form>
   )
