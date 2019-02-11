@@ -1,12 +1,15 @@
 import {DateTime} from 'luxon'
 
+import ContractItem from '../contractItem/model'
+
 interface Quotation {
   id: number
   userId: number
   number: string
   deposit: number | null
   total: number
-  taxeRate: number
+  taxRate: number
+  items: ContractItem[]
   createdAt: DateTime
   expiresAt: DateTime
   signedAt: DateTime | null

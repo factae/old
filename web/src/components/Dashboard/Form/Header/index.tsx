@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography'
 import {SvgIconProps} from '@material-ui/core/SvgIcon'
 import IconBack from '@material-ui/icons/ArrowBack'
 
-import useRouting from '../../../hooks/routing'
-import AsyncContext from '../../../contexts/async'
+import useRouting from '../../../../hooks/routing'
+import AsyncContext from '../../../../contexts/async'
 
 import {useStyles} from './styles'
 

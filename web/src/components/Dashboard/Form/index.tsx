@@ -1,6 +1,6 @@
 import React, {FunctionComponent, ReactNode, useEffect, useState} from 'react'
-import flow from 'lodash/fp/flow'
-import fromPairs from 'lodash/fp/fromPairs'
+import zipAll from 'lodash/fp/zipAll'
+import zipObjectDeep from 'lodash/fp/zipObjectDeep'
 import isNull from 'lodash/fp/isNull'
 
 import TextField, {TextFieldProps} from './TextField'
@@ -27,13 +27,11 @@ export default function<T>(state: T | null) {
   function Form(props: FormProps<T>) {
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
       event.preventDefault()
+      const formData = Array.from(new FormData(event.currentTarget))
+      const [entries, values] = zipAll(formData) as [keyof T, string][]
+      const nextState: unknown = zipObjectDeep(entries, values)
 
-      const nextState = flow(
-        Array.from,
-        fromPairs,
-      )(new FormData(event.currentTarget)) as T
-
-      return props.onSubmit(nextState)
+      return props.onSubmit(nextState as T)
     }
 
     return <form onSubmit={handleSubmit}>{props.children}</form>

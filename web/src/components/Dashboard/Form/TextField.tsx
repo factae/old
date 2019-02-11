@@ -23,7 +23,6 @@ export default function<T>(props: TextFieldProps<T>) {
         {...inputProps}
         required={!optional}
         name={name}
-        id={name}
         label={label}
         fullWidth
         variant="outlined"

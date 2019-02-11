@@ -1,7 +1,7 @@
 import React from 'react'
 import noop from 'lodash/fp/noop'
 
-import Quotation from '../models/Quotation'
+import Quotation from './model'
 
 type ActionUpdateAll = {
   type: 'update-all'
@@ -13,14 +13,9 @@ type ActionCreate = {
   quotation: Quotation
 }
 
-export type Action = ActionUpdateAll | ActionCreate
-
-export type State = Quotation[] | null
-
-interface Context {
-  state: State
-  dispatch: React.Dispatch<Action>
-}
+type Action = ActionUpdateAll | ActionCreate
+type State = Quotation[] | null
+type Context = [State, React.Dispatch<Action>]
 
 function reducer(state: State, action: Action) {
   const quotations = state || []
@@ -35,11 +30,10 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const context = React.createContext<Context>({state: null, dispatch: noop})
+const context = React.createContext<Context>([null, noop])
 
 export function useQuotationReducer() {
-  const [state, dispatch] = React.useReducer(reducer, null)
-  return {state, dispatch}
+  return React.useReducer(reducer, null)
 }
 
 export default context

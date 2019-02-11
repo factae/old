@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react'
 import IconAdd from '@material-ui/icons/Add'
 
-import useRouting from '../../../hooks/routing'
-import Header from '../Form/Header'
+import useRouting from '../../hooks/routing'
+import Header from '../../components/Dashboard/Form/Header'
 import QuotationList from './List'
 
 export default function() {
