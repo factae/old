@@ -5,8 +5,8 @@ import Home from './Home'
 import Quotation from '../../quotation/components'
 import QuotationEdit from '../../quotation/components/Edit'
 import Invoice from './Invoice'
-import Client from './Client'
-import ClientEdit from './Client/Edit'
+import Client from '../../client/components'
+import ClientEdit from '../../client/components/Edit'
 import Profile from './Profile'
 
 export default function() {

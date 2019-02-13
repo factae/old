@@ -1,5 +1,4 @@
 import React, {useContext} from 'react'
-import isNull from 'lodash/fp/isNull'
 import IconSave from '@material-ui/icons/Save'
 
 import * as userService from '../../../services/user'
@@ -14,26 +13,23 @@ import useForm from '../Form'
 export default function() {
   const {goBack} = useRouting()
   const {loading, ...async} = useContext(AsyncContext)
-  const [profile, dispatch] = useContext(ProfileContext)
-  const {Form, Field} = useForm(profile)
+  const [defaultProfile, dispatch] = useContext(ProfileContext)
+  const {Form, TextField} = useForm<User>(defaultProfile)
 
   async function updateProfile(profile: User) {
     async.start()
+    const nextProfile = {...defaultProfile, ...profile}
 
     try {
-      await userService.update(profile)
+      await userService.update(nextProfile)
     } catch (error) {
       console.error(error.message)
       return async.stop('Erreur lors de la mise à jour du profil !')
     }
 
-    dispatch({type: 'update', profile})
+    dispatch({type: 'update', profile: nextProfile})
     async.stop('Profil mis à jour.')
     goBack()
-  }
-
-  if (isNull(profile)) {
-    return null
   }
 
   return (
@@ -41,22 +37,22 @@ export default function() {
       <Header title="Profil" tooltip="Sauvegarder" icon={IconSave} />
 
       <Section title="Informations personnelles">
-        <Field name="firstName" label="Prénom" autoFocus />
-        <Field name="lastName" label="Nom" />
-        <Field name="email" label="Email" type="email" disabled />
-        <Field name="phone" label="Téléphone" />
+        <TextField name="firstName" label="Prénom" autoFocus />
+        <TextField name="lastName" label="Nom" />
+        <TextField name="email" label="Email" type="email" disabled />
+        <TextField name="phone" label="Téléphone" />
       </Section>
 
       <Section title="Adresse postale">
-        <Field name="address" label="Adresse" />
-        <Field name="zip" label="Code postal" type="number" />
-        <Field name="city" label="Ville" />
+        <TextField name="address" label="Adresse" />
+        <TextField name="zip" label="Code postal" type="number" />
+        <TextField name="city" label="Ville" />
       </Section>
 
       <Section title="Auto-entrepreneur">
-        <Field name="siren" label="Siren" />
-        <Field name="apeCode" label="Code APE" optional />
-        <Field name="tvaNumber" label="Numéro de TVA" optional />
+        <TextField name="siren" label="Siren" />
+        <TextField name="apeCode" label="Code APE" />
+        <TextField name="tvaNumber" label="Numéro de TVA" required={false} />
       </Section>
     </Form>
   )

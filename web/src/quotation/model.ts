@@ -5,6 +5,7 @@ import ContractItem from '../contractItem/model'
 interface Quotation {
   id: number
   userId: number
+  clientId: number
   number: string
   deposit: number | null
   total: number

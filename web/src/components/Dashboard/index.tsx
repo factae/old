@@ -6,7 +6,7 @@ import * as clientService from '../../services/client'
 import * as quotationService from '../../quotation/service'
 import AsyncContext from '../../contexts/async'
 import ProfileContext, {useProfileReducer} from '../../contexts/profile'
-import ClientContext, {useClientReducer} from '../../contexts/client'
+import ClientContext, {useClientReducer} from '../../client/context'
 import QuotationContext, {useQuotationReducer} from '../../quotation/context'
 import DashboardRoutes from './Routes'
 
