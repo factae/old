@@ -14,13 +14,13 @@ import {useStyles} from './styles'
 
 interface Props {
   title: string
-  tooltip: string
+  label: string
   icon: React.ComponentType<SvgIconProps>
   onClick?: () => void
 }
 
 export default function(props: Props) {
-  const {title, tooltip, icon: Icon} = props
+  const {title, label, icon: Icon} = props
   const handleClick = props.onClick || noop
   const {loading} = useContext(AsyncContext)
   const {goBack} = useRouting()
@@ -33,21 +33,19 @@ export default function(props: Props) {
       </IconButton>
       {title}
       <div className={classes.action}>
-        <Tooltip placement="left" title={tooltip} aria-label={tooltip}>
-          <div>
-            <Fab
-              type="submit"
-              aria-owns="menu-appbar"
-              aria-haspopup="true"
-              size="medium"
-              color="secondary"
-              disabled={loading}
-              onClick={handleClick}
-            >
-              <Icon />
-            </Fab>
-          </div>
-        </Tooltip>
+        <Fab
+          variant="extended"
+          type="submit"
+          aria-owns="menu-appbar"
+          aria-haspopup="true"
+          size="medium"
+          color="secondary"
+          disabled={loading}
+          onClick={handleClick}
+        >
+          <Icon className={classes.icon} />
+          {label}
+        </Fab>
       </div>
     </Typography>
   )

@@ -12,7 +12,7 @@ export default function() {
     <Fragment>
       <Header
         title="Devis"
-        tooltip="Créer un devis"
+        label="Ajouter"
         icon={IconAdd}
         onClick={goTo('quotationEdit')}
       />

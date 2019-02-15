@@ -10,6 +10,9 @@ export const useStyles = makeStyles((theme: Theme) => {
       alignItems: 'center',
       margin: `${unit * 2}px 0`,
     },
+    icon: {
+      margin: `0 ${unit / 2}px 1px 0`,
+    },
     action: {
       display: 'flex',
       flex: 1,

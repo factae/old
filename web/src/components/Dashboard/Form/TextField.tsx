@@ -1,12 +1,13 @@
-import React, {Context, useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import get from 'lodash/get'
-import isNull from 'lodash/isNull'
+import isNil from 'lodash/isNil'
 import noop from 'lodash/noop'
 import omit from 'lodash/omit'
 import Grid from '@material-ui/core/Grid'
 import MuiTextField from '@material-ui/core/TextField'
 import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
 
+import FormContext from './Context'
 import useDebounce from '../../../hooks/debounce'
 import AsyncContext from '../../../contexts/async'
 
@@ -17,24 +18,22 @@ export type TextFieldProps<T> = Pick<MuiTextFieldProps, TextFieldAttributes> & {
   onChange?: (value: string) => void
 }
 
-type FormContext<T> = Context<[T | null, (k: keyof T, v: string) => void]>
-
-export default function<T>(context: FormContext<T>) {
+export default function<T>(context: React.Context<FormContext<T>>) {
   function TextField(props: TextFieldProps<T>) {
     const debounce = useDebounce()
     const {loading} = useContext(AsyncContext)
-    const {name: key, label, ...rest} = omit(props, 'onChange')
+    const {name: key, label, required, ...rest} = omit(props, 'onChange')
     const handleChangeParent = debounce(props.onChange || noop)
 
     const [defaultModel, setModelPart] = useContext(context)
-    const defaultValue = get(defaultModel, key, '')
-    const [value, setValue] = useState(defaultValue)
+    const defaultValue = get(defaultModel, key, null)
+    const [value, setValue] = useState<string | null>(defaultValue)
 
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      const nextValue = event.currentTarget.value
+      const nextValue = event.currentTarget.value.trim() || null
       setValue(nextValue)
 
-      if (!isNull(defaultModel)) {
+      if (!isNil(defaultModel)) {
         setModelPart(key, nextValue)
         handleChangeParent(key, nextValue)
       }
@@ -50,8 +49,9 @@ export default function<T>(context: FormContext<T>) {
           disabled={loading}
           fullWidth
           {...rest}
+          required={isNil(required) ? true : required}
           onChange={handleChange}
-          value={value}
+          value={value || ''}
           name={key}
           label={label}
           variant="outlined"

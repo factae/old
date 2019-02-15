@@ -1,15 +1,18 @@
-import React, {createContext, useEffect, useState} from 'react'
+import React, {createContext, useContext, useEffect, useState} from 'react'
 import {ReactNode} from 'react'
 import assign from 'lodash/assign'
 import isNull from 'lodash/isNull'
 import noop from 'lodash/noop'
+
+import Context from './Context'
+import AsyncContext from '../../../contexts/async'
+import useRouting from '../../../hooks/routing'
 
 export type FormProps<T> = {
   onSubmit: (model: T) => void
   children?: ReactNode
 }
 
-type Context<T> = [T | null, (k: keyof T, v: string) => void]
 type FormEvent = React.FormEvent<HTMLFormElement>
 
 export default function<T>(defaultModel: T | null) {
@@ -21,20 +24,34 @@ export default function<T>(defaultModel: T | null) {
   }, [defaultModel])
 
   function Form(props: FormProps<T>) {
+    const {goBack} = useRouting()
+    const async = useContext(AsyncContext)
     const [model, setModel] = useState<T | null>(defaultModel)
 
-    function setModelPart(key: keyof T, value: string) {
+    function setModelPart(key: keyof T, value: string | null) {
       if (!isNull(model)) {
         setModel(assign(model, {[key]: value}))
       }
     }
 
-    function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: FormEvent) {
       event.preventDefault()
 
-      if (!isNull(model)) {
-        props.onSubmit(model)
+      if (isNull(model)) {
+        return
       }
+
+      async.start()
+
+      try {
+        await props.onSubmit(model)
+      } catch (error) {
+        console.error(error.message)
+        async.stop('error-submit-form')
+      }
+
+      async.stop('success-submit-form')
+      goBack()
     }
 
     return (

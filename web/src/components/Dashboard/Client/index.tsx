@@ -12,7 +12,7 @@ export default function() {
     <Fragment>
       <Header
         title="Clients"
-        tooltip="Ajouter un client"
+        label="Ajouter"
         onClick={goTo('clientEdit')}
         icon={IconAdd}
       />

@@ -7,15 +7,13 @@ import IconSave from '@material-ui/icons/Save'
 import * as clientService from '../service'
 import ClientContext from '../context'
 import {Client, emptyClient} from '../model'
-import AsyncContext from '../../contexts/async'
 import useRouting from '../../hooks/routing'
 import useForm from '../../components/Dashboard/Form'
 import Header from '../../components/Dashboard/Form/Header'
 import Section from '../../components/Dashboard/Form/Section'
 
 export default function() {
-  const {match, goBack} = useRouting()
-  const async = useContext(AsyncContext)
+  const {match} = useRouting()
   const [clients, dispatch] = useContext(ClientContext)
 
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
@@ -24,40 +22,24 @@ export default function() {
   const {Form, TextField} = useForm<Client>(client)
 
   async function createOrUpdateClient(nextClient: Client) {
-    async.start()
-
-    if (isNull(id)) {
-      try {
-        const clientWithId = await clientService.create(nextClient)
-        dispatch({type: 'create', client: clientWithId})
-        async.stop('Client ajouté.')
-      } catch (error) {
-        console.error(error.message)
-        return async.stop(`Erreur lors de l'ajout du client !`)
-      }
+    if (id === -1) {
+      const clientWithId = await clientService.create(nextClient)
+      dispatch({type: 'create', client: clientWithId})
     } else {
-      try {
-        const clientWithId = await clientService.update(nextClient)
-        dispatch({type: 'update', client: clientWithId})
-        async.stop('Client modifié.')
-      } catch (error) {
-        console.error(error.message)
-        return async.stop('Erreur lors de la modification du client !')
-      }
+      const clientWithId = await clientService.update(nextClient)
+      dispatch({type: 'update', client: clientWithId})
     }
-
-    goBack()
   }
 
-  if (!isNull(id) && isNull(client)) {
+  if (id > -1 && isNull(client)) {
     return null
   }
 
   return (
     <Form onSubmit={createOrUpdateClient}>
       <Header
-        title={isNull(client) ? 'Ajouter un client' : 'Modifier un client'}
-        tooltip="Sauvegarder"
+        title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
+        label="Sauvegarder"
         icon={IconSave}
       />
       <Section title="Informations personnelles">

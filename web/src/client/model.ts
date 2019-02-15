@@ -19,5 +19,5 @@ export const emptyClient: Client = {
   city: '',
   email: '',
   phone: '',
-  tvaNumber: null,
+  tvaNumber: '',
 }
