@@ -7,10 +7,10 @@ import IconSave from '@material-ui/icons/Save'
 import * as clientService from '../service'
 import ClientContext from '../context'
 import {Client, emptyClient} from '../model'
-import useRouting from '../../hooks/routing'
-import useForm from '../../components/Dashboard/Form'
-import Header from '../../components/Dashboard/Form/Header'
-import Section from '../../components/Dashboard/Form/Section'
+import useRouting from '../../common/hooks/routing'
+import useForm from '../../common/form'
+import Header from '../../common/form/Header'
+import Section from '../../common/form/Section'
 
 export default function() {
   const {match} = useRouting()

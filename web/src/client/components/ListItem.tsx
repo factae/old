@@ -3,7 +3,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 
 import {Client} from '../model'
-import useRouting from '../../hooks/routing'
+import useRouting from '../../common/hooks/routing'
 
 import {useStyles} from './styles'
 

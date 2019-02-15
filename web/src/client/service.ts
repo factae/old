@@ -1,7 +1,7 @@
 import omit from 'lodash/fp/omit'
 
 import {Client} from './model'
-import {get, post, put} from '../utils/axios'
+import {get, post, put} from '../common/utils/axios'
 
 // ---------------------------------------------------------------- # Read all #
 

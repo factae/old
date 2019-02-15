@@ -1,6 +1,6 @@
 import omit from 'lodash/fp/omit'
 
-import {get, post} from '../utils/axios'
+import {get, post} from '../common/utils/axios'
 
 import Quotation from './model'
 
