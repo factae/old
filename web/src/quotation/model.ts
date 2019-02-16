@@ -1,8 +1,8 @@
 import {DateTime} from 'luxon'
 
-import ContractItem from '../contractItem/model'
+import {ContractItem} from '../contractItem/model'
 
-interface Quotation {
+export interface Quotation {
   id: number
   userId: number
   clientId: number
@@ -16,4 +16,18 @@ interface Quotation {
   signedAt: DateTime | null
 }
 
-export default Quotation
+export function emptyQuotation(): Quotation {
+  return {
+    id: -1,
+    userId: -1,
+    clientId: -1,
+    number: '',
+    deposit: 0,
+    total: 0,
+    taxRate: 0,
+    items: [],
+    createdAt: DateTime.local(),
+    expiresAt: DateTime.local(),
+    signedAt: null,
+  }
+}

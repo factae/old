@@ -10,11 +10,18 @@
 /*   total: number */
 /* } */
 
-interface ContractItem {
+export interface ContractItem {
   description: string
   unitPrice: number
   quantity: number
   total: number
 }
 
-export default ContractItem
+export function emptyContractItem(): ContractItem {
+  return {
+    description: '',
+    unitPrice: 0,
+    quantity: 0,
+    total: 0,
+  }
+}

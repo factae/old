@@ -1,7 +1,7 @@
 import React from 'react'
 import noop from 'lodash/fp/noop'
 
-import Quotation from './model'
+import {Quotation} from './model'
 
 type ActionUpdateAll = {
   type: 'update-all'

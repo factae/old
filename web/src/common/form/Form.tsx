@@ -10,6 +10,7 @@ import useRouting from '../../common/hooks/routing'
 
 export type FormProps<T> = {
   onSubmit: (model: T) => void
+  inline?: boolean
   children?: ReactNode
 }
 
@@ -39,6 +40,11 @@ export default function<T>(defaultModel: T | null) {
 
       if (isNull(model)) {
         return
+      }
+
+      if (props.inline) {
+        await props.onSubmit(model)
+        return setModel(defaultModel)
       }
 
       async.start()
