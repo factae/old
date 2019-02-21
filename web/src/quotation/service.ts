@@ -1,6 +1,6 @@
 import omit from 'lodash/omit'
 
-import {get, post} from '../common/utils/axios'
+import {get, post, put} from '../common/utils/axios'
 
 import {Quotation} from './model'
 
@@ -20,6 +20,18 @@ export async function readAll() {
 
 export async function create(quotation: Quotation) {
   const res = await post('/quotation', omit(quotation, 'id'))
+
+  if (res.status !== 200) {
+    throw new Error(res.statusText)
+  }
+
+  return <Quotation>res.data
+}
+
+// ------------------------------------------------------------------ # Update #
+
+export async function update(quotation: Quotation) {
+  const res = await put('/quotation', quotation)
 
   if (res.status !== 200) {
     throw new Error(res.statusText)

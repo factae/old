@@ -9,13 +9,13 @@ export class User {
   // @ts-ignore
   id: number
 
-  @OneToMany(type => Client, client => client.user)
+  @OneToMany(() => Client, client => client.user)
   // @ts-ignore
   clients: Client[]
 
-  @OneToMany(type => Quotation, quotation => quotation.user)
+  @OneToMany(() => Quotation, quotation => quotation.user)
   // @ts-ignore
-  quotation: Quotation[]
+  quotations: Quotation[]
 
   @Column({unique: true})
   // @ts-ignore

@@ -8,28 +8,26 @@ import TableFooter from '@material-ui/core/TableFooter'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import Edit from '../Edit'
 import {ContractItem} from '../../model'
 import {toEuro} from '../../../common/utils/currency'
 
 import {useStyles} from './styles'
 
 type Props = {
+  items: ContractItem[]
   total: number
   taxRate: number
-  value: ContractItem[]
-  onSubmit: (contractItem: ContractItem) => void
 }
 
 export default function(props: Props) {
-  const {total, taxRate, value: contractItems} = props
+  const {items, total, taxRate} = props
   const classes = useStyles()
 
   return (
     <Grid item xs={12} className={classes.container}>
       <Paper>
         <Table>
-          <TableHead className={classes.head}>
+          <TableHead>
             <TableRow>
               <TableCell>Description</TableCell>
               <TableCell align="right">Prix unitaire</TableCell>
@@ -38,9 +36,8 @@ export default function(props: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <Edit onSubmit={props.onSubmit} />
-            {contractItems.map((item, index) => (
-              <TableRow key={index}>
+            {items.map((item, key) => (
+              <TableRow key={key}>
                 <TableCell>{item.description}</TableCell>
                 <TableCell align="right">{toEuro(item.unitPrice)}</TableCell>
                 <TableCell align="right">{item.quantity}</TableCell>
@@ -48,18 +45,20 @@ export default function(props: Props) {
               </TableRow>
             ))}
           </TableBody>
-          <TableFooter className={classes.footer}>
+          <TableFooter>
             {taxRate > 0 && (
               <TableRow>
-                <TableCell align="right">Total HT:</TableCell>
                 <TableCell align="right" colSpan={3}>
-                  {toEuro(total)}
+                  Total HT:
                 </TableCell>
+                <TableCell align="right">{toEuro(total)}</TableCell>
               </TableRow>
             )}
             <TableRow>
-              <TableCell align="right">Total TTC :</TableCell>
               <TableCell align="right" colSpan={3}>
+                Total TTC :
+              </TableCell>
+              <TableCell align="right">
                 {toEuro(total * (1 + taxRate * 0.01))}
               </TableCell>
             </TableRow>

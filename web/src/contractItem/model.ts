@@ -11,14 +11,16 @@
 /* } */
 
 export interface ContractItem {
+  id: number
   description: string
   unitPrice: number
   quantity: number
   total: number
 }
 
-export function emptyContractItem(): ContractItem {
+export function emptyItem(): ContractItem {
   return {
+    id: -1,
     description: '',
     unitPrice: 0,
     quantity: 0,

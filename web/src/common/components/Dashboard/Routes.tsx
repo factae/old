@@ -13,7 +13,11 @@ export default function() {
     <Fragment>
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/dashboard/quotation" component={Quotation} />
-      <Route exact path="/dashboard/quotation/edit" component={QuotationEdit} />
+      <Route
+        exact
+        path="/dashboard/quotation/edit/:id?"
+        component={QuotationEdit}
+      />
       <Route exact path="/dashboard/invoice" component={() => null} />
       <Route exact path="/dashboard/client" component={Client} />
       <Route exact path="/dashboard/client/edit/:id?" component={ClientEdit} />

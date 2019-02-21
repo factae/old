@@ -36,7 +36,7 @@ export default function() {
   }
 
   return (
-    <Form onSubmit={createOrUpdateClient}>
+    <Form main onSubmit={createOrUpdateClient}>
       <Header
         title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
         label="Sauvegarder"

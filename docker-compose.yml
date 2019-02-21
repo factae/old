@@ -23,6 +23,16 @@ services:
     volumes:
       - .:/home/node
 
+  adminer:
+    image: adminer:4.7.1
+    container_name: factae-adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=database
+    links:
+      - database
+    ports:
+      - 3002:8080
+
   database:
     image: mysql:5.7.25
     container_name: factae-database

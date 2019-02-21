@@ -3,12 +3,6 @@ import {makeStyles} from '@material-ui/styles'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    margin: `${theme.spacing.unit * 3}px 0`,
-  },
-  head: {
-    backgroundColor: theme.palette.grey[100],
-  },
-  footer: {
-    backgroundColor: theme.palette.grey[100],
+    marginTop: theme.spacing.unit * 3,
   },
 }))

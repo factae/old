@@ -19,7 +19,7 @@ type SelectAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
 export type SelectProps<T> = Pick<MuiSelectProps, SelectAttributes> & {
   name: string & keyof T
   label: string
-  onChange?: (value: string) => void
+  onChange?: (value: number) => void
   children: any
 }
 
@@ -32,24 +32,23 @@ export default function<T>(context: React.Context<FormContext<T>>) {
     const labelRef = useRef<InputLabel>(null)
 
     const [defaultModel, setModelPart] = useContext(context)
-    const defaultValue = get(defaultModel, key, null)
-    const [value, setValue] = useState<string | null>(defaultValue)
+    const defaultValue = Number(get(defaultModel, key, null))
+    const [value, setValue] = useState(defaultValue)
 
     useEffect(() => {
       setValue(defaultValue)
     }, [defaultModel])
 
     function labelWidth() {
-      if (labelRef.current) {
-        const labelNode = ReactDOM.findDOMNode(labelRef.current)
-        return (labelNode as HTMLLabelElement).offsetWidth
-      } else {
-        return 0
-      }
+      if (Number(value) === -1) return 0
+      if (!labelRef.current) return 0
+
+      const labelNode = ReactDOM.findDOMNode(labelRef.current)
+      return (labelNode as HTMLLabelElement).offsetWidth
     }
 
     function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-      const nextValue = event.target.value
+      const nextValue = Number(event.target.value)
       setValue(nextValue)
 
       if (!isNil(defaultModel)) {
@@ -70,7 +69,7 @@ export default function<T>(context: React.Context<FormContext<T>>) {
           disabled={loading || disabled}
           required={required !== false}
         >
-          <InputLabel ref={labelRef} htmlFor={id}>
+          <InputLabel shrink={Number(value) > -1} ref={labelRef} htmlFor={id}>
             {label}
           </InputLabel>
           <MuiSelect

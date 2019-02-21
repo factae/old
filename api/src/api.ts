@@ -31,6 +31,7 @@ api.put('/client', authByCookie, handle(client.update))
 // Quotation
 api.get('/quotation', authByCookie, handle(quotation.readAll))
 api.post('/quotation', authByCookie, handle(quotation.create))
+api.put('/quotation', authByCookie, handle(quotation.update))
 
 // User
 api.get('/user', authByCookie, handle(user.read))

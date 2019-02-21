@@ -4,30 +4,30 @@ import {ContractItem} from '../contractItem/model'
 
 export interface Quotation {
   id: number
-  userId: number
   clientId: number
   number: string
+  status: 'draft' | 'sent' | 'signed'
   deposit: number | null
   total: number
   taxRate: number
   items: ContractItem[]
   createdAt: DateTime
   expiresAt: DateTime
+  sentAt: DateTime | null
   signedAt: DateTime | null
 }
 
-export function emptyQuotation(): Quotation {
-  return {
-    id: -1,
-    userId: -1,
-    clientId: -1,
-    number: '',
-    deposit: 0,
-    total: 0,
-    taxRate: 0,
-    items: [],
-    createdAt: DateTime.local(),
-    expiresAt: DateTime.local(),
-    signedAt: null,
-  }
+export const emptyQuotation: Quotation = {
+  id: -1,
+  clientId: -1,
+  number: '',
+  status: 'draft',
+  deposit: 0,
+  total: 0,
+  taxRate: 0,
+  items: [],
+  createdAt: DateTime.local(),
+  expiresAt: DateTime.local().plus({days: 60}),
+  sentAt: null,
+  signedAt: null,
 }

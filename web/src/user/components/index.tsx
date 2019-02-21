@@ -18,7 +18,7 @@ export default function() {
   }
 
   return (
-    <Form onSubmit={updateProfile}>
+    <Form main onSubmit={updateProfile}>
       <Header title="Profil" label="Sauvegarder" icon={IconSave} />
 
       <Section title="Informations personnelles">

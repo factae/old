@@ -9,11 +9,11 @@ export class Client {
   // @ts-ignore
   id: number
 
-  @ManyToOne(type => User, user => user.id)
+  @ManyToOne(() => User, user => user.id)
   // @ts-ignore
   user: User
 
-  @OneToMany(type => Quotation, quotation => quotation.client)
+  @OneToMany(() => Quotation, quotation => quotation.id)
   // @ts-ignore
   quotation: Quotation[]
 

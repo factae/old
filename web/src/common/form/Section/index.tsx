@@ -15,7 +15,7 @@ type Action = {
 }
 
 interface Props {
-  title: string
+  title: React.ReactNode
   action?: Action
   children?: ReactNode
 }

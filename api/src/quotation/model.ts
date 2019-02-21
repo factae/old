@@ -1,47 +1,53 @@
-import {Entity, Column, ManyToOne} from 'typeorm'
+import {Column, PrimaryGeneratedColumn, JoinColumn} from 'typeorm'
+import {Entity, ManyToOne, OneToMany, RelationId} from 'typeorm'
+import {DateTime} from 'luxon'
 
 import {User} from '../models/User'
 import {Client} from '../models/Client'
+import {ContractItem} from '../contractItem/model'
 
 @Entity()
 export class Quotation {
-  @Column({primary: true, generated: true})
-  // @ts-ignore
+  @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne(type => User, user => user.id)
-  // @ts-ignore
+  @ManyToOne(() => User)
   user: User
 
-  @ManyToOne(type => Client, client => client.id)
-  // @ts-ignore
+  @ManyToOne(() => Client, client => client.id, {onDelete: 'CASCADE'})
+  @JoinColumn({name: 'clientId'})
   client: Client
 
+  @RelationId((quotation: Quotation) => quotation.client)
+  clientId: number
+
   @Column({unique: true})
-  // @ts-ignore
   number: string
 
+  @Column({type: 'enum', enum: ['draft', 'sent', 'signed']})
+  status: 'draft' | 'sent' | 'signed'
+
+  @OneToMany(() => ContractItem, item => item.quotation)
+  items: ContractItem[]
+
   @Column({default: 0})
-  // @ts-ignore
   deposit: number
 
   @Column()
-  // @ts-ignore
   total: number
 
   @Column({default: 0})
-  // @ts-ignore
   taxRate: number
 
-  /*   @Column() */
-  /*   // @ts-ignore */
-  /*   createdAt: DateTime */
+  @Column({type: 'datetime'})
+  createdAt: DateTime
 
-  /*   @Column() */
-  /*   // @ts-ignore */
-  /*   expiresAt: DateTime */
+  @Column({type: 'datetime'})
+  expiresAt: DateTime
 
-  /*   @Column() */
-  /*   // @ts-ignore */
-  /*   signedAt: DateTime */
+  @Column({type: 'datetime', nullable: true, default: null})
+  sentAt: DateTime | null
+
+  @Column({type: 'datetime', nullable: true, default: null})
+  signedAt: DateTime | null
 }

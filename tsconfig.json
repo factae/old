@@ -1,5 +1,4 @@
 {
-  "exclude": ["node_modules"],
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
@@ -17,5 +16,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5"
-  }
+  },
+  "exclude": ["node_modules"]
 }

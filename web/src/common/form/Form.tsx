@@ -7,10 +7,12 @@ import noop from 'lodash/noop'
 import Context from './Context'
 import AsyncContext from '../../common/contexts/async'
 import useRouting from '../../common/hooks/routing'
+import useDebounce from '../../common/hooks/debounce'
 
 export type FormProps<T> = {
-  onSubmit: (model: T) => void
-  inline?: boolean
+  onChange?: (model: T) => void
+  onSubmit?: (model: T) => void
+  main?: boolean
   children?: ReactNode
 }
 
@@ -25,13 +27,18 @@ export default function<T>(defaultModel: T | null) {
   }, [defaultModel])
 
   function Form(props: FormProps<T>) {
+    const submit = props.onSubmit || noop
+    const debounce = useDebounce()
+    const sendChanges = debounce(props.onChange || noop)
     const {goBack} = useRouting()
     const async = useContext(AsyncContext)
     const [model, setModel] = useState<T | null>(defaultModel)
 
-    function setModelPart(key: keyof T, value: string | null) {
+    function setModelPart(key: keyof T, value: string | number | null) {
       if (!isNull(model)) {
-        setModel(assign(model, {[key]: value}))
+        const nextModel: T = assign(model, {[key]: value})
+        setModel(nextModel)
+        sendChanges(nextModel)
       }
     }
 
@@ -42,15 +49,15 @@ export default function<T>(defaultModel: T | null) {
         return
       }
 
-      if (props.inline) {
-        await props.onSubmit(model)
+      if (!props.main) {
+        await submit(model)
         return setModel(defaultModel)
       }
 
       async.start()
 
       try {
-        await props.onSubmit(model)
+        await submit(model)
       } catch (error) {
         console.error(error.message)
         async.stop('error-submit-form')

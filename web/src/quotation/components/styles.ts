@@ -8,4 +8,18 @@ export const useStyles = makeStyles((theme: Theme) => ({
       backgroundColor: theme.palette.grey[100],
     },
   },
+  spacing: {
+    '&>$item': {
+      [theme.breakpoints.only('xs')]: {
+        paddingBottom: theme.spacing.unit / 2,
+      },
+      [theme.breakpoints.up('sm')]: {
+        paddingRight: theme.spacing.unit / 2,
+      },
+    },
+  },
+  item: {},
+  addItem: {
+    float: 'right',
+  },
 }))
