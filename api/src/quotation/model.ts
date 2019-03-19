@@ -24,8 +24,8 @@ export class Quotation {
   @Column({unique: true})
   number: string
 
-  @Column({type: 'enum', enum: ['draft', 'sent', 'signed']})
-  status: 'draft' | 'sent' | 'signed'
+  @Column({type: 'enum', enum: ['draft', 'downloaded', 'signed']})
+  status: 'draft' | 'downloaded' | 'signed'
 
   @OneToMany(() => ContractItem, item => item.quotation)
   items: ContractItem[]

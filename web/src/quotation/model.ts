@@ -6,14 +6,14 @@ export interface Quotation {
   id: number
   clientId: number
   number: string
-  status: 'draft' | 'sent' | 'signed'
+  status: 'draft' | 'downloaded' | 'signed'
   deposit: number | null
   total: number
   taxRate: number
   items: ContractItem[]
   createdAt: DateTime
   expiresAt: DateTime
-  sentAt: DateTime | null
+  downloadedAt: DateTime | null
   signedAt: DateTime | null
 }
 
@@ -28,6 +28,6 @@ export const emptyQuotation: Quotation = {
   items: [],
   createdAt: DateTime.local(),
   expiresAt: DateTime.local().plus({days: 60}),
-  sentAt: null,
+  downloadedAt: null,
   signedAt: null,
 }

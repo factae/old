@@ -7,14 +7,15 @@ export function handle(handler: Handler) {
     try {
       await handler(req, res)
     } catch (error) {
+      console.error(error)
+
       switch (error.code) {
         case 'ER_DUP_ENTRY':
           res.status(400)
-          res.send('Email already exists')
+          res.send('Resource already exists')
           break
 
         default:
-          console.error(error)
           res.status(500)
           res.send(error.message)
       }
