@@ -27,9 +27,8 @@
   },
   "scripts": {
     "start:dev": "NODE_ENV=development ts-node-dev --no-notify src/index.ts",
-    "typeorm": "ts-node node_modules/.bin/typeorm",
-    "migration:create": "typeorm migration:create -n",
-    "prestart": "NODE_ENV=production tsc",
-    "start": "NODE_ENV=production node build/index.js"
+    "typeorm:dev": "ts-node node_modules/.bin/typeorm",
+    "prestart": "tsc",
+    "start": "node build/index.js"
   }
 }
