@@ -1,5 +1,5 @@
 import {Column, PrimaryGeneratedColumn, JoinColumn} from 'typeorm'
-import {Entity, ManyToOne, OneToMany, RelationId} from 'typeorm'
+import {Entity, Index, ManyToOne, OneToMany, RelationId} from 'typeorm'
 import {DateTime} from 'luxon'
 
 import {User} from '../models/User'
@@ -7,6 +7,7 @@ import {Client} from '../models/Client'
 import {ContractItem} from '../contractItem/model'
 
 @Entity()
+@Index('client_number', ['client.id', 'number'], {unique: true})
 export class Quotation {
   @PrimaryGeneratedColumn()
   id: number
@@ -21,7 +22,7 @@ export class Quotation {
   @RelationId((quotation: Quotation) => quotation.client)
   clientId: number
 
-  @Column({unique: true})
+  @Column()
   number: string
 
   @Column({type: 'enum', enum: ['draft', 'downloaded', 'signed']})

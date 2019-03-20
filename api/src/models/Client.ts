@@ -1,9 +1,10 @@
-import {Entity, Column, ManyToOne, OneToMany} from 'typeorm'
+import {Entity, Index, Column, ManyToOne, OneToMany} from 'typeorm'
 
 import {User} from './User'
 import {Quotation} from '../quotation/model'
 
 @Entity()
+@Index('user_email', ['user.id', 'email'], {unique: true})
 export class Client {
   @Column({primary: true, generated: true})
   // @ts-ignore
@@ -37,7 +38,7 @@ export class Client {
   // @ts-ignore
   city: string
 
-  @Column({unique: true})
+  @Column()
   // @ts-ignore
   email: string
 

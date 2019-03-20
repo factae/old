@@ -31,10 +31,10 @@
     "use-react-router": "^1.0.3"
   },
   "scripts": {
-    "preinstall": "sudo rm -rf node_modules/.cache/babel-loader",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cache:clear": "sudo rm -rf node_modules/.cache/babel-loader"
   }
 }
