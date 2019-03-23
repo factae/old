@@ -3,28 +3,26 @@ import get from 'lodash/get'
 import isNil from 'lodash/isNil'
 import noop from 'lodash/noop'
 import omit from 'lodash/omit'
+import {DateTime} from 'luxon'
 import Grid, {GridProps} from '@material-ui/core/Grid'
-import MuiTextField from '@material-ui/core/TextField'
+import {DatePicker as MuiDateField} from 'material-ui-pickers'
 import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
 
 import FormContext from './Context'
 import useDebounce from '../../common/hooks/debounce'
 import AsyncContext from '../../common/contexts/async'
 
-type TextFieldAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
+type DateFieldAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
 
-export type TextFieldProps<T> = Pick<MuiTextFieldProps, TextFieldAttributes> & {
+export type DateFieldProps<T> = Pick<MuiTextFieldProps, DateFieldAttributes> & {
   name: string & keyof T
   label: string
-  onChange?: (value: string) => void
+  onChange?: (value: DateTime) => void
   grid?: GridProps
-  placeholder?: string
-  multiline?: boolean
-  rows?: number
 }
 
 export default function<T>(context: React.Context<FormContext<T>>) {
-  return function TextField(props: TextFieldProps<T>) {
+  return function DateField(props: DateFieldProps<T>) {
     const debounce = useDebounce()
     const {loading} = useContext(AsyncContext)
     const {name: key, label, required} = props
@@ -33,10 +31,9 @@ export default function<T>(context: React.Context<FormContext<T>>) {
 
     const [defaultModel, setModelPart] = useContext(context)
     const defaultValue = get(defaultModel, key, null)
-    const [value, setValue] = useState<string | null>(defaultValue)
+    const [value, setValue] = useState<DateTime | null>(defaultValue)
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      const nextValue = event.currentTarget.value || null
+    function handleChange(nextValue: DateTime) {
       setValue(nextValue)
 
       if (!isNil(defaultModel)) {
@@ -51,13 +48,17 @@ export default function<T>(context: React.Context<FormContext<T>>) {
 
     return (
       <Grid item {...grid}>
-        <MuiTextField
+        <MuiDateField
           disabled={loading}
           fullWidth
+          autoOk
           {...omit(props, 'name', 'label', 'grid', 'onChange')}
           required={isNil(required) ? true : required}
           onChange={handleChange}
-          value={value || ''}
+          value={value}
+          format="dd/LL/yyyy"
+          cancelLabel="Annuler"
+          okLabel="Valider"
           name={key}
           label={label}
           variant="outlined"

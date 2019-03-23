@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import get from 'lodash/get'
 import uuid from 'uuid/v4'
 import isNil from 'lodash/isNil'
+import isNumber from 'lodash/isNumber'
 import noop from 'lodash/noop'
 import omit from 'lodash/omit'
 import Grid from '@material-ui/core/Grid'
@@ -40,7 +41,7 @@ export default function<T>(context: React.Context<FormContext<T>>) {
     }, [defaultModel])
 
     function labelWidth() {
-      if (Number(value) === -1) return 0
+      if (value <= 0) return 0
       if (!labelRef.current) return 0
 
       const labelNode = ReactDOM.findDOMNode(labelRef.current)
@@ -58,7 +59,7 @@ export default function<T>(context: React.Context<FormContext<T>>) {
     }
 
     function renderInput() {
-      return <OutlinedInput labelWidth={labelWidth()} id={id} name={name} />
+      return <OutlinedInput id={id} name={key} labelWidth={labelWidth()} />
     }
 
     return (
@@ -69,15 +70,17 @@ export default function<T>(context: React.Context<FormContext<T>>) {
           disabled={loading || disabled}
           required={required !== false}
         >
-          <InputLabel shrink={Number(value) > -1} ref={labelRef} htmlFor={id}>
+          <InputLabel shrink={value > 0} ref={labelRef} htmlFor={id}>
             {label}
           </InputLabel>
           <MuiSelect
             {...omit(props, 'name', 'label', 'onChange')}
+            native
             input={renderInput()}
-            value={value || ''}
+            value={value}
             onChange={handleChange}
           >
+            <option />
             {props.children}
           </MuiSelect>
         </FormControl>

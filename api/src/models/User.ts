@@ -3,65 +3,74 @@ import {Entity, Column, OneToMany} from 'typeorm'
 import {Quotation} from '../quotation/model'
 import {Client} from './Client'
 
+export enum RateUnit {
+  hour = 1,
+  day = 2,
+  service = 3,
+}
+
 @Entity()
 export class User {
   @Column({primary: true, generated: true})
-  // @ts-ignore
   id: number
 
   @OneToMany(() => Client, client => client.user)
-  // @ts-ignore
   clients: Client[]
 
   @OneToMany(() => Quotation, quotation => quotation.user)
-  // @ts-ignore
   quotations: Quotation[]
 
   @Column({unique: true})
-  // @ts-ignore
   email: string
 
   @Column()
-  // @ts-ignore
   password: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  firstName?: string
+  firstName: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  lastName?: string
+  lastName: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  address?: string
+  address: string
 
   @Column({type: 'int', nullable: true, default: null})
-  // @ts-ignore
-  zip?: number
+  zip: number
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  city?: string
+  city: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  phone?: string
+  phone: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  tvaNumber?: string
+  rib: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  iban?: string
+  iban: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  siren?: string
+  bic: string
 
   @Column({nullable: true, default: null})
-  // @ts-ignore
-  apeCode?: string
+  siren: string
+
+  @Column({nullable: true, default: null})
+  apeCode: string
+
+  @Column({nullable: true, default: null})
+  taxId: string
+
+  @Column({type: 'tinyint', nullable: true, default: null})
+  taxRate: number
+
+  @Column({nullable: true, default: null})
+  conditions: string
+
+  @Column({nullable: true, default: null})
+  rate: number
+
+  @Column({type: 'tinyint', default: RateUnit.hour})
+  rateUnit: RateUnit
 }

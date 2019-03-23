@@ -17,24 +17,21 @@ export default function() {
   }
 
   return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Numéro</TableCell>
-            <TableCell>Client</TableCell>
-            <TableCell>Statut</TableCell>
-            <TableCell align="right">Total TTC</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {quotations.map(quotation => (
-            <QuotationListItem
-              key={quotation.id}
-              quotation={quotation}
-            />
-          ))}
-        </TableBody>
-      </Table>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Numéro</TableCell>
+          <TableCell>Client</TableCell>
+          <TableCell>Statut</TableCell>
+          <TableCell align="right">Total TTC</TableCell>
+          <TableCell align="right">Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {quotations.map((quotation, key) => (
+          <QuotationListItem key={key} quotation={quotation} />
+        ))}
+      </TableBody>
+    </Table>
   )
 }

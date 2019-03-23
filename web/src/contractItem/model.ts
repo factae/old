@@ -18,11 +18,11 @@ export interface ContractItem {
   total: number
 }
 
-export function emptyItem(): ContractItem {
+export function emptyItem(unitPrice: number | null): ContractItem {
   return {
     id: -1,
     description: '',
-    unitPrice: 0,
+    unitPrice: unitPrice || 0,
     quantity: 0,
     total: 0,
   }

@@ -13,6 +13,12 @@ export const useStyles = makeStyles((theme: Theme) => {
       margin: `${unit * 4}px 0 ${unit * 2}px 0`,
       padding: `${unit * 2}px 0 0 0`,
     },
+    withSubtitle: {
+      marginBottom: 0,
+    },
+    subtitle: {
+      marginBottom: unit * 2,
+    },
     tooltip: {
       display: 'flex',
     },

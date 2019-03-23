@@ -2,7 +2,7 @@ import React from 'react'
 import merge from 'lodash/merge'
 import noop from 'lodash/noop'
 
-import User from './model'
+import {User} from './model'
 
 type ActionUpdate = {
   type: 'update'

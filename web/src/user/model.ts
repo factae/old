@@ -1,4 +1,10 @@
-interface User {
+export enum RateUnit {
+  hour = 1,
+  day = 2,
+  service = 3,
+}
+
+export interface User {
   id: number
   email: string
   password: string
@@ -8,10 +14,14 @@ interface User {
   zip: number
   city: string
   phone: string
-  tvaNumber: string
+  rib: string
   iban: string
+  bic: string
   siren: string
   apeCode: string
+  taxId: string | null
+  taxRate: number | null
+  conditions: string | null
+  rate: number | null
+  rateUnit: RateUnit
 }
-
-export default User

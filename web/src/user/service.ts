@@ -1,6 +1,6 @@
 import {get, post} from '../common/utils/axios'
 
-import User from './model'
+import {User} from './model'
 
 // -------------------------------------------------------------------- # Read #
 

@@ -2,6 +2,7 @@ import {Request, Response} from 'express'
 import {getRepository} from 'typeorm'
 import assign from 'lodash/assign'
 import omit from 'lodash/omit'
+import {DateTime} from 'luxon'
 
 import {Quotation} from './model'
 import {ContractItem} from '../contractItem/model'
@@ -15,20 +16,38 @@ export async function readAll(req: Request, res: Response) {
     .where('quotation.user = :user', {user: req.user.id})
     .getMany()
 
-  res.json(quotations)
+  res.json(
+    quotations.map(q =>
+      assign(q, {
+        createdAt: DateTime.fromJSDate(new Date(q.createdAt)).toISO(),
+        expiresAt: DateTime.fromJSDate(new Date(q.expiresAt)).toISO(),
+        startsAt: DateTime.fromJSDate(new Date(q.startsAt)).toISO(),
+        endsAt: DateTime.fromJSDate(new Date(q.endsAt)).toISO(),
+      }),
+    ),
+  )
 }
 
 // ------------------------------------------------------------------ # Create #
 
 export async function create(req: Request, res: Response) {
+  const now = DateTime.local()
+
   const quotationRepository = await getRepository(Quotation)
   const itemRepository = await getRepository(ContractItem)
 
   req.body.user = req.user
   req.body.client = req.body.clientId
 
-  let quotation: Quotation = omit(req.body, 'id')
-  quotation = await quotationRepository.save(quotation)
+  const quotations = await quotationRepository.find({
+    where: {clientId: req.body.clientId},
+    order: {createdAt: 'DESC'},
+  })
+
+  const quotation: Quotation = await quotationRepository.save({
+    ...omit(req.body, 'id'),
+    number: `${now.toFormat('yyLL')}-${quotations.length + 1}`,
+  })
 
   await itemRepository.save(
     quotation.items.map(item => assign(omit(item, 'id'), {quotation})),
@@ -43,8 +62,7 @@ export async function update(req: Request, res: Response) {
   const quotationRepository = await getRepository(Quotation)
   const itemRepository = await getRepository(ContractItem)
 
-  let quotation: Quotation = req.body
-  quotation = await quotationRepository.save(quotation)
+  const quotation: Quotation = await quotationRepository.save(req.body)
 
   await itemRepository.save(
     quotation.items.map(item => {

@@ -1,8 +1,7 @@
 import {Column, PrimaryGeneratedColumn, JoinColumn} from 'typeorm'
 import {Entity, Index, ManyToOne, OneToMany, RelationId} from 'typeorm'
-import {DateTime} from 'luxon'
 
-import {User} from '../models/User'
+import {User, RateUnit} from '../models/User'
 import {Client} from '../models/Client'
 import {ContractItem} from '../contractItem/model'
 
@@ -22,33 +21,45 @@ export class Quotation {
   @RelationId((quotation: Quotation) => quotation.client)
   clientId: number
 
-  @Column()
-  number: string
-
-  @Column({type: 'enum', enum: ['draft', 'downloaded', 'signed']})
-  status: 'draft' | 'downloaded' | 'signed'
+  @Column({type: 'enum', enum: ['draft', 'validated', 'signed']})
+  status: 'draft' | 'validated' | 'signed'
 
   @OneToMany(() => ContractItem, item => item.quotation)
   items: ContractItem[]
 
-  @Column({default: 0})
-  deposit: number
+  @Column()
+  number: string
+
+  @Column({nullable: true, default: null})
+  conditions?: string
+
+  @Column({nullable: true, default: null})
+  taxRate?: number
+
+  @Column({nullable: true, default: null})
+  rate?: number
+
+  @Column({type: 'tinyint', default: 0})
+  rateUnit: RateUnit
 
   @Column()
   total: number
 
-  @Column({default: 0})
-  taxRate: number
+  @Column({type: 'datetime'})
+  createdAt: string
 
   @Column({type: 'datetime'})
-  createdAt: DateTime
+  expiresAt: string
 
   @Column({type: 'datetime'})
-  expiresAt: DateTime
+  startsAt: string
+
+  @Column({type: 'datetime'})
+  endsAt: string
 
   @Column({type: 'datetime', nullable: true, default: null})
-  sentAt: DateTime | null
+  validatedAt?: string
 
   @Column({type: 'datetime', nullable: true, default: null})
-  signedAt: DateTime | null
+  signedAt?: string
 }

@@ -3,6 +3,7 @@ import {ReactNode} from 'react'
 import assign from 'lodash/assign'
 import isNull from 'lodash/isNull'
 import noop from 'lodash/noop'
+import {DateTime} from 'luxon'
 
 import Context from './Context'
 import AsyncContext from '../../common/contexts/async'
@@ -34,7 +35,10 @@ export default function<T>(defaultModel: T | null) {
     const async = useContext(AsyncContext)
     const [model, setModel] = useState<T | null>(defaultModel)
 
-    function setModelPart(key: keyof T, value: string | number | null) {
+    function setModelPart(
+      key: keyof T,
+      value: string | number | DateTime | null,
+    ) {
       if (!isNull(model)) {
         const nextModel: T = assign(model, {[key]: value})
         setModel(nextModel)

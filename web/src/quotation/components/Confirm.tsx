@@ -21,8 +21,9 @@ export default function(props: Props) {
 
       <DialogContent>
         <DialogContentText>
-          Si vous téléchargez le devis, vous ne pourrez plus l'éditer. Êtes-vous
-          sûr de vouloir continuer ?
+          C'est la première fois que vous téléchargez ce devis. Si vous
+          continuez, il sera vérouillé, et vous ne pourrez plus le modifier.
+          Êtes-vous sûr de vouloir continuer ?
         </DialogContentText>
       </DialogContent>
 

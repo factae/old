@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Button from '@material-ui/core/Button'
 import IconAdd from '@material-ui/icons/Add'
 
@@ -9,19 +9,24 @@ import Section from '../../../common/form/Section'
 import {useStyles} from './styles'
 
 type Props = {
+  rate: number | null
   onAdd: (item: ContractItem) => void
 }
 
 export default function(props: Props) {
-  const [item, setItem] = useState(emptyItem())
+  const {rate} = props
+  const [item, setItem] = useState(emptyItem(rate))
   const {Form, TextField} = useForm(item)
-
   const classes = useStyles()
+
+  useEffect(() => {
+    setItem({...item, unitPrice: rate || 0})
+  }, [rate])
 
   function addItem(nextItem: ContractItem) {
     nextItem.total = nextItem.quantity * nextItem.unitPrice
     props.onAdd(nextItem)
-    setItem(emptyItem())
+    setItem(emptyItem(rate))
   }
 
   return (

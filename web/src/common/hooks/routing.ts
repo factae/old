@@ -29,7 +29,7 @@ const routes: Routes = {
 export default function useRouting() {
   const {history, ...routerProps} = useReactRouter<{id: number}>()
 
-  function goTo(route: Route, id?: number) {
+  function goTo(route: Route, id?: number | null) {
     return () => {
       const url = get(route)(routes)
       return history.push(`${url}${isNil(id) ? '' : `/${id}`}`)

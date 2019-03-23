@@ -1,4 +1,5 @@
 import React, {Fragment, ReactNode, useContext} from 'react'
+import classNames from 'classnames'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import {SvgIconProps} from '@material-ui/core/SvgIcon'
@@ -16,18 +17,19 @@ type Action = {
 
 interface Props {
   title: React.ReactNode
+  subtitle?: React.ReactNode
   action?: Action
   children?: ReactNode
 }
 
 export default function(props: Props) {
-  const {title, action, children} = props
+  const {title, subtitle, action, children} = props
   const {loading} = useContext(AsyncContext)
   const classes = useStyles()
 
   return (
     <Fragment>
-      <Typography variant="h5" component="h2" className={classes.title}>
+      <Typography className={classNames(classes.title, {[classes.withSubtitle]: subtitle})} variant="h5" component="h2">
         {title}
         {action && (
           <Tooltip
@@ -50,6 +52,12 @@ export default function(props: Props) {
           </Tooltip>
         )}
       </Typography>
+
+      {subtitle && (
+        <Typography className={classes.subtitle} color="textSecondary">
+          <em>{subtitle}</em>
+        </Typography>
+      )}
 
       <Grid container spacing={16}>
         {children}

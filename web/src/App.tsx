@@ -1,5 +1,7 @@
 import React from 'react'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
+import {MuiPickersUtilsProvider} from 'material-ui-pickers'
+import LuxonUtils from '@date-io/luxon'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
@@ -31,19 +33,21 @@ export default function() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AsyncContext.Provider value={{loading, start, stop}}>
-        <CssBaseline />
-        <Snackbar message={message} onClose={close} />
-        <BrowserRouter>
-          <Navigation />
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <PrivateRoute path="/dashboard" component={Dashboard} />
-            <Redirect to="/dashboard" />
-          </Switch>
-        </BrowserRouter>
-      </AsyncContext.Provider>
+      <MuiPickersUtilsProvider locale="fr" utils={LuxonUtils}>
+        <AsyncContext.Provider value={{loading, start, stop}}>
+          <CssBaseline />
+          <Snackbar message={message} onClose={close} />
+          <BrowserRouter>
+            <Navigation />
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <Redirect to="/dashboard" />
+            </Switch>
+          </BrowserRouter>
+        </AsyncContext.Provider>
+      </MuiPickersUtilsProvider>
     </ThemeProvider>
   )
 }
