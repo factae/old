@@ -4,6 +4,8 @@ import {Route} from 'react-router-dom'
 import Dashboard from './Dashboard'
 import Quotation from '../../../quotation/components'
 import QuotationEdit from '../../../quotation/components/Edit'
+import Invoice from '../../../invoice/components'
+import InvoiceEdit from '../../../invoice/components/Edit'
 import Client from '../../../client/components'
 import ClientEdit from '../../../client/components/Edit'
 import Profile from '../../../user/components'
@@ -17,6 +19,12 @@ export default function() {
         exact
         path="/dashboard/quotation/edit/:id?"
         component={QuotationEdit}
+      />
+      <Route exact path="/dashboard/invoice" component={Invoice} />
+      <Route
+        exact
+        path="/dashboard/invoice/edit/:id?"
+        component={InvoiceEdit}
       />
       <Route exact path="/dashboard/invoice" component={() => null} />
       <Route exact path="/dashboard/client" component={Client} />

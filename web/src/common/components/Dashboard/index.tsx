@@ -4,10 +4,12 @@ import Grid from '@material-ui/core/Grid'
 import * as userService from '../../../user/service'
 import * as clientService from '../../../client/service'
 import * as quotationService from '../../../quotation/service'
+import * as invoiceService from '../../../invoice/service'
 import AsyncContext from '../../../common/contexts/async'
 import ProfileContext, {useProfileReducer} from '../../../user/context'
 import ClientContext, {useClientReducer} from '../../../client/context'
 import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
+import InvoiceContext, {useInvoiceReducer} from '../../../invoice/context'
 import DashboardRoutes from './Routes'
 
 import {useStyles} from './styles'
@@ -17,6 +19,7 @@ export default function() {
   const [profileState, profileDispatch] = useProfileReducer()
   const [clientState, clientDispatch] = useClientReducer()
   const [quotationState, quotationDispatch] = useQuotationReducer()
+  const [invoiceState, invoiceDispatch] = useInvoiceReducer()
   const classes = useStyles()
 
   async function fetchProfile() {
@@ -34,6 +37,11 @@ export default function() {
     quotationDispatch({type: 'update-all', quotations})
   }
 
+  async function fetchInvoices() {
+    const invoices = await invoiceService.readAll()
+    invoiceDispatch({type: 'update-all', invoices})
+  }
+
   async function fetchData() {
     async.start()
 
@@ -41,6 +49,7 @@ export default function() {
       await fetchProfile()
       await fetchClients()
       await fetchQuotations()
+      await fetchInvoices()
     } catch (error) {
       console.error(error.message)
       return async.stop('Erreur lors de la récupération des données serveur !')
@@ -61,7 +70,9 @@ export default function() {
             <QuotationContext.Provider
               value={[quotationState, quotationDispatch]}
             >
-              <DashboardRoutes />
+              <InvoiceContext.Provider value={[invoiceState, invoiceDispatch]}>
+                <DashboardRoutes />
+              </InvoiceContext.Provider>
             </QuotationContext.Provider>
           </ClientContext.Provider>
         </ProfileContext.Provider>

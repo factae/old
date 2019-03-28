@@ -10,6 +10,7 @@ export type Route =
   | 'quotation'
   | 'quotationEdit'
   | 'invoice'
+  | 'invoiceEdit'
   | 'client'
   | 'clientEdit'
   | 'profile'
@@ -21,6 +22,7 @@ const routes: Routes = {
   quotation: '/dashboard/quotation',
   quotationEdit: '/dashboard/quotation/edit',
   invoice: '/dashboard/invoice',
+  invoiceEdit: '/dashboard/invoice/edit',
   client: '/dashboard/client',
   clientEdit: '/dashboard/client/edit',
   profile: '/dashboard/profile',

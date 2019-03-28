@@ -1,30 +1,28 @@
 import {Entity, Column, ManyToOne} from 'typeorm'
 
 import {Quotation} from '../quotation/model'
+import {Invoice} from '../invoice/model'
 
 @Entity()
 export class ContractItem {
   @Column({primary: true, generated: true})
-  // @ts-ignore
   id: number
 
   @ManyToOne(() => Quotation)
-  // @ts-ignore
   quotation: Quotation
 
+  @ManyToOne(() => Invoice)
+  invoice: Invoice
+
   @Column()
-  // @ts-ignore
   description: string
 
   @Column()
-  // @ts-ignore
   unitPrice: number
 
   @Column()
-  // @ts-ignore
   quantity: number
 
   @Column()
-  // @ts-ignore
   total: number
 }

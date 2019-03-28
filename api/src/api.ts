@@ -5,6 +5,7 @@ import middlewares from './middlewares'
 import * as auth from './controllers/Auth'
 import * as client from './controllers/Client'
 import * as quotation from './quotation/controller'
+import * as invoice from './invoice/controller'
 import * as user from './controllers/User'
 import {authByLoginPassword} from './strategies/Local'
 import {authByCookie} from './strategies/Cookie'
@@ -32,6 +33,11 @@ api.put('/client', authByCookie, handle(client.update))
 api.get('/quotation', authByCookie, handle(quotation.readAll))
 api.post('/quotation', authByCookie, handle(quotation.create))
 api.put('/quotation', authByCookie, handle(quotation.update))
+
+// Invoice
+api.get('/invoice', authByCookie, handle(invoice.readAll))
+api.post('/invoice', authByCookie, handle(invoice.create))
+api.put('/invoice', authByCookie, handle(invoice.update))
 
 // User
 api.get('/user', authByCookie, handle(user.read))
