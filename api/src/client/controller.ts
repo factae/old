@@ -2,7 +2,7 @@ import {Request, Response} from 'express'
 import omit from 'lodash/fp/omit'
 import {getRepository} from 'typeorm'
 
-import {Client} from '../models/Client'
+import {Client} from './model'
 
 // ---------------------------------------------------------------- # Read all #
 

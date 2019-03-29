@@ -1,5 +1,6 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react'
+import React, {Fragment, useContext, useEffect, useRef, useState} from 'react'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import isNil from 'lodash/isNil'
 import isNull from 'lodash/isNull'
 import keys from 'lodash/keys'
@@ -22,30 +23,27 @@ import ListItem from '../../contractItem/components/List'
 export default function() {
   const [clients] = useContext(ClientContext)
   const [quotations, dispatch] = useContext(QuotationContext)
-  const [profile] = useContext(ProfileContext)
+  const [user] = useContext(ProfileContext)
 
   const {match} = useRouting()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
-  const defaultQuotation = find(quotations, {id}) || emptyQuotation(profile)
+  const quotation = useRef(find(quotations, {id}) || emptyQuotation({user}))
+  const {Form, TextField, DateField, Select} = useForm(quotation.current)
 
-  const [rate, setRate] = useState(defaultQuotation.rate)
-  const [items, setItems] = useState([emptyItem(defaultQuotation.rate)])
+  const [rate, setRate] = useState(quotation.current.rate)
+  const [items, setItems] = useState([emptyItem(quotation.current.rate)])
   const [total, setTotal] = useState(0)
-  const [taxRate, setLocalTaxRate] = useState(0)
-
-  const {Form, TextField, DateField, Select} = useForm<Quotation>(
-    defaultQuotation,
-  )
+  const [taxRate, setLocalTaxRate] = useState(quotation.current.taxRate)
 
   useEffect(() => {
-    setItems(defaultQuotation.items)
-    setLocalTaxRate(defaultQuotation.taxRate)
-    setTotal(defaultQuotation.total)
+    setItems(quotation.current.items)
+    setLocalTaxRate(quotation.current.taxRate)
+    setTotal(quotation.current.total)
   }, [quotations])
 
   useEffect(() => {
-    setRate(defaultQuotation.rate)
-  }, [defaultQuotation.rate])
+    setRate(quotation.current.rate)
+  }, [quotation.current.rate])
 
   function addItem(item: ContractItem) {
     setItems([...items, item])
@@ -66,10 +64,10 @@ export default function() {
   }
 
   function setTaxRate(value: string) {
-    setLocalTaxRate(Number(value))
+    setLocalTaxRate(isEmpty(value.trim()) ? null : Number(value))
   }
 
-  if ((id > -1 && isNull(quotations)) || isNull(clients) || isNull(profile)) {
+  if ((id > -1 && isNull(quotations)) || isNull(clients) || isNull(user)) {
     return null
   }
 
@@ -104,7 +102,7 @@ export default function() {
             ))}
           </Select>
 
-          {profile.taxId && (
+          {user.taxId && (
             <TextField
               name="taxRate"
               label="TVA (%)"

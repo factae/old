@@ -1,4 +1,5 @@
 import React from 'react'
+import isNull from 'lodash/isNull'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
@@ -16,7 +17,7 @@ import {useStyles} from './styles'
 type Props = {
   items: ContractItem[]
   total: number
-  taxRate: number
+  taxRate: number | null
 }
 
 export default function(props: Props) {
@@ -30,8 +31,8 @@ export default function(props: Props) {
           <TableHead>
             <TableRow>
               <TableCell>Description</TableCell>
-              <TableCell align="right">Prix unitaire</TableCell>
               <TableCell align="right">Quantité</TableCell>
+              <TableCell align="right">Prix unitaire</TableCell>
               <TableCell align="right">Total</TableCell>
             </TableRow>
           </TableHead>
@@ -39,14 +40,14 @@ export default function(props: Props) {
             {items.map((item, key) => (
               <TableRow key={key}>
                 <TableCell>{item.description}</TableCell>
-                <TableCell align="right">{toEuro(item.unitPrice)}</TableCell>
                 <TableCell align="right">{item.quantity}</TableCell>
+                <TableCell align="right">{toEuro(item.unitPrice)}</TableCell>
                 <TableCell align="right">{toEuro(item.total)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
-            {taxRate > 0 && (
+            {!isNull(taxRate) && (
               <TableRow>
                 <TableCell align="right" colSpan={3}>
                   Total HT:
@@ -59,7 +60,7 @@ export default function(props: Props) {
                 Total TTC :
               </TableCell>
               <TableCell align="right">
-                {toEuro(total * (1 + taxRate * 0.01))}
+                {toEuro(total * (1 + Number(taxRate) * 0.01))}
               </TableCell>
             </TableRow>
           </TableFooter>

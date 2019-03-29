@@ -13,6 +13,7 @@ import IconSign from '@material-ui/icons/Check'
 import ClientContext from '../../client/context'
 import AsyncContext from '../../common/contexts/async'
 import useRouting from '../../common/hooks/routing'
+import {toEuro} from '../../common/utils/currency'
 import {Quotation} from '../model'
 import QuotationContext from '../context'
 import * as service from '../service'
@@ -158,7 +159,9 @@ export default function(props: Props) {
         <TableCell className={classNameCell}>{clientName}</TableCell>
         <TableCell className={classNameCell}>{quotation.status}</TableCell>
         <TableCell className={classNameCell} align="right">
-          {(quotation.total * (1 + quotation.taxRate / 100)).toFixed(2)} €
+          {quotation.taxRate
+            ? toEuro(quotation.total * (1 + quotation.taxRate / 100))
+            : toEuro(quotation.total)}
         </TableCell>
         <TableCell className={classNameCell} align="right">
           {renderAction()}

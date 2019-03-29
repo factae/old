@@ -224,7 +224,7 @@ export default function(props: Props) {
                   Total TTC
                 </Text>
                 <Text style={{...styles.td, ...styles.totalAmount}}>
-                  {toEuro(invoice.total * (1 + invoice.taxRate * 0.01))}
+                  {toEuro(invoice.total * (1 + Number(invoice.taxRate) * 0.01))}
                 </Text>
               </View>
             </View>

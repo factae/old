@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from 'react'
+import React, {Fragment, useContext, useEffect, useRef, useState} from 'react'
 import find from 'lodash/find'
 import isNil from 'lodash/isNil'
 import isNull from 'lodash/isNull'
@@ -11,7 +11,7 @@ import {ContractItem, emptyItem} from '../../contractItem/model'
 import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
 import InvoiceContext from '../context'
-import ProfileContext from '../../user/context'
+import UserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
@@ -22,28 +22,27 @@ import ListItem from '../../contractItem/components/List'
 export default function() {
   const [clients] = useContext(ClientContext)
   const [invoices, dispatch] = useContext(InvoiceContext)
-  const [profile] = useContext(ProfileContext)
+  const [user] = useContext(UserContext)
 
   const {match} = useRouting()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
-  const defaultInvoice = find(invoices, {id}) || emptyInvoice(profile)
+  const invoice = useRef(find(invoices, {id}) || emptyInvoice({user}))
+  const {Form, TextField, DateField, Select} = useForm(invoice.current)
 
-  const [rate, setRate] = useState(defaultInvoice.rate)
-  const [items, setItems] = useState([emptyItem(defaultInvoice.rate)])
+  const [rate, setRate] = useState(invoice.current.rate)
+  const [items, setItems] = useState([emptyItem(invoice.current.rate)])
   const [total, setTotal] = useState(0)
-  const [taxRate, setLocalTaxRate] = useState(0)
-
-  const {Form, TextField, DateField, Select} = useForm<Invoice>(defaultInvoice)
+  const [taxRate, setLocalTaxRate] = useState(invoice.current.taxRate)
 
   useEffect(() => {
-    setItems(defaultInvoice.items)
-    setLocalTaxRate(defaultInvoice.taxRate)
-    setTotal(defaultInvoice.total)
+    setItems(invoice.current.items)
+    setLocalTaxRate(invoice.current.taxRate)
+    setTotal(invoice.current.total)
   }, [invoices])
 
   useEffect(() => {
-    setRate(defaultInvoice.rate)
-  }, [defaultInvoice.rate])
+    setRate(invoice.current.rate)
+  }, [invoice.current.rate])
 
   function addItem(item: ContractItem) {
     setItems([...items, item])
@@ -67,7 +66,7 @@ export default function() {
     setLocalTaxRate(Number(value))
   }
 
-  if ((id > -1 && isNull(invoices)) || isNull(clients) || isNull(profile)) {
+  if ((id > -1 && isNull(invoices)) || isNull(clients) || isNull(user)) {
     return null
   }
 
@@ -102,7 +101,7 @@ export default function() {
             ))}
           </Select>
 
-          {profile.taxId && (
+          {user.taxId && (
             <TextField
               name="taxRate"
               label="TVA (%)"
@@ -111,7 +110,6 @@ export default function() {
             />
           )}
 
-          <DateField name="expiresAt" label="Expiration de l'offre" />
           <DateField name="startsAt" label="Date de début" />
           <DateField name="endsAt" label="Date de fin" />
           <TextField

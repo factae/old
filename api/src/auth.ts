@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken'
 import isEmail from 'validator/lib/isEmail'
 import isByteLength from 'validator/lib/isByteLength'
 
-import {User} from '../models/User'
+import {User} from './user/model'
 
 const SECRET = process.env.API_SECRET || 'secret'
 const EXPIRY_TIME = 60 * 60 * 24 // 24h

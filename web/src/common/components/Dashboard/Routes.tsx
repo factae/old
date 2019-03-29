@@ -8,28 +8,20 @@ import Invoice from '../../../invoice/components'
 import InvoiceEdit from '../../../invoice/components/Edit'
 import Client from '../../../client/components'
 import ClientEdit from '../../../client/components/Edit'
-import Profile from '../../../user/components'
+import UserEdit from '../../../user/components'
 
 export default function() {
   return (
     <Fragment>
       <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/dashboard/quotation" component={Quotation} />
-      <Route
-        exact
-        path="/dashboard/quotation/edit/:id?"
-        component={QuotationEdit}
-      />
+      <Route path="/dashboard/quotation/edit/:id?" component={QuotationEdit} />
       <Route exact path="/dashboard/invoice" component={Invoice} />
-      <Route
-        exact
-        path="/dashboard/invoice/edit/:id?"
-        component={InvoiceEdit}
-      />
+      <Route path="/dashboard/invoice/edit/:id?" component={InvoiceEdit} />
       <Route exact path="/dashboard/invoice" component={() => null} />
       <Route exact path="/dashboard/client" component={Client} />
-      <Route exact path="/dashboard/client/edit/:id?" component={ClientEdit} />
-      <Route exact path="/dashboard/profile" component={Profile} />
+      <Route path="/dashboard/client/edit/:id?" component={ClientEdit} />
+      <Route path="/dashboard/profile" component={UserEdit} />
     </Fragment>
   )
 }

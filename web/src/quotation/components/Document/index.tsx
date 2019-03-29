@@ -5,7 +5,7 @@ import {Theme} from '@material-ui/core'
 import {useTheme} from '@material-ui/styles'
 
 import {toEuro} from '../../../common/utils/currency'
-import ProfileContext from '../../../user/context'
+import UserContext from '../../../user/context'
 import {Quotation} from '../../model'
 import {Client} from '../../../client/model'
 import {RateUnit} from '../../../user/model'
@@ -22,20 +22,20 @@ interface Props {
 
 export default function(props: Props) {
   const {quotation, client} = props
-  const [profile] = useContext(ProfileContext)
+  const [user] = useContext(UserContext)
   const theme = useTheme<Theme>()
   const styles = useStyle(theme)
 
-  if (isNull(profile)) {
+  if (isNull(user)) {
     return null
   }
 
   function renderTVANumber() {
-    if (!profile!.taxId) {
+    if (!user!.taxId) {
       return null
     }
 
-    return <Text style={styles.taxId}>N° TVA : {profile!.taxId}</Text>
+    return <Text style={styles.taxId}>N° TVA : {user!.taxId}</Text>
   }
 
   function renderDuration() {
@@ -133,17 +133,17 @@ export default function(props: Props) {
             <View style={styles.section}>
               <View style={styles.fullWidth}>
                 <Text style={styles.name}>
-                  {profile.firstName} {profile.lastName}
+                  {user.firstName} {user.lastName}
                 </Text>
 
-                <Text>{profile.address}</Text>
+                <Text>{user.address}</Text>
                 <Text>
-                  {profile.zip} {profile.city}
+                  {user.zip} {user.city}
                 </Text>
 
-                <Text>{profile.email}</Text>
-                <Text>{profile.phone}</Text>
-                <Text style={styles.siren}>SIREN : {profile!.siren}</Text>
+                <Text>{user.email}</Text>
+                <Text>{user.phone}</Text>
+                <Text style={styles.siren}>SIREN : {user!.siren}</Text>
                 {renderTVANumber()}
               </View>
               <View>
@@ -224,7 +224,9 @@ export default function(props: Props) {
                   Total TTC
                 </Text>
                 <Text style={{...styles.td, ...styles.totalAmount}}>
-                  {toEuro(quotation.total * (1 + quotation.taxRate * 0.01))}
+                  {toEuro(
+                    quotation.total * (1 + Number(quotation.taxRate) * 0.01),
+                  )}
                 </Text>
               </View>
             </View>
@@ -234,9 +236,9 @@ export default function(props: Props) {
             <View style={styles.section}>
               <View>
                 <Text style={styles.bankTitle}>Coordonnées bancaires :</Text>
-                <Text style={styles.bankItem}>RIB : {profile.rib}</Text>
-                <Text style={styles.bankItem}>IBAN : {profile.iban}</Text>
-                <Text style={styles.bankItem}>BIC : {profile.bic}</Text>
+                <Text style={styles.bankItem}>RIB : {user.rib}</Text>
+                <Text style={styles.bankItem}>IBAN : {user.iban}</Text>
+                <Text style={styles.bankItem}>BIC : {user.bic}</Text>
               </View>
             </View>
 

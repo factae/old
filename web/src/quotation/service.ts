@@ -29,6 +29,7 @@ export async function readAll(): Promise<Quotation[]> {
 // ------------------------------------------------------------------ # Create #
 
 export async function create(quotation: Quotation) {
+  quotation.type = 'quotation'
   quotation.createdAt = DateTime.local()
 
   const res = await post('/quotation', {

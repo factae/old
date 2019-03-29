@@ -29,6 +29,7 @@ export async function readAll(): Promise<Invoice[]> {
 // ------------------------------------------------------------------ # Create #
 
 export async function create(invoice: Invoice) {
+  invoice.type = 'invoice'
   invoice.createdAt = DateTime.local()
 
   const res = await post('/invoice', {

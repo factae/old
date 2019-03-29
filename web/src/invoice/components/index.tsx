@@ -11,7 +11,7 @@ export default function() {
   return (
     <Fragment>
       <Header
-        title="Facture"
+        title="Factures"
         label="Ajouter"
         icon={IconAdd}
         onClick={goTo('invoiceEdit')}

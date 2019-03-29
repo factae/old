@@ -6,7 +6,7 @@ import {User} from './model'
 
 type ActionUpdate = {
   type: 'update'
-  profile: User
+  user: User
 }
 
 type Action = ActionUpdate
@@ -16,7 +16,7 @@ type Context = [State, React.Dispatch<Action>]
 function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'update':
-      return merge(action.profile, state)
+      return merge(action.user, state)
     default:
       return state
   }
@@ -24,7 +24,7 @@ function reducer(state: State, action: Action) {
 
 const context = React.createContext<Context>([null, noop])
 
-export function useProfileReducer() {
+export function useUserReducer() {
   return React.useReducer(reducer, null)
 }
 

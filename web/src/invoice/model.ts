@@ -1,8 +1,10 @@
-import {Contract, emptyContract} from '../contract/model'
-import {User} from '../user/model'
+import {Contract, EmptyContractParams, emptyContract} from '../contract/model'
+
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
+type EmptyInvoiceParams = Omit<EmptyContractParams, 'type'>
 
 export interface Invoice extends Contract {}
 
-export function emptyInvoice(profile: User | null): Invoice {
-  return emptyContract(profile)
+export function emptyInvoice(params: EmptyInvoiceParams): Invoice {
+  return emptyContract({...params, type: 'invoice'})
 }

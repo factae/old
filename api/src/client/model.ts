@@ -1,7 +1,7 @@
 import {Entity, Index, Column, ManyToOne, OneToMany} from 'typeorm'
 
-import {User} from './User'
-import {Quotation} from '../quotation/model'
+import {User} from '../user/model'
+import {Contract} from '../contract/model'
 
 @Entity()
 @Index('user_email', ['user.id', 'email'], {unique: true})
@@ -14,9 +14,9 @@ export class Client {
   // @ts-ignore
   user: User
 
-  @OneToMany(() => Quotation, quotation => quotation.id)
+  @OneToMany(() => Contract, contract => contract.id)
   // @ts-ignore
-  quotation: Quotation[]
+  contract: Contract[]
 
   @Column()
   // @ts-ignore

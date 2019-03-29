@@ -1,7 +1,7 @@
 import {Entity, Column, OneToMany} from 'typeorm'
 
-import {Quotation} from '../quotation/model'
-import {Client} from './Client'
+import {Contract} from '../contract/model'
+import {Client} from '../client/model'
 
 export enum RateUnit {
   hour = 1,
@@ -17,8 +17,8 @@ export class User {
   @OneToMany(() => Client, client => client.user)
   clients: Client[]
 
-  @OneToMany(() => Quotation, quotation => quotation.user)
-  quotations: Quotation[]
+  @OneToMany(() => Contract, contract => contract.user)
+  contracts: Contract[]
 
   @Column({unique: true})
   email: string

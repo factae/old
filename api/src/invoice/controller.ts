@@ -4,28 +4,28 @@ import assign from 'lodash/assign'
 import omit from 'lodash/omit'
 import {DateTime} from 'luxon'
 
-import {Invoice} from './model'
+import {Contract} from '../contract/model'
 import {ContractItem} from '../contractItem/model'
 
 // ---------------------------------------------------------------- # Read all #
 
 export async function readAll(req: Request, res: Response) {
-  const invoices = await getRepository(Invoice)
+  let invoices = await getRepository(Contract)
     .createQueryBuilder('invoice')
     .leftJoinAndSelect('invoice.items', 'items')
-    .where('invoice.user = :user', {user: req.user.id})
+    .where('invoice.type = :type', {type: 'invoice'})
+    .andWhere('invoice.user = :user', {user: req.user.id})
     .getMany()
 
-  res.json(
-    invoices.map(q =>
-      assign(q, {
-        createdAt: DateTime.fromJSDate(new Date(q.createdAt)).toISO(),
-        expiresAt: DateTime.fromJSDate(new Date(q.expiresAt)).toISO(),
-        startsAt: DateTime.fromJSDate(new Date(q.startsAt)).toISO(),
-        endsAt: DateTime.fromJSDate(new Date(q.endsAt)).toISO(),
-      }),
-    ),
-  )
+  invoices.forEach(invoice => {
+    const createdAt = DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
+    const startsAt = DateTime.fromJSDate(new Date(invoice.startsAt)).toISO()
+    const endsAt = DateTime.fromJSDate(new Date(invoice.endsAt)).toISO()
+
+    assign(invoice, {createdAt, startsAt, endsAt})
+  })
+
+  res.json(invoices)
 }
 
 // ------------------------------------------------------------------ # Create #
@@ -33,18 +33,18 @@ export async function readAll(req: Request, res: Response) {
 export async function create(req: Request, res: Response) {
   const now = DateTime.local()
 
-  const invoiceRepository = await getRepository(Invoice)
+  const invoiceRepository = await getRepository(Contract)
   const itemRepository = await getRepository(ContractItem)
 
   req.body.user = req.user
   req.body.client = req.body.clientId
 
   const invoices = await invoiceRepository.find({
-    where: {clientId: req.body.clientId},
+    where: {type: 'invoice', clientId: req.body.clientId},
     order: {createdAt: 'DESC'},
   })
 
-  const invoice: Invoice = await invoiceRepository.save({
+  const invoice: Contract = await invoiceRepository.save({
     ...omit(req.body, 'id'),
     number: `${now.toFormat('yyLL')}-${invoices.length + 1}`,
   })
@@ -59,10 +59,10 @@ export async function create(req: Request, res: Response) {
 // ------------------------------------------------------------------ # Update #
 
 export async function update(req: Request, res: Response) {
-  const invoiceRepository = await getRepository(Invoice)
+  const invoiceRepository = await getRepository(Contract)
   const itemRepository = await getRepository(ContractItem)
 
-  const invoice: Invoice = await invoiceRepository.save(req.body)
+  const invoice: Contract = await invoiceRepository.save(req.body)
 
   await itemRepository.save(
     invoice.items.map(item => {

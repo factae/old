@@ -7,16 +7,16 @@ import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
 import * as userService from '../service'
-import ProfileContext from '../context'
+import UserContext from '../context'
 import {User, RateUnit} from '../model'
 
 export default function() {
-  const [defaultProfile, dispatch] = useContext(ProfileContext)
-  const {Form, TextField, Select} = useForm<User>(defaultProfile)
+  const [defaultUser, dispatch] = useContext(UserContext)
+  const {Form, TextField, Select} = useForm<User>(defaultUser)
 
-  async function updateProfile(profile: User) {
-    await userService.update(profile)
-    dispatch({type: 'update', profile})
+  async function updateUser(user: User) {
+    await userService.update(user)
+    dispatch({type: 'update', user})
   }
 
   function renderRate(unit: RateUnit) {
@@ -29,14 +29,11 @@ export default function() {
 
       case RateUnit.service:
         return 'Par prestation'
-
-      default:
-        return ''
     }
   }
 
   return (
-    <Form main onSubmit={updateProfile}>
+    <Form main onSubmit={updateUser}>
       <Header title="Profil" label="Sauvegarder" icon={IconSave} />
 
       <Section title="Identité">

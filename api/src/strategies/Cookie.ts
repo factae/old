@@ -4,7 +4,7 @@ import {ExtractJwt} from 'passport-jwt'
 import {Strategy, StrategyOptions, VerifyCallback} from 'passport-jwt'
 import {getConnection} from 'typeorm'
 
-import {User} from '../models/User'
+import {User} from '../user/model'
 
 // --------------------------------------------------------- # Cookie strategy #
 

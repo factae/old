@@ -4,7 +4,7 @@ import passport, {AuthenticateOptions} from 'passport'
 import {Strategy, IStrategyOptions, VerifyFunction} from 'passport-local'
 import {getConnection} from 'typeorm'
 
-import {User} from '../models/User'
+import {User} from '../user/model'
 
 // ---------------------------------------------------------- # Local strategy #
 

@@ -1,18 +1,14 @@
 import {Entity, Column, ManyToOne} from 'typeorm'
 
-import {Quotation} from '../quotation/model'
-import {Invoice} from '../invoice/model'
+import {Contract} from '../contract/model'
 
 @Entity()
 export class ContractItem {
   @Column({primary: true, generated: true})
   id: number
 
-  @ManyToOne(() => Quotation)
-  quotation: Quotation
-
-  @ManyToOne(() => Invoice)
-  invoice: Invoice
+  @ManyToOne(() => Contract)
+  contract: Contract
 
   @Column()
   description: string
