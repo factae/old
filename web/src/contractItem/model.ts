@@ -23,7 +23,7 @@ export function emptyItem(unitPrice: number | null): ContractItem {
     id: -1,
     description: '',
     unitPrice: unitPrice || 0,
-    quantity: 0,
+    quantity: 1,
     total: 0,
   }
 }

@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
+import useDebounce from 'react-captain/useDebounce'
 import get from 'lodash/get'
 import isNil from 'lodash/isNil'
 import noop from 'lodash/noop'
@@ -9,7 +10,6 @@ import {DatePicker as MuiDateField} from 'material-ui-pickers'
 import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
 
 import FormContext from './Context'
-import useDebounce from '../../common/hooks/debounce'
 import AsyncContext from '../../common/contexts/async'
 
 type DateFieldAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'

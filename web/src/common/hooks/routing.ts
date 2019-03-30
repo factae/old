@@ -1,5 +1,5 @@
-import get from 'lodash/fp/get'
-import isNil from 'lodash/fp/isNil'
+import get from 'lodash/get'
+import isNumber from 'lodash/isNumber'
 import useReactRouter from 'use-react-router'
 
 type Routes = {[T in Route]: string | null}
@@ -31,10 +31,13 @@ const routes: Routes = {
 export default function useRouting() {
   const {history, ...routerProps} = useReactRouter<{id: number}>()
 
-  function goTo(route: Route, id?: number | null) {
+  function goTo(route: Route, params?: any) {
     return () => {
-      const url = get(route)(routes)
-      return history.push(`${url}${isNil(id) ? '' : `/${id}`}`)
+      const url = get(routes, route)
+      return history.push(
+        `${url}${isNumber(params) ? `/${params}` : ''}`,
+        params,
+      )
     }
   }
 

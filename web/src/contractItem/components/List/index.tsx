@@ -50,9 +50,15 @@ export default function(props: Props) {
             {!isNull(taxRate) && (
               <TableRow>
                 <TableCell align="right" colSpan={3}>
-                  Total HT:
+                  Total HT :
+                  <br />
+                  TVA :
                 </TableCell>
-                <TableCell align="right">{toEuro(total)}</TableCell>
+                <TableCell align="right">
+                  {toEuro(total)}
+                  <br />
+                  {taxRate} %
+                </TableCell>
               </TableRow>
             )}
             <TableRow>

@@ -1,18 +1,19 @@
-import React, {Fragment, useContext, useEffect, useRef, useState} from 'react'
+import React, {Fragment} from 'react'
+import {useMemo, useContext, useEffect, useRef, useState} from 'react'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
+import isNaN from 'lodash/isNaN'
 import isNil from 'lodash/isNil'
-import isNull from 'lodash/isNull'
+import isObject from 'lodash/isObject'
 import keys from 'lodash/keys'
 import IconSave from '@material-ui/icons/Save'
 
 import * as service from '../service'
-import {Quotation, emptyQuotation} from '../model'
-import {ContractItem, emptyItem} from '../../contractItem/model'
+import {Quotation, emptyQuotation} from '../../quotation/model'
+import {ContractItem} from '../../contractItem/model'
 import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
 import QuotationContext from '../context'
-import ProfileContext from '../../user/context'
+import UserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
@@ -21,38 +22,55 @@ import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
+  const [user] = useContext(UserContext)
   const [clients] = useContext(ClientContext)
   const [quotations, dispatch] = useContext(QuotationContext)
-  const [user] = useContext(ProfileContext)
 
-  const {match} = useRouting()
+  const {match, location} = useRouting()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
-  const quotation = useRef(find(quotations, {id}) || emptyQuotation({user}))
-  const {Form, TextField, DateField, Select} = useForm(quotation.current)
 
-  const [rate, setRate] = useState(quotation.current.rate)
-  const [items, setItems] = useState([emptyItem(quotation.current.rate)])
-  const [total, setTotal] = useState(0)
-  const [taxRate, setLocalTaxRate] = useState(quotation.current.taxRate)
+  const getDefaultQuotation = useMemo((): Quotation => {
+    const {state} = location
+    if (isObject(state)) return state
 
-  useEffect(() => {
-    setItems(quotation.current.items)
-    setLocalTaxRate(quotation.current.taxRate)
-    setTotal(quotation.current.total)
+    const quotation = find(quotations, {id})
+    if (!isNil(quotation)) return quotation
+
+    return emptyQuotation({user})
   }, [quotations])
 
+  const quotation = useRef(getDefaultQuotation)
+  const [rate, setLocalRate] = useState(quotation.current.rate)
+  const [taxRate, setLocalTaxRate] = useState(quotation.current.taxRate)
+  const [items, setItems] = useState(quotation.current.items)
+  const [total, setTotal] = useState(quotation.current.total)
+  const {Form, TextField, DateField, Select} = useForm(quotation.current)
+
   useEffect(() => {
-    setRate(quotation.current.rate)
-  }, [quotation.current.rate])
+    quotation.current = getDefaultQuotation
+
+    setLocalRate(quotation.current.rate)
+    setLocalTaxRate(quotation.current.taxRate)
+    setItems(quotation.current.items)
+    setTotal(quotation.current.total)
+  }, [quotations])
 
   function addItem(item: ContractItem) {
     setItems([...items, item])
     setTotal(total + item.total)
   }
 
+  function setTaxRate(value: string | number | null | undefined) {
+    setLocalTaxRate(isNil(value) ? null : Number(value))
+  }
+
+  function setRate(value: string | number | null | undefined) {
+    setLocalRate(isNil(value) ? null : Number(value))
+  }
+
   async function saveQuotation(quotation: Quotation) {
-    quotation.total = total
     quotation.items = items
+    quotation.total = total
 
     if (id === -1) {
       await service.create(quotation)
@@ -63,13 +81,9 @@ export default function() {
     }
   }
 
-  function setTaxRate(value: string) {
-    setLocalTaxRate(isEmpty(value.trim()) ? null : Number(value))
-  }
-
-  if ((id > -1 && isNull(quotations)) || isNull(clients) || isNull(user)) {
-    return null
-  }
+  if (isNil(user)) return null
+  if (isNil(clients)) return null
+  if (isNil(quotations) && id > -1) return null
 
   function renderRate(unit: RateUnit) {
     switch (unit) {
@@ -119,7 +133,7 @@ export default function() {
             label="Tarif"
             type="number"
             required={false}
-            onChange={nextRate => setRate(Number(nextRate))}
+            onChange={setRate}
           />
           <Select name="rateUnit" label="Unité de tarif" required={false}>
             {keys(RateUnit)

@@ -58,7 +58,9 @@ export async function create(req: Request, res: Response) {
   })
 
   await itemRepository.save(
-    quotation.items.map(item => assign(omit(item, 'id'), {quotation})),
+    quotation.items.map(item =>
+      assign(omit(item, 'id'), {contract: quotation}),
+    ),
   )
 
   res.json(quotation)

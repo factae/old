@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
+import useDebounce from 'react-captain/useDebounce'
 import {ReactNode} from 'react'
 import assign from 'lodash/assign'
 import isNull from 'lodash/isNull'
@@ -8,7 +9,6 @@ import {DateTime} from 'luxon'
 import Context from './Context'
 import AsyncContext from '../../common/contexts/async'
 import useRouting from '../../common/hooks/routing'
-import useDebounce from '../../common/hooks/debounce'
 
 export type FormProps<T> = {
   onChange?: (model: T) => void
@@ -17,6 +17,7 @@ export type FormProps<T> = {
   children?: ReactNode
 }
 
+type FormValue = string | number | DateTime | null | undefined
 type FormEvent = React.FormEvent<HTMLFormElement>
 
 export default function<T>(defaultModel: T | null) {
@@ -35,10 +36,7 @@ export default function<T>(defaultModel: T | null) {
     const async = useContext(AsyncContext)
     const [model, setModel] = useState<T | null>(defaultModel)
 
-    function setModelPart(
-      key: keyof T,
-      value: string | number | DateTime | null,
-    ) {
+    function setModelPart(key: keyof T, value: FormValue) {
       if (!isNull(model)) {
         const nextModel: T = assign(model, {[key]: value})
         setModel(nextModel)

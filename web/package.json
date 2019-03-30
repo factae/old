@@ -27,6 +27,7 @@
     "material-ui-pickers": "^2.2.4",
     "node-sass": "^4.11.0",
     "react": "^16.8.0-alpha.1",
+    "react-captain": "^0.1.13",
     "react-dom": "^16.8.0-alpha.1",
     "react-router-dom": "^4.4.0-beta.6",
     "react-scripts": "2.1.3",

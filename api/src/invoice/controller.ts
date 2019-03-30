@@ -50,7 +50,7 @@ export async function create(req: Request, res: Response) {
   })
 
   await itemRepository.save(
-    invoice.items.map(item => assign(omit(item, 'id'), {invoice})),
+    invoice.items.map(item => assign(omit(item, 'id'), {contract: invoice})),
   )
 
   res.json(invoice)
