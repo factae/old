@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
-import IconSign from '@material-ui/icons/Check'
+import IconPaid from '@material-ui/icons/AttachMoney'
 
 import ClientContext from '../../client/context'
 import AsyncContext from '../../common/contexts/async'
@@ -67,8 +67,8 @@ export default function(props: Props) {
       async.start()
       closeConfirm()
       invoice.status = 'validated'
-      dispatch({type: 'update', invoice})
       await service.update(invoice)
+      dispatch({type: 'update', invoice})
       async.stop()
       setReadyToDownload(true)
     } catch (error) {
@@ -76,16 +76,16 @@ export default function(props: Props) {
     }
   }
 
-  async function sign() {
+  async function paid() {
     try {
       async.start()
-      invoice.status = 'signed'
+      invoice.status = 'paid'
       dispatch({type: 'update', invoice})
       await service.update(invoice)
       async.stop()
     } catch (error) {
       console.error(error)
-      async.stop('Erreur lors de la mise à jour du devis !')
+      async.stop('Erreur lors de la mise à jour de la facture !')
     }
   }
 
@@ -97,7 +97,7 @@ export default function(props: Props) {
   function handleDownloadError(error: Error) {
     console.error(error)
     setReadyToDownload(false)
-    async.stop('Erreur lors du téléchargement du devis !')
+    async.stop('Erreur lors du téléchargement de la facture !')
   }
 
   function renderAction() {
@@ -116,10 +116,10 @@ export default function(props: Props) {
       case 'validated':
         return (
           <Fragment>
-            <Tooltip placement="bottom" title="Devis signé">
+            <Tooltip placement="bottom" title="Facture payée">
               <span className={classes.icon}>
-                <IconButton onClick={sign} disabled={async.loading}>
-                  <IconSign />
+                <IconButton onClick={paid} disabled={async.loading}>
+                  <IconPaid />
                 </IconButton>
               </span>
             </Tooltip>
@@ -133,7 +133,7 @@ export default function(props: Props) {
           </Fragment>
         )
 
-      case 'signed':
+      case 'paid':
         return (
           <Tooltip placement="bottom" title="Télécharger">
             <span className={classes.icon}>

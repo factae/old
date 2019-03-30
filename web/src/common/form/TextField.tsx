@@ -76,6 +76,7 @@ export default function<T>(context: React.Context<FormContext<T>>) {
     return (
       <Grid item {...grid}>
         <MuiTextField
+          inputProps={{step: 0.01}}
           disabled={loading}
           fullWidth
           {...omit(props, 'name', 'label', 'grid', 'onChange')}

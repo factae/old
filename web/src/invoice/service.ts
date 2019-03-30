@@ -46,6 +46,7 @@ export async function create(invoice: Invoice) {
 
   invoice.id = res.data.id
   invoice.number = res.data.number
+  invoice.items = res.data.items
 }
 
 // ------------------------------------------------------------------ # Update #
@@ -61,4 +62,7 @@ export async function update(invoice: Invoice) {
   if (res.status !== 200) {
     throw new Error(res.statusText)
   }
+
+  invoice.number = res.data.number
+  invoice.items = res.data.items
 }

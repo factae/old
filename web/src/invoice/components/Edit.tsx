@@ -31,6 +31,7 @@ export default function() {
 
   const getDefaultInvoice = useMemo((): Invoice => {
     const {state} = location
+    console.log(state)
     if (isObject(state)) return state
 
     const invoice = find(invoices, {id})

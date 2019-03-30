@@ -24,9 +24,8 @@ export interface Contract {
   id: number
   clientId: number
   type: 'quotation' | 'invoice'
-  status: 'draft' | 'validated' | 'signed'
+  status: 'draft' | 'validated' | 'signed' | 'paid'
   items: ContractItem[]
-  number: string
   conditions: string | null
   taxRate: number | null
   rate: number | null
@@ -52,7 +51,6 @@ const contract: Omit<Contract, ContractDynamicAttributes> = {
   clientId: -1,
   status: 'draft',
   items: [],
-  number: '',
   total: 0,
   validatedAt: null,
   signedAt: null,

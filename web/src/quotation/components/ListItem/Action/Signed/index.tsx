@@ -26,7 +26,17 @@ export default function(props: Props) {
       <Tooltip placement="bottom" title="Transformer en facture">
         <span className={classes.icon}>
           <IconButton
-            onClick={goTo('invoiceEdit', quotation)}
+            onClick={goTo('invoiceEdit', {
+              ...quotation,
+              id: null,
+              toto: 'lol',
+              status: 'draft',
+              items: quotation.items.map(item => ({
+                ...item,
+                id: null,
+                contract: null,
+              })),
+            })}
             disabled={loading}
           >
             <IconTransform />

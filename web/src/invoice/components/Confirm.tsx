@@ -21,8 +21,8 @@ export default function(props: Props) {
 
       <DialogContent>
         <DialogContentText>
-          C'est la première fois que vous téléchargez ce devis. Si vous
-          continuez, il sera vérouillé, et vous ne pourrez plus le modifier.
+          C'est la première fois que vous téléchargez cette facture. Si vous
+          continuez, elle sera vérouillée, et vous ne pourrez plus la modifier.
           Êtes-vous sûr de vouloir continuer ?
         </DialogContentText>
       </DialogContent>

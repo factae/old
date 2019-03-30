@@ -1,12 +1,11 @@
 import {Column, PrimaryGeneratedColumn, JoinColumn} from 'typeorm'
-import {Entity, Index, ManyToOne, OneToMany, RelationId} from 'typeorm'
+import {Entity, ManyToOne, OneToMany, RelationId} from 'typeorm'
 
 import {Client} from '../client/model'
 import {ContractItem} from '../contractItem/model'
 import {User, RateUnit} from '../user/model'
 
 @Entity()
-@Index('index', ['type', 'number', 'client.id'], {unique: true})
 export class Contract {
   @PrimaryGeneratedColumn()
   id: number
@@ -24,11 +23,11 @@ export class Contract {
   @Column({type: 'enum', enum: ['quotation', 'invoice']})
   type: 'quotation' | 'invoice'
 
-  @Column()
-  number: string
+  @Column({nullable: true, default: null})
+  number?: string
 
-  @Column({type: 'enum', enum: ['draft', 'validated', 'signed']})
-  status: 'draft' | 'validated' | 'signed'
+  @Column({type: 'enum', enum: ['draft', 'validated', 'signed', 'paid']})
+  status: 'draft' | 'validated' | 'signed' | 'paid'
 
   @OneToMany(() => ContractItem, item => item.contract)
   items: ContractItem[]

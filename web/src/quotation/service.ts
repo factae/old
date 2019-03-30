@@ -45,7 +45,7 @@ export async function create(quotation: Quotation) {
   }
 
   quotation.id = res.data.id
-  quotation.number = res.data.number
+  quotation.items = res.data.items
 }
 
 // ------------------------------------------------------------------ # Update #
@@ -61,4 +61,6 @@ export async function update(quotation: Quotation) {
   if (res.status !== 200) {
     throw new Error(res.statusText)
   }
+
+  quotation.items = res.data.items
 }

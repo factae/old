@@ -43,9 +43,9 @@ export default function(props: Props) {
       .diff(quotation.startsAt, ['months', 'days', 'hours'])
       .toObject()
 
-    if (duration.months) return `(${duration.months + 1} mois) `
-    if (duration.days) return `(${duration.days + 1} jours) `
-    if (duration.hours) return `(${duration.hours + 1} heures) `
+    if (duration.months) return `(${Math.round(duration.months + 1)} mois) `
+    if (duration.days) return `(${Math.round(duration.days + 1)} jours) `
+    if (duration.hours) return `(${Math.round(duration.hours + 1)} heures) `
     return null
   }
 
@@ -169,7 +169,6 @@ export default function(props: Props) {
               <View style={styles.fullWidth}>
                 <View style={styles.flexRow}>
                   <View style={styles.metadata}>
-                    <Text style={styles.metadataTitle}>Devis n°</Text>
                     <Text style={styles.metadataTitle}>Date</Text>
                     <Text style={styles.metadataTitle}>Expiration offre</Text>
                     <Text style={styles.metadataTitle}>Début</Text>
@@ -177,7 +176,6 @@ export default function(props: Props) {
                     {renderRateUnit()}
                   </View>
                   <View style={styles.metadata}>
-                    <Text style={styles.metadataItem}>{quotation.number}</Text>
                     <Text style={styles.metadataItem}>
                       {quotation.createdAt.toFormat('dd/LL/yyyy')}
                     </Text>
@@ -256,7 +254,7 @@ export default function(props: Props) {
       {blobProps => (
         <Download
           {...blobProps}
-          fileName={`devis-${quotation.number}.pdf`}
+          fileName={`devis-${quotation.id}.pdf`}
           onSuccess={props.onSuccess}
           onError={props.onError}
         />

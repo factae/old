@@ -43,9 +43,9 @@ export default function(props: Props) {
       .diff(invoice.startsAt, ['months', 'days', 'hours'])
       .toObject()
 
-    if (duration.months) return `(${duration.months + 1} mois) `
-    if (duration.days) return `(${duration.days + 1} jours) `
-    if (duration.hours) return `(${duration.hours + 1} heures) `
+    if (duration.months) return `(${Math.round(duration.months + 1)} mois) `
+    if (duration.days) return `(${Math.round(duration.days + 1)} jours) `
+    if (duration.hours) return `(${Math.round(duration.hours + 1)} heures) `
     return null
   }
 
@@ -147,13 +147,13 @@ export default function(props: Props) {
                 {renderTVANumber()}
               </View>
               <View>
-                <Text style={styles.title}>Devis</Text>
+                <Text style={styles.title}>Facture</Text>
               </View>
             </View>
 
             <View style={styles.section}>
               <View style={styles.fullWidth}>
-                <Text style={styles.subTitle}>Devis à l'attention de</Text>
+                <Text style={styles.subTitle}>Facturé à</Text>
 
                 <Text>
                   {client.firstName} {client.lastName}
@@ -169,7 +169,7 @@ export default function(props: Props) {
               <View style={styles.fullWidth}>
                 <View style={styles.flexRow}>
                   <View style={styles.metadata}>
-                    <Text style={styles.metadataTitle}>Devis n°</Text>
+                    <Text style={styles.metadataTitle}>Facture n°</Text>
                     <Text style={styles.metadataTitle}>Date</Text>
                     <Text style={styles.metadataTitle}>Expiration offre</Text>
                     <Text style={styles.metadataTitle}>Début</Text>
@@ -254,7 +254,7 @@ export default function(props: Props) {
       {blobProps => (
         <Download
           {...blobProps}
-          fileName={`devis-${invoice.number}.pdf`}
+          fileName={`facture-${invoice.number}.pdf`}
           onSuccess={props.onSuccess}
           onError={props.onError}
         />

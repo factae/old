@@ -28,12 +28,15 @@ function reducer(state: State, action: Action) {
   switch (action.type) {
     case 'create':
       return [...quotations, action.quotation]
+
     case 'update':
       return quotations.map(q =>
         q.id === action.quotation.id ? action.quotation : q,
       )
+
     case 'update-all':
       return action.quotations
+
     default:
       return state
   }

@@ -148,7 +148,6 @@ export default function(props: Props) {
         className={classNames({[classes.draft]: isDraft})}
         onClick={isDraft ? goTo('quotationEdit', quotation.id) : noop}
       >
-        <TableCell className={classNameCell}>{quotation.number}</TableCell>
         <TableCell className={classNameCell}>{clientName}</TableCell>
         <TableCell className={classNameCell}>{quotation.status}</TableCell>
         <TableCell className={classNameCell} align="right">

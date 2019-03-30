@@ -1,7 +1,5 @@
 import {Request, Response} from 'express'
-import {getRepository} from 'typeorm'
-import assign from 'lodash/assign'
-import omit from 'lodash/omit'
+import {getRepository, Not, Equal, Between} from 'typeorm'
 import {DateTime} from 'luxon'
 
 import {Contract} from '../contract/model'
@@ -17,40 +15,36 @@ export async function readAll(req: Request, res: Response) {
     .andWhere('invoice.user = :user', {user: req.user.id})
     .getMany()
 
-  invoices.forEach(invoice => {
-    const createdAt = DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
-    const startsAt = DateTime.fromJSDate(new Date(invoice.startsAt)).toISO()
-    const endsAt = DateTime.fromJSDate(new Date(invoice.endsAt)).toISO()
+  res.json(
+    invoices.map(invoice => {
+      const createdAt = DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
+      const startsAt = DateTime.fromJSDate(new Date(invoice.startsAt)).toISO()
+      const endsAt = DateTime.fromJSDate(new Date(invoice.endsAt)).toISO()
 
-    assign(invoice, {createdAt, startsAt, endsAt})
-  })
-
-  res.json(invoices)
+      return {...invoice, createdAt, startsAt, endsAt}
+    }),
+  )
 }
 
 // ------------------------------------------------------------------ # Create #
 
 export async function create(req: Request, res: Response) {
-  const now = DateTime.local()
+  const $invoice = await getRepository(Contract)
+  const $item = await getRepository(ContractItem)
 
-  const invoiceRepository = await getRepository(Contract)
-  const itemRepository = await getRepository(ContractItem)
-
-  req.body.user = req.user
+  delete req.body.id
+  req.body.number = '-'
+  req.body.user = req.user.id
   req.body.client = req.body.clientId
 
-  const invoices = await invoiceRepository.find({
-    where: {type: 'invoice', clientId: req.body.clientId},
-    order: {createdAt: 'DESC'},
-  })
+  const invoice = await $invoice.save(req.body)
 
-  const invoice: Contract = await invoiceRepository.save({
-    ...omit(req.body, 'id'),
-    number: `${now.toFormat('yyLL')}-${invoices.length + 1}`,
-  })
-
-  await itemRepository.save(
-    invoice.items.map(item => assign(omit(item, 'id'), {contract: invoice})),
+  invoice.items = await $item.save(
+    invoice.items.map((item: ContractItem) => {
+      delete item.id
+      item.contract = invoice.id
+      return item
+    }),
   )
 
   res.json(invoice)
@@ -59,17 +53,56 @@ export async function create(req: Request, res: Response) {
 // ------------------------------------------------------------------ # Update #
 
 export async function update(req: Request, res: Response) {
-  const invoiceRepository = await getRepository(Contract)
-  const itemRepository = await getRepository(ContractItem)
+  const $invoice = await getRepository(Contract)
+  const $item = await getRepository(ContractItem)
+  const now = DateTime.local()
+  const [firstDayOfMonth, lastDayOfMonth] = getFirstAndLastDay(now)
 
-  const invoice: Contract = await invoiceRepository.save(req.body)
+  const invoices = await $invoice.find({
+    where: {
+      type: 'invoice',
+      status: Not(Equal('draft')),
+      clientId: req.body.clientId,
+      createdAt: Between(firstDayOfMonth, lastDayOfMonth),
+    },
+    order: {createdAt: 'DESC'},
+  })
 
-  await itemRepository.save(
-    invoice.items.map(item => {
-      const id = item.id === -1 ? {} : {id: item.id}
-      return assign(omit(item, 'id'), id, {invoice})
+  const invoice = await $invoice.save({
+    ...req.body,
+    number:
+      req.body.status === 'validated'
+        ? `${now.toFormat('yyLL')}-${invoices.length + 1}`
+        : req.body.number,
+  })
+
+  invoice.items = await $item.save(
+    invoice.items.map((item: ContractItem) => {
+      if (item.id === -1) delete item.id
+      item.contract = invoice.id
+      return item
     }),
   )
 
   res.json(invoice)
+}
+
+function getFirstAndLastDay(date: DateTime) {
+  const firstDayOfMonth = date.set({
+    day: 1,
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+  })
+
+  const lastDayOfMonth = date.set({
+    day: firstDayOfMonth.plus({months: 1}).minus({days: 1}).day,
+    hour: 23,
+    minute: 59,
+    second: 59,
+    millisecond: 999,
+  })
+
+  return [firstDayOfMonth.toSQL(), lastDayOfMonth.toSQL()]
 }

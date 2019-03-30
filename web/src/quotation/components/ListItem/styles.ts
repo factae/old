@@ -14,18 +14,4 @@ export const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     display: 'inline-block',
   },
-  spacing: {
-    '&>$item': {
-      [theme.breakpoints.only('xs')]: {
-        paddingBottom: theme.spacing.unit / 2,
-      },
-      [theme.breakpoints.up('sm')]: {
-        paddingRight: theme.spacing.unit / 2,
-      },
-    },
-  },
-  item: {},
-  addItem: {
-    float: 'right',
-  },
 }))

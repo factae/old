@@ -20,7 +20,6 @@ export default function() {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Numéro</TableCell>
           <TableCell>Client</TableCell>
           <TableCell>Statut</TableCell>
           <TableCell align="right">Total TTC</TableCell>
