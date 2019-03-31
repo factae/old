@@ -10,6 +10,7 @@ import IconProfile from '@material-ui/icons/AccountCircle'
 import IconQuotation from '@material-ui/icons/Assignment'
 
 import useRouting from '../../../../common/hooks/routing'
+import Chart from '../Chart'
 
 import {useStyles} from './styles'
 
@@ -90,6 +91,9 @@ export default function() {
             </CardContent>
           </CardActionArea>
         </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Chart />
       </Grid>
     </Grid>
   )
