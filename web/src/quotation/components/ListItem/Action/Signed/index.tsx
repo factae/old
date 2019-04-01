@@ -1,4 +1,4 @@
-import React, {Fragment, MouseEvent, useContext} from 'react'
+import React, {Fragment, useContext} from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
@@ -12,7 +12,6 @@ import {useStyles} from './styles'
 
 interface Props {
   quotation: Quotation
-  onDownload: (e: MouseEvent) => void
 }
 
 export default function(props: Props) {
@@ -26,6 +25,7 @@ export default function(props: Props) {
       <Tooltip placement="bottom" title="Transformer en facture">
         <span className={classes.icon}>
           <IconButton
+            disabled={loading}
             onClick={goTo('invoiceEdit', {
               ...quotation,
               id: null,
@@ -37,7 +37,6 @@ export default function(props: Props) {
                 contract: null,
               })),
             })}
-            disabled={loading}
           >
             <IconTransform />
           </IconButton>
@@ -46,7 +45,12 @@ export default function(props: Props) {
 
       <Tooltip placement="bottom" title="Télécharger">
         <span className={classes.icon}>
-          <IconButton onClick={props.onDownload} disabled={loading}>
+          <IconButton
+            href={quotation.pdf || '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            disabled={loading}
+          >
             <IconDownload />
           </IconButton>
         </span>

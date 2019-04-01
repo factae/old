@@ -47,6 +47,9 @@ export class Contract {
   @Column()
   total: number
 
+  @Column({type: 'text', nullable: true, default: null})
+  pdf?: string
+
   @Column({type: 'datetime'})
   createdAt: string
 

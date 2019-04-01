@@ -16,7 +16,7 @@ import useStyle from './styles'
 interface Props {
   invoice: Invoice
   client: Client
-  onSuccess: () => void
+  onSuccess: (pdf: string) => void
   onError: (error: Error) => void
 }
 
@@ -28,6 +28,22 @@ export default function(props: Props) {
 
   if (isNull(profile)) {
     return null
+  }
+
+  function handleDownloadSuccess(blob: Blob | null) {
+    return () => {
+      const pdfReader = new FileReader()
+
+      if (isNull(blob)) {
+        return props.onError(new Error())
+      }
+
+      pdfReader.readAsDataURL(blob)
+      pdfReader.onloadend = () =>
+        isNull(pdfReader.result)
+          ? props.onError(new Error())
+          : props.onSuccess(String(pdfReader.result))
+    }
   }
 
   function renderTVANumber() {
@@ -255,7 +271,7 @@ export default function(props: Props) {
         <Download
           {...blobProps}
           fileName={`facture-${invoice.number}.pdf`}
-          onSuccess={props.onSuccess}
+          onSuccess={handleDownloadSuccess(blobProps.blob)}
           onError={props.onError}
         />
       )}

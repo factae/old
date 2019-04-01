@@ -57,12 +57,6 @@ export default function(props: Props) {
     setConfirm(false)
   }
 
-  function download(event: MouseEvent) {
-    event.stopPropagation()
-    async.start()
-    setReadyToDownload(true)
-  }
-
   async function lockAndDownload() {
     try {
       async.start()
@@ -70,7 +64,6 @@ export default function(props: Props) {
       quotation.status = 'validated'
       dispatch({type: 'update', quotation})
       await service.update(quotation)
-      async.stop()
       setReadyToDownload(true)
     } catch (error) {
       handleDownloadError(error)
@@ -90,8 +83,11 @@ export default function(props: Props) {
     }
   }
 
-  function handleDownloadSuccess() {
+  async function handleDownloadSuccess(pdf: string) {
     setReadyToDownload(false)
+    quotation.pdf = pdf
+    dispatch({type: 'update', quotation})
+    await service.update(quotation)
     async.stop()
   }
 
@@ -126,7 +122,12 @@ export default function(props: Props) {
             </Tooltip>
             <Tooltip placement="bottom" title="Télécharger">
               <span className={classes.icon}>
-                <IconButton onClick={download} disabled={async.loading}>
+                <IconButton
+                  href={quotation.pdf || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  disabled={async.loading}
+                >
                   <IconDownload />
                 </IconButton>
               </span>
@@ -135,7 +136,7 @@ export default function(props: Props) {
         )
 
       case 'signed':
-        return <ActionSigned quotation={quotation} onDownload={download} />
+        return <ActionSigned quotation={quotation} />
 
       default:
         return null

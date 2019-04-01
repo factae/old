@@ -26,6 +26,7 @@ export async function readAll(req: Request, res: Response) {
 
       return {
         ...quotation,
+        pdf: quotation.pdf ? quotation.pdf.toString('base64') : null,
         createdAt: createdAt.toISO(),
         startsAt: startsAt.toISO(),
         endsAt: endsAt.toISO(),
@@ -64,8 +65,11 @@ export async function update(req: Request, res: Response) {
   const $quotation = await getRepository(Contract)
   const $item = await getRepository(ContractItem)
 
+  console.log(req.body.pdf)
   req.body.user = req.user.id
   req.body.client = req.body.clientId
+  req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
+  console.log(req.body.pdf)
 
   const quotation = await $quotation.save(req.body)
 

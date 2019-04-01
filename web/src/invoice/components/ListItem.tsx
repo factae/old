@@ -56,12 +56,6 @@ export default function(props: Props) {
     setConfirm(false)
   }
 
-  function download(event: MouseEvent) {
-    event.stopPropagation()
-    async.start()
-    setReadyToDownload(true)
-  }
-
   async function lockAndDownload() {
     try {
       async.start()
@@ -89,8 +83,11 @@ export default function(props: Props) {
     }
   }
 
-  function handleDownloadSuccess() {
+  async function handleDownloadSuccess(pdf: string) {
     setReadyToDownload(false)
+    invoice.pdf = pdf
+    dispatch({type: 'update', invoice})
+    await service.update(invoice)
     async.stop()
   }
 
@@ -125,7 +122,12 @@ export default function(props: Props) {
             </Tooltip>
             <Tooltip placement="bottom" title="Télécharger">
               <span className={classes.icon}>
-                <IconButton onClick={download} disabled={async.loading}>
+                <IconButton
+                  href={invoice.pdf || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  disabled={async.loading}
+                >
                   <IconDownload />
                 </IconButton>
               </span>
@@ -137,7 +139,12 @@ export default function(props: Props) {
         return (
           <Tooltip placement="bottom" title="Télécharger">
             <span className={classes.icon}>
-              <IconButton onClick={download} disabled={async.loading}>
+              <IconButton
+                href={invoice.pdf || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                disabled={async.loading}
+              >
                 <IconDownload />
               </IconButton>
             </span>

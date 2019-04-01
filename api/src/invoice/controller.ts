@@ -8,7 +8,7 @@ import {ContractItem} from '../contractItem/model'
 // ---------------------------------------------------------------- # Read all #
 
 export async function readAll(req: Request, res: Response) {
-  let invoices = await getRepository(Contract)
+  const invoices = await getRepository(Contract)
     .createQueryBuilder('invoice')
     .leftJoinAndSelect('invoice.items', 'items')
     .where('invoice.type = :type', {type: 'invoice'})
@@ -16,13 +16,12 @@ export async function readAll(req: Request, res: Response) {
     .getMany()
 
   res.json(
-    invoices.map(invoice => {
-      const createdAt = DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
-      const startsAt = DateTime.fromJSDate(new Date(invoice.startsAt)).toISO()
-      const endsAt = DateTime.fromJSDate(new Date(invoice.endsAt)).toISO()
-
-      return {...invoice, createdAt, startsAt, endsAt}
-    }),
+    invoices.map(invoice => ({
+      ...invoice,
+      createdAt: DateTime.fromJSDate(new Date(invoice.createdAt)).toISO(),
+      startsAt: DateTime.fromJSDate(new Date(invoice.startsAt)).toISO(),
+      endsAt: DateTime.fromJSDate(new Date(invoice.endsAt)).toISO(),
+    })),
   )
 }
 

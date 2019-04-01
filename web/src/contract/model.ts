@@ -1,4 +1,3 @@
-import assign from 'lodash/assign'
 import get from 'lodash/get'
 import {DateTime} from 'luxon'
 
@@ -31,6 +30,7 @@ export interface Contract {
   rate: number | null
   rateUnit: RateUnit
   total: number
+  pdf: string | null
   createdAt: DateTime
   expiresAt: DateTime
   startsAt: DateTime
@@ -52,6 +52,7 @@ const contract: Omit<Contract, ContractDynamicAttributes> = {
   status: 'draft',
   items: [],
   total: 0,
+  pdf: null,
   validatedAt: null,
   signedAt: null,
 }
