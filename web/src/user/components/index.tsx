@@ -36,9 +36,9 @@ export default function() {
     <Form main onSubmit={updateUser}>
       <Header title="Profil" label="Sauvegarder" icon={IconSave} />
 
-      <Section title="Identité">
+      <Section title="Identité personnelle">
         <TextField name="firstName" label="Prénom" autoFocus />
-        <TextField name="lastName" label="Nom" />
+        <TextField name="lastName" label="Nom de famille" />
         <TextField name="email" label="Email" type="email" disabled />
         <TextField name="phone" label="Téléphone" />
       </Section>
@@ -51,8 +51,14 @@ export default function() {
 
       <Section title="Auto-entrepreneur">
         <TextField name="siren" label="Siren" />
-        <TextField name="rate" label="Tarif" type="number" required={false} />
-        <Select name="rateUnit" label="Unité de tarif" required={false}>
+        <TextField name="tradingName" label="Nom commercial" required={false} />
+        <TextField
+          name="rate"
+          label="Tarif (€)"
+          type="number"
+          required={false}
+        />
+        <Select name="rateUnit" label="Unité" required={false}>
           {keys(RateUnit)
             .filter(unit => !isNaN(Number(unit)))
             .map(unit => (

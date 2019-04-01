@@ -1,17 +1,25 @@
 import {DateTime} from 'luxon'
 
-import {Contract, EmptyContractParams, emptyContract} from '../contract/model'
-
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
-type EmptyQuotationParams = Omit<EmptyContractParams, 'type'>
+import {Contract, emptyContract} from '../contract/model'
+import {User} from '../user/model'
 
 export interface Quotation extends Contract {
+  type: 'quotation'
+  status: 'draft' | 'validated' | 'signed'
   expiresAt: DateTime
+  startsAt: DateTime
+  endsAt: DateTime
 }
 
-export function emptyQuotation(params: EmptyQuotationParams): Quotation {
+export function emptyQuotation(user: User | null): Quotation {
+  const now = DateTime.local()
+
   return {
-    ...emptyContract({...params, type: 'quotation'}),
-    expiresAt: DateTime.local().plus({days: 60}),
+    ...emptyContract(user),
+    type: 'quotation',
+    status: 'draft',
+    expiresAt: now.plus({days: 60}),
+    startsAt: now,
+    endsAt: now,
   }
 }

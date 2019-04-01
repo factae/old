@@ -47,22 +47,15 @@ export default function(props: Props) {
   }
 
   function renderTVANumber() {
-    if (!profile!.taxId) {
-      return null
-    }
-
-    return <Text style={styles.taxId}>N° TVA : {profile!.taxId}</Text>
+    if (!profile!.taxId) return null
+    return <Text>N° TVA Intracommunautaire: {profile!.taxId}</Text>
   }
 
-  function renderDuration() {
-    const duration = invoice.endsAt
-      .diff(invoice.startsAt, ['months', 'days', 'hours'])
-      .toObject()
-
-    if (duration.months) return `(${Math.round(duration.months + 1)} mois) `
-    if (duration.days) return `(${Math.round(duration.days + 1)} jours) `
-    if (duration.hours) return `(${Math.round(duration.hours + 1)} heures) `
-    return null
+  function renderTVAMention() {
+    if (profile!.taxId) return null
+    return (
+      <Text style={styles.mention}>TVA non applicable, art 293B du CGI</Text>
+    )
   }
 
   function renderRateUnit() {
@@ -141,6 +134,19 @@ export default function(props: Props) {
     )
   }
 
+  function renderClientName() {
+    const fullName = `${client.firstName} ${client.lastName}`
+    const name = client.tradingName
+      ? `${client.tradingName} (${fullName})`
+      : fullName
+
+    return <Text>{name}</Text>
+  }
+
+  function renderClientSiren() {
+    return client.siren ? <Text>{client.siren}</Text> : null
+  }
+
   return (
     <BlobProvider
       document={
@@ -157,9 +163,9 @@ export default function(props: Props) {
                   {profile.zip} {profile.city}
                 </Text>
 
-                <Text>{profile.email}</Text>
-                <Text>{profile.phone}</Text>
-                <Text style={styles.siren}>SIREN : {profile!.siren}</Text>
+                <Text>Email : {profile.email}</Text>
+                <Text>Téléphone : {profile.phone}</Text>
+                <Text>Siren : {profile.siren}</Text>
                 {renderTVANumber()}
               </View>
               <View>
@@ -171,25 +177,22 @@ export default function(props: Props) {
               <View style={styles.fullWidth}>
                 <Text style={styles.subTitle}>Facturé à</Text>
 
-                <Text>
-                  {client.firstName} {client.lastName}
-                </Text>
+                <Text>{renderClientName()}</Text>
                 <Text>{client.address}</Text>
                 <Text>
                   {client.zip} {client.city}
                 </Text>
-                <Text>{client.email}</Text>
-                <Text>{client.phone}</Text>
+                {renderClientSiren()}
+                <Text>Email : {client.email}</Text>
+                <Text>Téléphone : {client.phone}</Text>
               </View>
 
               <View style={styles.fullWidth}>
                 <View style={styles.flexRow}>
                   <View style={styles.metadata}>
                     <Text style={styles.metadataTitle}>Facture n°</Text>
-                    <Text style={styles.metadataTitle}>Date</Text>
-                    <Text style={styles.metadataTitle}>Expiration offre</Text>
-                    <Text style={styles.metadataTitle}>Début</Text>
-                    <Text style={styles.metadataTitle}>Fin</Text>
+                    <Text style={styles.metadataTitle}>Date de création</Text>
+                    <Text style={styles.metadataTitle}>Date de livraison</Text>
                     {renderRateUnit()}
                   </View>
                   <View style={styles.metadata}>
@@ -198,14 +201,7 @@ export default function(props: Props) {
                       {invoice.createdAt.toFormat('dd/LL/yyyy')}
                     </Text>
                     <Text style={styles.metadataItem}>
-                      {invoice.expiresAt.toFormat('dd/LL/yyyy')}
-                    </Text>
-                    <Text style={styles.metadataItem}>
-                      {invoice.startsAt.toFormat('dd/LL/yyyy')}
-                    </Text>
-                    <Text style={styles.metadataItem}>
-                      {renderDuration()}
-                      {invoice.endsAt.toFormat('dd/LL/yyyy')}
+                      {invoice.deliveredAt.toFormat('dd/LL/yyyy')}
                     </Text>
                     {renderRate()}
                   </View>
@@ -253,6 +249,24 @@ export default function(props: Props) {
                 <Text style={styles.bankItem}>RIB : {profile.rib}</Text>
                 <Text style={styles.bankItem}>IBAN : {profile.iban}</Text>
                 <Text style={styles.bankItem}>BIC : {profile.bic}</Text>
+              </View>
+            </View>
+
+            <View style={styles.section}>
+              <View>
+                {renderTVAMention()}
+                <Text style={styles.mention}>
+                  Dispensé d’immatriculation au registre du commerce et des
+                  sociétés (RCS) et au répertoire des métiers (RM)
+                </Text>
+                <Text style={styles.mention}>
+                  Pour tout professionnel, en sus des indemnités de retard,
+                  toute somme, y compris l’acompte, non payée à sa date
+                  d’exigibilité produira de plein droit le paiement d’une
+                  indemnité forfaitaire de 40 euros due au titre des frais de
+                  recouvrement (Art. 441-6, I al. 12 du code de commerce et D.
+                  441-5 ibidem)
+                </Text>
               </View>
             </View>
 

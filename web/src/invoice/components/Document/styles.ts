@@ -9,6 +9,13 @@ Font.register(
 )
 
 Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Italic.ttf',
+  {
+    family: 'Roboto Italic',
+  },
+)
+
+Font.register(
   'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Bold.ttf',
   {
     family: 'Roboto Bold',
@@ -156,6 +163,12 @@ export default function(theme: Theme) {
     },
     bankItem: {
       fontSize: 9,
+    },
+    mention: {
+      fontSize: 9,
+      fontFamily: 'Roboto Italic',
+      color: theme.palette.grey[400],
+      marginBottom: theme.spacing.unit,
     },
     conditions: {
       fontSize: 10,

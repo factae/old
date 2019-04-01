@@ -54,7 +54,8 @@ export default function() {
         <TextField name="city" label="Ville" />
       </Section>
       <Section title="Autre">
-        <TextField name="tvaNumber" label="Numéro de TVA" required={false} />
+        <TextField name="tradingName" label="Nom commercial" required={false} />
+        <TextField name="siren" label="Siren" required={false} />
       </Section>
     </Form>
   )

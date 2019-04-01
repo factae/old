@@ -9,21 +9,15 @@ import {User, RateUnit} from '../user/model'
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 
 type ContractDynamicAttributes =
-  | 'type'
-  | 'taxRate'
   | 'rate'
   | 'rateUnit'
+  | 'taxRate'
   | 'conditions'
   | 'createdAt'
-  | 'startsAt'
-  | 'endsAt'
-  | 'expiresAt'
 
 export interface Contract {
   id: number
   clientId: number
-  type: 'quotation' | 'invoice'
-  status: 'draft' | 'validated' | 'signed' | 'paid'
   items: ContractItem[]
   conditions: string | null
   taxRate: number | null
@@ -32,11 +26,7 @@ export interface Contract {
   total: number
   pdf: string | null
   createdAt: DateTime
-  expiresAt: DateTime
-  startsAt: DateTime
-  endsAt: DateTime
   validatedAt: DateTime | null
-  signedAt: DateTime | null
 }
 
 export type EmptyContractParams = {
@@ -49,28 +39,21 @@ export type EmptyContractParams = {
 const contract: Omit<Contract, ContractDynamicAttributes> = {
   id: -1,
   clientId: -1,
-  status: 'draft',
   items: [],
   total: 0,
   pdf: null,
   validatedAt: null,
-  signedAt: null,
 }
 
-export function emptyContract(params: EmptyContractParams): Contract {
-  const {user, type} = params
+export function emptyContract(user: User | null): Contract {
   const now = DateTime.local()
 
   return {
     ...contract,
-    type,
-    taxRate: get(user, 'taxRate', null),
     rate: get(user, 'rate', null),
     rateUnit: get(user, 'rateUnit', RateUnit.hour),
+    taxRate: get(user, 'taxRate', null),
     conditions: get(user, 'conditions', null),
     createdAt: now,
-    expiresAt: now.plus({days: 60}),
-    startsAt: now,
-    endsAt: now,
   }
 }

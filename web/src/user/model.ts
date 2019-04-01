@@ -8,6 +8,7 @@ export interface User {
   id: number
   email: string
   password: string
+  tradingName: string | null
   firstName: string
   lastName: string
   address: string

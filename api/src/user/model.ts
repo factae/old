@@ -33,6 +33,9 @@ export class User {
   lastName: string
 
   @Column({nullable: true, default: null})
+  tradingName: string
+
+  @Column({nullable: true, default: null})
   address: string
 
   @Column({type: 'int', nullable: true, default: null})

@@ -1,15 +1,21 @@
-import {Contract, EmptyContractParams, emptyContract} from '../contract/model'
+import {DateTime} from 'luxon'
 
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
-type EmptyInvoiceParams = Omit<EmptyContractParams, 'type'>
+import {Contract, emptyContract} from '../contract/model'
+import {User} from '../user/model'
 
 export interface Invoice extends Contract {
-  number: string | null
+  type: 'invoice'
+  status: 'draft' | 'validated' | 'paid'
+  number: string
+  deliveredAt: DateTime
 }
 
-export function emptyInvoice(params: EmptyInvoiceParams): Invoice {
+export function emptyInvoice(user: User | null): Invoice {
   return {
-    ...emptyContract({...params, type: 'invoice'}),
-    number: null,
+    ...emptyContract(user),
+    type: 'invoice',
+    status: 'draft',
+    number: '-',
+    deliveredAt: DateTime.local(),
   }
 }

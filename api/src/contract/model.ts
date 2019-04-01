@@ -53,10 +53,10 @@ export class Contract {
   @Column({type: 'datetime'})
   createdAt: string
 
-  @Column({type: 'datetime'})
+  @Column({type: 'datetime', nullable: true, default: null})
   startsAt: string
 
-  @Column({type: 'datetime'})
+  @Column({type: 'datetime', nullable: true, default: null})
   endsAt: string
 
   @Column({type: 'datetime', nullable: true, default: null})
@@ -67,4 +67,7 @@ export class Contract {
 
   @Column({type: 'datetime', nullable: true, default: null})
   signedAt?: string
+
+  @Column({type: 'datetime', nullable: true, default: null})
+  deliveredAt?: string
 }

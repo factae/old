@@ -36,7 +36,7 @@ export default function() {
     const quotation = find(quotations, {id})
     if (!isNil(quotation)) return quotation
 
-    return emptyQuotation({user})
+    return emptyQuotation(user)
   }, [quotations])
 
   const quotation = useRef(getDefaultQuotation)

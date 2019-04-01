@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Button from '@material-ui/core/Button'
-import IconAdd from '@material-ui/icons/Add'
+import IconAdd from '@material-ui/icons/AddCircleOutline'
 
 import {ContractItem, emptyItem} from '../../model'
 import useForm from '../../../common/form'
@@ -34,7 +34,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
 
   return (
     <Form onSubmit={addItem}>
-      <Section title="Articles / services">
+      <Section title="Designations">
         <TextField
           name="description"
           label="Description"
@@ -45,7 +45,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
 
         <TextField
           name="unitPrice"
-          label="Prix"
+          label="Prix unitaire (€)"
           type="number"
           value={unitPrice}
         />
@@ -53,7 +53,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
         <Button
           className={classes.button}
           type="submit"
-          variant="outlined"
+          variant="text"
           color="primary"
         >
           <IconAdd className={classes.icon} />

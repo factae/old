@@ -35,9 +35,7 @@ export async function create(invoice: Invoice) {
   const res = await post('/invoice', {
     ...omit(invoice, 'id'),
     createdAt: date.to(invoice.createdAt),
-    expiresAt: date.to(invoice.expiresAt),
-    startsAt: date.to(invoice.startsAt),
-    endsAt: date.to(invoice.endsAt),
+    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
@@ -54,9 +52,7 @@ export async function create(invoice: Invoice) {
 export async function update(invoice: Invoice) {
   const res = await put('/invoice', {
     ...invoice,
-    expiresAt: date.to(invoice.expiresAt),
-    startsAt: date.to(invoice.startsAt),
-    endsAt: date.to(invoice.endsAt),
+    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
