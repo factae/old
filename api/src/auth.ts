@@ -60,7 +60,7 @@ export async function register(req: Request, res: Response) {
 function generateToken(data: any) {
   return jwt.sign({}, SECRET, {
     subject: String(data),
-    issuer: 'FactAE',
+    issuer: 'factAE',
     algorithm: 'HS512',
     expiresIn: EXPIRY_TIME,
   })

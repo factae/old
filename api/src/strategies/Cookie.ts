@@ -11,7 +11,7 @@ import {User} from '../user/model'
 const options: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromExtractors([req => req.cookies.token]),
   secretOrKey: process.env.API_SECRET || 'secret',
-  issuer: 'FactAE',
+  issuer: 'factAE',
 }
 
 const verify: VerifyCallback = async (payload, done) => {

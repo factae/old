@@ -28,7 +28,7 @@ export default function() {
           className={classes.brand}
           onClick={goTo(auth ? 'dashboard' : 'login')}
         >
-          <span className={classes.title}>FactAE</span>
+          <span className={classes.title}>factAE</span>
         </Typography>
 
         {auth && (

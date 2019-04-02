@@ -7,7 +7,8 @@ export const useStyles = makeStyles({
   },
   brand: {
     flexGrow: 1,
-    fontFamily: 'Kaushan Script, cursive',
+    fontFamily: 'Quicksand, sans-serif',
+    fontWeight: 700,
   },
   title: {
     cursor: 'pointer',

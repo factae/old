@@ -49,7 +49,7 @@ export default function() {
     <main className={classes.main}>
       <Paper elevation={8} className={classes.paper}>
         <Typography component="h1" variant="h3" className={classes.title}>
-          FactAE
+          factAE
         </Typography>
 
         <form className={classes.form} onSubmit={login}>

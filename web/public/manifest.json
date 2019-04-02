@@ -1,7 +1,7 @@
 {
   "author": "Clément DOUIN",
-  "name": "FactAE",
-  "short_name": "FactAE",
+  "name": "factAE",
+  "short_name": "factAE",
   "description": "Outil d'aide à la facturation pour auto-entrepreneurs",
   "default_locale": "fr",
   "icons": [

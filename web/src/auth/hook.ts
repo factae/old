@@ -31,7 +31,7 @@ function parseExpiry(cookiesStr: string) {
     const cookies = parseCookiesStr(cookiesStr)
     const token: Token = jwt.verify(cookies.expiry, SECRET, {
       algorithms: ['HS512'],
-      issuer: 'FactAE',
+      issuer: 'factAE',
     })
 
     return DateTime.fromMillis(Number(token.sub)).toUTC()

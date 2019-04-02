@@ -25,7 +25,8 @@ export const useStyles = makeStyles((theme: Theme) => {
       padding: unit * 2,
     },
     title: {
-      fontFamily: 'Kaushan Script, cursive;',
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: 700,
       marginTop: unit * 2,
       marginBottom: unit * 3,
     },

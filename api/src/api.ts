@@ -48,7 +48,7 @@ api.post('/user', authByCookie, handle(user.update))
 export function start() {
   api.listen(PORT, () => {
     const env = process.env.NODE_ENV || ''
-    console.log(`[${env.toUpperCase()}] FactAE API started at ${URL}:${PORT}`)
+    console.log(`[${env.toUpperCase()}] factAE API started at ${URL}:${PORT}`)
   })
 }
 
