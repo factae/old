@@ -1,6 +1,9 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "author": "Clément DOUIN",
+  "name": "FactAE",
+  "short_name": "FactAE",
+  "description": "Outil d'aide à la facturation pour auto-entrepreneurs",
+  "default_locale": "fr",
   "icons": [
     {
       "src": "favicon.ico",
