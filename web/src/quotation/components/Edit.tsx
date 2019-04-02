@@ -115,7 +115,6 @@ export default function() {
               </option>
             ))}
           </Select>
-
           {user.taxId && (
             <TextField
               name="taxRate"
@@ -124,26 +123,6 @@ export default function() {
               onChange={setTaxRate}
             />
           )}
-
-          <DateField name="expiresAt" label="Expiration de l'offre" />
-          <DateField name="startsAt" label="Date de début" />
-          <DateField name="endsAt" label="Date de fin" />
-          <TextField
-            name="rate"
-            label="Tarif"
-            type="number"
-            required={false}
-            onChange={setRate}
-          />
-          <Select name="rateUnit" label="Unité de tarif" required={false}>
-            {keys(RateUnit)
-              .filter(unit => !isNaN(Number(unit)))
-              .map(unit => (
-                <option key={unit} value={unit}>
-                  {renderRate(Number(unit))}
-                </option>
-              ))}
-          </Select>
           <TextField
             grid={{xs: 12}}
             multiline
@@ -152,6 +131,31 @@ export default function() {
             label="Conditions"
             required={false}
           />
+        </Section>
+
+        <Section title="Tarification">
+          <TextField
+            name="rate"
+            label="Tarif (€)"
+            type="number"
+            required={false}
+            onChange={setRate}
+          />
+          <Select name="rateUnit" label="Unité" required={false}>
+            {keys(RateUnit)
+              .filter(unit => !isNaN(Number(unit)))
+              .map(unit => (
+                <option key={unit} value={unit}>
+                  {renderRate(Number(unit))}
+                </option>
+              ))}
+          </Select>
+        </Section>
+
+        <Section title="Dates">
+          <DateField name="expiresAt" label="Expiration de l'offre" />
+          <DateField name="startsAt" label="Date de début" />
+          <DateField name="endsAt" label="Date de fin" />
         </Section>
       </Form>
 

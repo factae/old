@@ -68,9 +68,16 @@ export default function() {
             ))}
         </Select>
         <TextField
-          name="conditions"
-          label="Conditions"
-          placeholder="Conditions de paiement, de livraison, d'exécution, de SAV ..."
+          name="quotationConditions"
+          label="Conditions des devis"
+          multiline
+          rows={4}
+          grid={{xs: 12}}
+          required={false}
+        />
+        <TextField
+          name="invoiceConditions"
+          label="Conditions des factures"
           multiline
           rows={4}
           grid={{xs: 12}}
@@ -88,7 +95,7 @@ export default function() {
       </Section>
 
       <Section
-        title="TVA"
+        title="N° TVA Intracom."
         subtitle="Renseignez uniquement si vous êtes assujetti à la TVA."
       >
         <TextField name="taxId" label="Numéro de TVA" required={false} />

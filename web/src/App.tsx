@@ -1,5 +1,6 @@
 import React from 'react'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
+import {Font} from '@react-pdf/renderer'
 import {MuiPickersUtilsProvider} from 'material-ui-pickers'
 import LuxonUtils from '@date-io/luxon'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -13,6 +14,41 @@ import Register from './auth/components/Register'
 import PrivateRoute from './auth/components/PrivateRoute'
 import Dashboard from './common/components/Dashboard'
 import theme from './theme'
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Regular.ttf',
+  {
+    family: 'Roboto',
+  },
+)
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Italic.ttf',
+  {
+    family: 'Roboto Italic',
+  },
+)
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Bold.ttf',
+  {
+    family: 'Roboto Bold',
+  },
+)
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/robotocondensed/RobotoCondensed-Regular.ttf',
+  {
+    family: 'Roboto Condensed',
+  },
+)
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/apache/robotocondensed/RobotoCondensed-Bold.ttf',
+  {
+    family: 'Roboto Condensed Bold',
+  },
+)
 
 export default function() {
   const [loading, setLoading] = React.useState(false)

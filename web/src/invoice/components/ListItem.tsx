@@ -78,7 +78,7 @@ export default function(props: Props) {
       await service.update(invoice)
       async.stop()
     } catch (error) {
-      console.error(error)
+      console.error(error.message)
       async.stop('Erreur lors de la mise à jour de la facture !')
     }
   }
@@ -166,9 +166,7 @@ export default function(props: Props) {
         <TableCell className={classNameCell}>{clientName}</TableCell>
         <TableCell className={classNameCell}>{invoice.status}</TableCell>
         <TableCell className={classNameCell} align="right">
-          {invoice.taxRate
-            ? toEuro(invoice.total * (1 + invoice.taxRate / 100))
-            : toEuro(invoice.total)}
+          {toEuro(invoice.total)}
         </TableCell>
         <TableCell className={classNameCell} align="right">
           {renderAction()}

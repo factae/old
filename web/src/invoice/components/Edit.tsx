@@ -6,7 +6,6 @@ import IconSave from '@material-ui/icons/Save'
 import * as service from '../service'
 import {Invoice, emptyInvoice} from '../../invoice/model'
 import {ContractItem} from '../../contractItem/model'
-import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
 import InvoiceContext from '../context'
 import UserContext from '../../user/context'
@@ -36,7 +35,6 @@ export default function() {
   }, [invoices])
 
   const invoice = useRef(defaultInvoice)
-  const [rate, setLocalRate] = useState(invoice.current.rate)
   const [taxRate, setLocalTaxRate] = useState(invoice.current.taxRate)
   const [items, setItems] = useState(invoice.current.items)
   const [total, setTotal] = useState(invoice.current.total)
@@ -45,7 +43,6 @@ export default function() {
   useEffect(() => {
     invoice.current = defaultInvoice
 
-    setLocalRate(invoice.current.rate)
     setLocalTaxRate(invoice.current.taxRate)
     setItems(invoice.current.items)
     setTotal(invoice.current.total)
@@ -58,10 +55,6 @@ export default function() {
 
   function setTaxRate(value: string | number | null | undefined) {
     setLocalTaxRate(_.isNil(value) ? null : Number(value))
-  }
-
-  function setRate(value: string | number | null | undefined) {
-    setLocalRate(_.isNil(value) ? null : Number(value))
   }
 
   async function saveInvoice(invoice: Invoice) {
@@ -81,19 +74,6 @@ export default function() {
   if (_.isNil(clients)) return null
   if (_.isNil(invoices) && id > -1) return null
 
-  function renderRate(unit: RateUnit) {
-    switch (unit) {
-      case RateUnit.hour:
-        return 'Par heure'
-
-      case RateUnit.day:
-        return 'Par jour'
-
-      case RateUnit.service:
-        return 'Par prestation'
-    }
-  }
-
   return (
     <Fragment>
       <Form main onSubmit={saveInvoice}>
@@ -112,6 +92,15 @@ export default function() {
             ))}
           </Select>
 
+          {user.taxId && (
+            <TextField
+              name="taxRate"
+              label="Taux de TVA (%)"
+              type="number"
+              onChange={setTaxRate}
+            />
+          )}
+
           <DateField name="deliveredAt" label="Date de livraison" />
 
           <TextField
@@ -123,38 +112,9 @@ export default function() {
             required={false}
           />
         </Section>
-
-        <Section title="Tarification">
-          <TextField
-            name="rate"
-            label="Tarif (€)"
-            type="number"
-            required={false}
-            onChange={setRate}
-          />
-
-          <Select name="rateUnit" label="Unité" required={false}>
-            {_.keys(RateUnit)
-              .filter(unit => !isNaN(Number(unit)))
-              .map(unit => (
-                <option key={unit} value={unit}>
-                  {renderRate(Number(unit))}
-                </option>
-              ))}
-          </Select>
-
-          {user.taxId && (
-            <TextField
-              name="taxRate"
-              label="Taux de TVA (%)"
-              type="number"
-              onChange={setTaxRate}
-            />
-          )}
-        </Section>
       </Form>
 
-      <EditItem rate={rate} onAdd={addItem} />
+      <EditItem rate={user.rate} onAdd={addItem} />
       <ListItem items={items} taxRate={taxRate} total={total} />
     </Fragment>
   )

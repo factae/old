@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
-import {getRepository, Not, Equal, Between} from 'typeorm'
+import get from 'lodash/get'
 import {DateTime} from 'luxon'
+import {getRepository, Not, Equal, Between} from 'typeorm'
 
 import {Contract} from '../contract/model'
 import {ContractItem} from '../contractItem/model'
@@ -18,6 +19,7 @@ export async function readAll(req: Request, res: Response) {
   res.json(
     invoices.map(invoice => ({
       ...invoice,
+      conditions: get(invoice, 'invoiceConditions', null),
       createdAt: DateTime.fromJSDate(new Date(invoice.createdAt)).toISO(),
       startsAt: DateTime.fromJSDate(new Date(invoice.startsAt)).toISO(),
       endsAt: DateTime.fromJSDate(new Date(invoice.endsAt)).toISO(),
@@ -35,9 +37,9 @@ export async function create(req: Request, res: Response) {
   req.body.number = '-'
   req.body.user = req.user.id
   req.body.client = req.body.clientId
+  req.body.invoiceConditions = req.body.conditions
 
   const invoice = await $invoice.save(req.body)
-
   invoice.items = await $item.save(
     invoice.items.map((item: ContractItem) => {
       delete item.id
@@ -67,14 +69,13 @@ export async function update(req: Request, res: Response) {
     order: {createdAt: 'DESC'},
   })
 
-  const invoice = await $invoice.save({
-    ...req.body,
-    number:
-      req.body.status === 'validated'
-        ? `${now.toFormat('yyLL')}-${invoices.length + 1}`
-        : req.body.number,
-  })
+  req.body.invoiceConditions = req.body.conditions
+  req.body.number =
+    req.body.status === 'validated'
+      ? `${now.toFormat('yyLL')}-${invoices.length + 1}`
+      : req.body.number
 
+  const invoice = await $invoice.save(req.body)
   invoice.items = await $item.save(
     invoice.items.map((item: ContractItem) => {
       if (item.id === -1) delete item.id

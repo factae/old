@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
-import {getRepository} from 'typeorm'
+import get from 'lodash/get'
 import {DateTime} from 'luxon'
+import {getRepository} from 'typeorm'
 
 import {Contract} from '../contract/model'
 import {ContractItem} from '../contractItem/model'
@@ -26,7 +27,7 @@ export async function readAll(req: Request, res: Response) {
 
       return {
         ...quotation,
-        pdf: quotation.pdf ? quotation.pdf.toString('base64') : null,
+        conditions: get(quotation, 'quotationConditions', null),
         createdAt: createdAt.toISO(),
         startsAt: startsAt.toISO(),
         endsAt: endsAt.toISO(),
@@ -45,9 +46,9 @@ export async function create(req: Request, res: Response) {
   delete req.body.id
   req.body.user = req.user.id
   req.body.client = req.body.clientId
+  req.body.quotationConditions = req.body.conditions
 
   const quotation = await $quotation.save(req.body)
-
   quotation.items = await $item.save(
     quotation.items.map((item: ContractItem) => {
       delete item.id
@@ -65,14 +66,12 @@ export async function update(req: Request, res: Response) {
   const $quotation = await getRepository(Contract)
   const $item = await getRepository(ContractItem)
 
-  console.log(req.body.pdf)
   req.body.user = req.user.id
   req.body.client = req.body.clientId
   req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
-  console.log(req.body.pdf)
+  req.body.quotationConditions = req.body.conditions
 
   const quotation = await $quotation.save(req.body)
-
   quotation.items = await $item.save(
     quotation.items.map((item: ContractItem) => {
       if (item.id === -1) delete item.id

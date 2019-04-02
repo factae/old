@@ -60,20 +60,20 @@ export class User {
   siren: string
 
   @Column({nullable: true, default: null})
-  apeCode: string
-
-  @Column({nullable: true, default: null})
-  taxId: string
-
-  @Column({type: 'tinyint', nullable: true, default: null})
-  taxRate: number
-
-  @Column({nullable: true, default: null})
-  conditions: string
-
-  @Column({nullable: true, default: null})
   rate: number
 
   @Column({type: 'tinyint', default: RateUnit.hour})
   rateUnit: RateUnit
+
+  @Column({nullable: true, default: null})
+  taxId?: string
+
+  @Column({type: 'tinyint', nullable: true, default: null})
+  taxRate?: number
+
+  @Column({nullable: true, default: null})
+  quotationConditions?: string
+
+  @Column({nullable: true, default: null})
+  invoiceConditions?: string
 }

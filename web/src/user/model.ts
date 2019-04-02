@@ -22,7 +22,8 @@ export interface User {
   apeCode: string
   taxId: string | null
   taxRate: number | null
-  conditions: string | null
+  quotationConditions: string | null
+  invoiceConditions: string | null
   rate: number | null
   rateUnit: RateUnit
 }

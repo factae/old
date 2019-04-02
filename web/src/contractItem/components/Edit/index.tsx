@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 import IconAdd from '@material-ui/icons/AddCircleOutline'
 
 import {ContractItem, emptyItem} from '../../model'
@@ -36,29 +37,38 @@ export default function({rate, onAdd: addItemParent}: Props) {
     <Form onSubmit={addItem}>
       <Section title="Designations">
         <TextField
+          grid={{xs: 6}}
           name="description"
           label="Description"
           autoFocus={autoFocus}
         />
 
-        <TextField name="quantity" label="Quantité" type="number" />
+        <TextField
+          grid={{xs: 2}}
+          name="quantity"
+          label="Quantité"
+          type="number"
+        />
 
         <TextField
+          grid={{xs: 2}}
           name="unitPrice"
           label="Prix unitaire (€)"
           type="number"
           value={unitPrice}
         />
 
-        <Button
-          className={classes.button}
-          type="submit"
-          variant="text"
-          color="primary"
-        >
-          <IconAdd className={classes.icon} />
-          Ajouter
-        </Button>
+        <Grid className={classes.buttonContainer} item xs={2}>
+          <Button
+            className={classes.button}
+            type="submit"
+            variant="text"
+            color="primary"
+          >
+            <IconAdd className={classes.icon} />
+            Ajouter
+          </Button>
+        </Grid>
       </Section>
     </Form>
   )

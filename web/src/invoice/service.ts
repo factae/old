@@ -2,7 +2,7 @@ import assign from 'lodash/assign'
 import omit from 'lodash/omit'
 import {DateTime} from 'luxon'
 
-import * as date from '../common/utils/date'
+import {from, to} from '../common/utils/date'
 import {get, post, put} from '../common/utils/axios'
 import {Invoice} from './model'
 
@@ -18,10 +18,8 @@ export async function readAll(): Promise<Invoice[]> {
   return res.data.map((data: any) =>
     assign(data, {
       ...data,
-      createdAt: date.from(data.createdAt),
-      expiresAt: date.from(data.expiresAt),
-      startsAt: date.from(data.startsAt),
-      endsAt: date.from(data.endsAt),
+      createdAt: from(data.createdAt),
+      deliveredAt: from(data.deliveredAt),
     }),
   )
 }
@@ -34,8 +32,8 @@ export async function create(invoice: Invoice) {
 
   const res = await post('/invoice', {
     ...omit(invoice, 'id'),
-    createdAt: date.to(invoice.createdAt),
-    deliveredAt: date.to(invoice.deliveredAt),
+    createdAt: to(invoice.createdAt),
+    deliveredAt: to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
@@ -52,7 +50,7 @@ export async function create(invoice: Invoice) {
 export async function update(invoice: Invoice) {
   const res = await put('/invoice', {
     ...invoice,
-    deliveredAt: date.to(invoice.deliveredAt),
+    deliveredAt: to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {

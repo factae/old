@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import omit from 'lodash/fp/omit'
+import omit from 'lodash/omit'
 import {getRepository} from 'typeorm'
 
 import {User} from './model'
@@ -8,7 +8,7 @@ import {User} from './model'
 
 export async function read(req: Request, res: Response) {
   return req.user
-    ? res.json(omit(['id', 'password'])(req.user))
+    ? res.json(omit(req.user, 'id', 'password'))
     : res.sendStatus(403)
 }
 
@@ -18,7 +18,7 @@ export async function update(req: Request, res: Response) {
   if (!req.user) return res.sendStatus(403)
 
   const userRepository = await getRepository(User)
-  userRepository.save({...req.user, ...omit(['email'])(req.body)})
+  userRepository.save({...req.user, ...omit(req.body, 'email')})
 
   return res.sendStatus(204)
 }

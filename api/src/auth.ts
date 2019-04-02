@@ -45,7 +45,12 @@ export async function register(req: Request, res: Response) {
   }
 
   const hash = bcrypt.hashSync(password)
-  await getManager().insert(User, {email, password: hash})
+  await getManager().insert(User, {
+    email,
+    password: hash,
+    quotationConditions: '- Type de paiement : virement bancaire',
+    invoiceConditions: '- Paiement comptant à réception de la facture',
+  })
 
   res.sendStatus(204)
 }

@@ -23,7 +23,7 @@ export default function() {
           <TableCell>Numéro</TableCell>
           <TableCell>Client</TableCell>
           <TableCell>Statut</TableCell>
-          <TableCell align="right">Total TTC</TableCell>
+          <TableCell align="right">Total HT</TableCell>
           <TableCell align="right">Actions</TableCell>
         </TableRow>
       </TableHead>

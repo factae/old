@@ -152,9 +152,7 @@ export default function(props: Props) {
         <TableCell className={classNameCell}>{clientName}</TableCell>
         <TableCell className={classNameCell}>{quotation.status}</TableCell>
         <TableCell className={classNameCell} align="right">
-          {quotation.taxRate
-            ? toEuro(quotation.total * (1 + quotation.taxRate / 100))
-            : toEuro(quotation.total)}
+          {toEuro(quotation.total)}
         </TableCell>
         <TableCell className={classNameCell} align="right">
           {renderAction()}
