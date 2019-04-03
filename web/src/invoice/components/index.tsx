@@ -14,7 +14,7 @@ export default function() {
         title="Factures"
         label="Ajouter"
         icon={IconAdd}
-        onClick={goTo('invoiceEdit')}
+        onClick={() => goTo('invoiceEdit')}
       />
 
       <InvoiceList />

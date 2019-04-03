@@ -14,7 +14,7 @@ export default function() {
         title="Devis"
         label="Ajouter"
         icon={IconAdd}
-        onClick={goTo('quotationEdit')}
+        onClick={() => goTo('quotationEdit')}
       />
 
       <QuotationList />

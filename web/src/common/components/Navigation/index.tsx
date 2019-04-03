@@ -26,7 +26,7 @@ export default function() {
           variant="h5"
           color="inherit"
           className={classes.brand}
-          onClick={goTo(auth ? 'dashboard' : 'login')}
+          onClick={() => goTo(auth ? 'dashboard' : 'login')}
         >
           <span className={classes.title}>factAE</span>
         </Typography>
@@ -37,7 +37,7 @@ export default function() {
               aria-owns="menu-appbar"
               aria-haspopup="true"
               color="inherit"
-              onClick={goTo('profile')}
+              onClick={() => goTo('profile')}
             >
               <IconProfile />
             </IconButton>

@@ -26,7 +26,7 @@ export default function() {
   const [clients] = useContext(ClientContext)
   const [quotations, dispatch] = useContext(QuotationContext)
 
-  const {match, location} = useRouting()
+  const {match, location} = useRouting<{id: number}>()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
 
   const getDefaultQuotation = useMemo((): Quotation => {

@@ -160,7 +160,7 @@ export default function(props: Props) {
     <Fragment>
       <TableRow
         className={classNames({[classes.draft]: isDraft})}
-        onClick={isDraft ? goTo('invoiceEdit', invoice.id) : noop}
+        onClick={isDraft ? () => goTo('invoiceEdit', invoice.id) : noop}
       >
         <TableCell className={classNameCell}>{invoice.number}</TableCell>
         <TableCell className={classNameCell}>{clientName}</TableCell>

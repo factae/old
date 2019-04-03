@@ -69,7 +69,7 @@ export default function<T>(defaultModel: T | null) {
         await submit(model)
         if (successReset) setLocalModel(defaultModel)
         if (successNotify) async.stop(successMessage)
-        if (successGoTo) goTo(successGoTo)()
+        if (successGoTo) goTo(successGoTo)
       } catch (error) {
         console.error(error.toString())
         async.stop(`${errorMessage} : ${error.message}`)

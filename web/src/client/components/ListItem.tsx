@@ -17,7 +17,7 @@ export default function(props: Props) {
   const classes = useStyles()
 
   return (
-    <TableRow className={classes.row} onClick={goTo('clientEdit', client.id)}>
+    <TableRow className={classes.row} onClick={() => goTo('clientEdit', client.id)}>
       <TableCell>{client.firstName}</TableCell>
       <TableCell>{client.lastName}</TableCell>
       <TableCell>{client.email}</TableCell>

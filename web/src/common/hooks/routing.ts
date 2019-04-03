@@ -28,17 +28,12 @@ const routes: Routes = {
   profile: '/dashboard/profile',
 }
 
-export default function useRouting() {
-  const {history, ...routerProps} = useReactRouter<{id: number}>()
+export default function useRouting<T>() {
+  const {history, ...routerProps} = useReactRouter<T>()
 
   function goTo(route: Route, params?: any) {
-    return () => {
-      const url = get(routes, route)
-      return history.push(
-        `${url}${isNumber(params) ? `/${params}` : ''}`,
-        params,
-      )
-    }
+    const url = get(routes, route)
+    return history.push(`${url}${isNumber(params) ? `/${params}` : ''}`, params)
   }
 
   function goBack() {

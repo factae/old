@@ -108,7 +108,7 @@ export default function() {
 
       <Button
         className={classes.changeAction}
-        onClick={goTo('login')}
+        onClick={() => goTo('login')}
         fullWidth
         variant="outlined"
         size="small"

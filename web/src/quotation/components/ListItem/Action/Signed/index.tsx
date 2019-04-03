@@ -26,7 +26,7 @@ export default function(props: Props) {
         <span className={classes.icon}>
           <IconButton
             disabled={loading}
-            onClick={goTo('invoiceEdit', {
+            onClick={() => goTo('invoiceEdit', {
               ...quotation,
               id: null,
               toto: 'lol',

@@ -147,7 +147,7 @@ export default function(props: Props) {
     <Fragment>
       <TableRow
         className={classNames({[classes.draft]: isDraft})}
-        onClick={isDraft ? goTo('quotationEdit', quotation.id) : noop}
+        onClick={isDraft ? () => goTo('quotationEdit', quotation.id) : noop}
       >
         <TableCell className={classNameCell}>{clientName}</TableCell>
         <TableCell className={classNameCell}>{quotation.status}</TableCell>

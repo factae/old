@@ -22,7 +22,7 @@ export default function() {
     <Grid container spacing={16} className={classes.cards}>
       <Grid item xs={12} sm={6} lg={3}>
         <Card>
-          <CardActionArea onClick={goTo('quotation')}>
+          <CardActionArea onClick={() => goTo('quotation')}>
             <CardContent>
               <Typography
                 gutterBottom
@@ -40,7 +40,7 @@ export default function() {
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Card>
-          <CardActionArea onClick={goTo('invoice')}>
+          <CardActionArea onClick={() => goTo('invoice')}>
             <CardContent>
               <Typography
                 gutterBottom
@@ -58,7 +58,7 @@ export default function() {
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Card>
-          <CardActionArea onClick={goTo('client')}>
+          <CardActionArea onClick={() => goTo('client')}>
             <CardContent>
               <Typography
                 gutterBottom
@@ -76,7 +76,7 @@ export default function() {
       </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Card>
-          <CardActionArea onClick={goTo('profile')}>
+          <CardActionArea onClick={() => goTo('profile')}>
             <CardContent>
               <Typography
                 gutterBottom

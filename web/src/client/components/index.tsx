@@ -13,7 +13,7 @@ export default function() {
       <Header
         title="Clients"
         label="Ajouter"
-        onClick={goTo('clientEdit')}
+        onClick={() => goTo('clientEdit')}
         icon={IconAdd}
       />
 

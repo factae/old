@@ -13,7 +13,7 @@ import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
 
 export default function() {
-  const {match} = useRouting()
+  const {match} = useRouting<{id: number}>()
   const [clients, dispatch] = useContext(ClientContext)
 
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)

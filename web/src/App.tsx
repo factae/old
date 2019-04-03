@@ -11,6 +11,7 @@ import Snackbar from './common/components/Snackbar'
 import Navigation from './common/components/Navigation'
 import Login from './auth/components/Login'
 import Register from './auth/components/Register'
+import Confirm from './user/components/Confirm'
 import PrivateRoute from './auth/components/PrivateRoute'
 import Dashboard from './common/components/Dashboard'
 import theme from './theme'
@@ -78,6 +79,7 @@ export default function() {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route exact path="/confirm/:token" component={Confirm} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <Redirect to="/dashboard" />
             </Switch>

@@ -21,7 +21,7 @@ export default function() {
   const [clients] = useContext(ClientContext)
   const [invoices, dispatch] = useContext(InvoiceContext)
 
-  const {match, location} = useRouting()
+  const {match, location} = useRouting<{id: number}>()
   const id = _.isNil(match.params.id) ? -1 : Number(match.params.id)
 
   const defaultInvoice = useMemo((): Invoice => {
