@@ -10,8 +10,8 @@ import * as user from './user/controller'
 import {authByLoginPassword} from './strategies/Local'
 import {authByCookie} from './strategies/Cookie'
 
-const URL = String(process.env.URL || 'http://localhost')
-const PORT = Number(process.env.PORT || 3001)
+const URL = String(process.env.API_URL || 'http://localhost')
+const PORT = Number(process.env.API_PORT || 3001)
 
 // --------------------------------------------------------------------- # API #
 
@@ -42,6 +42,7 @@ api.put('/invoice', authByCookie, handle(invoice.update))
 // User
 api.get('/user', authByCookie, handle(user.read))
 api.post('/user', authByCookie, handle(user.update))
+api.get('/confirm/:token', handle(user.confirm))
 
 // ----------------------------------------------------------------- # Exports #
 

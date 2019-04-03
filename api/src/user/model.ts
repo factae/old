@@ -23,6 +23,9 @@ export class User {
   @Column({unique: true})
   email: string
 
+  @Column({default: false})
+  emailConfirmed: boolean
+
   @Column()
   password: string
 
@@ -65,15 +68,18 @@ export class User {
   @Column({type: 'tinyint', default: RateUnit.hour})
   rateUnit: RateUnit
 
-  @Column({nullable: true, default: null})
-  taxId?: string
+  @Column({type: 'varchar', length: 36, nullable: true, default: null})
+  token: string | null
+
+  @Column({type: 'varchar', nullable: true, default: null})
+  taxId: string | null
 
   @Column({type: 'tinyint', nullable: true, default: null})
-  taxRate?: number
+  taxRate: number | null
 
-  @Column({nullable: true, default: null})
-  quotationConditions?: string
+  @Column({type: 'text', nullable: true, default: null})
+  quotationConditions: string
 
-  @Column({nullable: true, default: null})
-  invoiceConditions?: string
+  @Column({type: 'text', nullable: true, default: null})
+  invoiceConditions: string | null
 }

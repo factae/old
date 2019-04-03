@@ -11,16 +11,15 @@ import {User} from '../user/model'
 const options: IStrategyOptions = {usernameField: 'email'}
 const verify: VerifyFunction = async (email, password, done) => {
   try {
-    const userRepository = await getConnection().getRepository(User)
-    const user = await userRepository.findOneOrFail({email})
+    const $user = await getConnection().getRepository(User)
+    const user = await $user.findOneOrFail({email, emailConfirmed: true})
     const passwordsMatch = bcrypt.compareSync(password, user.password)
 
-    return done(null, passwordsMatch ? user : false)
+    done(null, passwordsMatch ? user : false)
   } catch (error) {
     switch (error.name) {
       case 'EntityNotFound':
         return done(null, false)
-
       default:
         return done(error)
     }
@@ -33,7 +32,11 @@ passport.use(localStrategy)
 
 // -------------------------------------------------------------- # Middleware #
 
-export function authByLoginPassword(req: Request, res: Response, next: Function) {
+export function authByLoginPassword(
+  req: Request,
+  res: Response,
+  next: Function,
+) {
   const options: AuthenticateOptions = {session: false}
   const validate = (error: Error, user: User) => {
     if (error) return next(error)

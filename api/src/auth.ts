@@ -1,13 +1,16 @@
 import {Request, Response, CookieOptions} from 'express'
-import {getManager} from 'typeorm'
+import {getRepository} from 'typeorm'
 import {DateTime} from 'luxon'
 import bcrypt from 'bcryptjs'
+import uuid from 'uuid/v4'
 import jwt from 'jsonwebtoken'
 import isEmail from 'validator/lib/isEmail'
 import isByteLength from 'validator/lib/isByteLength'
 
+import * as mail from './mail'
 import {User} from './user/model'
 
+const WEB_URL = `${process.env.WEB_URL}:${process.env.WEB_PORT}`
 const SECRET = process.env.API_SECRET || 'secret'
 const EXPIRY_TIME = 60 * 60 * 24 // 24h
 
@@ -37,19 +40,30 @@ export async function register(req: Request, res: Response) {
   const {email, password} = req.body
 
   if (!isEmail(email)) {
-    res.status(400).send('Invalid email')
+    res.status(400).send('email invalide')
   }
 
   if (!isByteLength(password, {min: 6})) {
-    res.status(400).send('Invalid password length (min: 6)')
+    res.status(400).send('mot de passe invalide (6 caractères min.)')
   }
 
+  const $user = getRepository(User)
   const hash = bcrypt.hashSync(password)
-  await getManager().insert(User, {
+  const token = uuid()
+  const confirmUrl = `${WEB_URL}/confirm/${token}`
+
+  $user.insert({
     email,
+    token,
     password: hash,
     quotationConditions: '- Type de paiement : virement bancaire',
     invoiceConditions: '- Paiement comptant à réception de la facture',
+  })
+
+  mail.send({
+    to: email,
+    subject: 'Bienvenue sur factAE !',
+    html: `Merci de bien vouloir confirmer votre email en cliquant sur le lien suivant : <a href="${confirmUrl}">${confirmUrl}</a>`,
   })
 
   res.sendStatus(204)
