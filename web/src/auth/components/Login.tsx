@@ -3,8 +3,6 @@ import isEmail from 'validator/lib/isEmail'
 import isEmpty from 'validator/lib/isEmpty'
 import isLength from 'validator/lib/isLength'
 import Button from '@material-ui/core/Button'
-import {InputLabelProps} from '@material-ui/core/InputLabel'
-import {OutlinedInputProps} from '@material-ui/core/OutlinedInput'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
@@ -56,7 +54,7 @@ export default function() {
         <Form
           className={classes.form}
           onSubmit={register}
-          onSuccess={{notify: false, goTo: 'dashboard'}}
+          onSuccess={{message: 'Bienvenue !', goTo: 'dashboard'}}
         >
           <TextField
             grid={{xs: 12}}

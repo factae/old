@@ -18,7 +18,7 @@ const EXPIRY_TIME = 60 * 60 * 24 // 24h
 
 function cookieOptions(options: CookieOptions) {
   return process.env.NODE_ENV === 'production'
-    ? {httpOnly: true, secure: true, domain: 'soywod.me', ...options}
+    ? {httpOnly: true, secure: true, domain: 'factae.fr', ...options}
     : {httpOnly: true, secure: false, ...options}
 }
 
