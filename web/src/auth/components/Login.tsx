@@ -1,48 +1,49 @@
-import React from 'react'
+import React, {useContext, useRef} from 'react'
 import isEmail from 'validator/lib/isEmail'
 import isEmpty from 'validator/lib/isEmpty'
 import isLength from 'validator/lib/isLength'
 import Button from '@material-ui/core/Button'
+import {InputLabelProps} from '@material-ui/core/InputLabel'
+import {OutlinedInputProps} from '@material-ui/core/OutlinedInput'
 import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 
 import AsyncContext from '../../common/contexts/async'
 import useRouting from '../../common/hooks/routing'
-import * as authService from '../../auth/service'
+import {PartialUser, emptyUser} from '../../user/model'
+import useForm from '../../common/form'
+import * as $auth from '../../auth/service'
 
 import {useStyles} from './styles'
 
-type LoginEventTarget = EventTarget & {
-  email: HTMLInputElement
-  password: HTMLInputElement
-}
-
 export default function() {
-  const async = React.useContext(AsyncContext)
+  const {loading} = useContext(AsyncContext)
   const {goTo} = useRouting()
   const classes = useStyles()
 
-  function login(event: React.FormEvent) {
-    event.preventDefault()
-    async.start()
+  const defaultUser = useRef(emptyUser())
+  const {Form, TextField} = useForm<PartialUser>(defaultUser.current)
 
-    const target = event.target as LoginEventTarget
-    const email = target.email.value.trim()
-    const password = target.password.value.trim()
-
+  async function register({email, password}: PartialUser) {
     if (isEmpty(email) || !isEmail(email)) {
-      return async.stop('Erreur : email invalide')
+      throw new Error('email invalide')
     }
 
     if (isEmpty(password) || !isLength(password, {min: 6})) {
-      return async.stop('Erreur : mot de passe invalide (6 caractères min.)')
+      throw new Error('mot de passe invalide (6 caractères min.)')
     }
 
-    authService
-      .login(email, password)
-      .catch(error => async.stop(`Erreur : ${error.message}`))
-      .then(goTo('dashboard'))
+    try {
+      await $auth.login(email, password)
+    } catch (error) {
+      console.error(error.toString())
+
+      if (/403$/.test(error.message)) {
+        throw new Error('email ou mot de passe invalide')
+      } else {
+        throw new Error('serveur')
+      }
+    }
   }
 
   return (
@@ -52,28 +53,26 @@ export default function() {
           factAE
         </Typography>
 
-        <form className={classes.form} onSubmit={login}>
+        <Form
+          className={classes.form}
+          onSubmit={register}
+          onSuccess={{notify: false, goTo: 'dashboard'}}
+        >
           <TextField
-            required
-            fullWidth
-            label="Email"
-            type="email"
-            name="email"
-            variant="outlined"
+            grid={{xs: 12}}
             margin="dense"
+            type="email"
+            label="Email"
+            name="email"
             autoFocus
-            disabled={async.loading}
           />
 
           <TextField
-            required
-            fullWidth
-            label="Mot de passe"
-            type="password"
-            name="password"
+            grid={{xs: 12}}
             margin="dense"
-            variant="outlined"
-            disabled={async.loading}
+            type="password"
+            label="Mot de passe"
+            name="password"
           />
 
           <Button
@@ -83,11 +82,11 @@ export default function() {
             color="primary"
             size="large"
             className={classes.submit}
-            disabled={async.loading}
+            disabled={loading}
           >
             Se connecter
           </Button>
-        </form>
+        </Form>
       </Paper>
 
       <Button
@@ -97,7 +96,7 @@ export default function() {
         variant="outlined"
         size="small"
         color="default"
-        disabled={async.loading}
+        disabled={loading}
       >
         Pas de compte ?
       </Button>

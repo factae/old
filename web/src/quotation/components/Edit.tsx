@@ -100,7 +100,11 @@ export default function() {
 
   return (
     <Fragment>
-      <Form main onSubmit={saveQuotation}>
+      <Form
+        onSubmit={saveQuotation}
+        onSuccess={{message: 'Devis enregistré.', goTo: 'quotation'}}
+        onError={{message: "Erreur lors de l'enregistrement du devis !"}}
+      >
         <Header
           title={id === -1 ? 'Créer un devis' : 'Modifier un devis'}
           label="Sauvegarder"

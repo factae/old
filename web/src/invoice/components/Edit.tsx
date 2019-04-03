@@ -76,7 +76,11 @@ export default function() {
 
   return (
     <Fragment>
-      <Form main onSubmit={saveInvoice}>
+      <Form
+        onSubmit={saveInvoice}
+        onSuccess={{message: 'Facture enregistrée.', goTo: 'invoice'}}
+        onError={{message: "Erreur lors de l'enregistrement de la facture !"}}
+      >
         <Header
           title={id === -1 ? 'Créer une facture' : 'Modifier une facture'}
           label="Sauvegarder"

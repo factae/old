@@ -34,7 +34,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
   }, [rate])
 
   return (
-    <Form onSubmit={addItem}>
+    <Form onSubmit={addItem} onSuccess={{notify: false}}>
       <Section title="Designations">
         <TextField
           grid={{xs: 6}}

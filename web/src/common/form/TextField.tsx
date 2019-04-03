@@ -8,23 +8,24 @@ import noop from 'lodash/noop'
 import omit from 'lodash/omit'
 import Grid, {GridProps} from '@material-ui/core/Grid'
 import MuiTextField from '@material-ui/core/TextField'
-import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
+import {TextFieldProps as AllMuiTextFieldProps} from '@material-ui/core/TextField'
 
 import FormContext from './Context'
 import AsyncContext from '../../common/contexts/async'
 
-type TextFieldAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
-type TextFieldValue = string | number | null | undefined
+type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 
-export type TextFieldProps<T> = Pick<MuiTextFieldProps, TextFieldAttributes> & {
+type TextFieldValue = string | number | null | undefined
+type MuiTextFieldProps = Omit<
+  AllMuiTextFieldProps,
+  'name' | 'value' | 'onChange'
+>
+
+export type TextFieldProps<T> = Partial<MuiTextFieldProps> & {
   name: string & keyof T
-  label: string
+  value?: TextFieldValue
   onChange?: (value: TextFieldValue) => void
   grid?: GridProps
-  placeholder?: string
-  multiline?: boolean
-  rows?: number
-  value?: TextFieldValue
 }
 
 export default function<T>(context: React.Context<FormContext<T>>) {

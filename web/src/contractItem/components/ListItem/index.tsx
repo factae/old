@@ -27,7 +27,7 @@ export default function(props: Props) {
   return (
     <TableRow>
       <TableCell colSpan={4} className={classes.cell}>
-        <Form onChange={props.onChange}>
+        <Form onChange={props.onChange} onSuccess={{notify: false}}>
           <Grid
             container
             spacing={8}

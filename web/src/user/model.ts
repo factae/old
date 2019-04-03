@@ -27,3 +27,12 @@ export interface User {
   rate: number | null
   rateUnit: RateUnit
 }
+
+export type PartialUser = Pick<User, 'email' | 'password'>
+
+export function emptyUser(): PartialUser {
+  return {
+    email: '',
+    password: '',
+  }
+}

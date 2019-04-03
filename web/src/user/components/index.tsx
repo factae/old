@@ -33,7 +33,11 @@ export default function() {
   }
 
   return (
-    <Form main onSubmit={updateUser}>
+    <Form
+      onSubmit={updateUser}
+      onSuccess={{message: 'Profil enregistré.', goTo: 'dashboard'}}
+      onError={{message: "Erreur lors de l'enregistrement du profil !"}}
+    >
       <Header title="Profil" label="Sauvegarder" icon={IconSave} />
 
       <Section title="Identité personnelle">

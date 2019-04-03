@@ -36,7 +36,11 @@ export default function() {
   }
 
   return (
-    <Form main onSubmit={createOrUpdateClient}>
+    <Form
+      onSubmit={createOrUpdateClient}
+      onSuccess={{message: 'Client enregistré.', goTo: 'client'}}
+      onError={{message: "Erreur lors de l'enregistrement du client !"}}
+    >
       <Header
         title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
         label="Sauvegarder"
