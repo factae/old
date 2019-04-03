@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import isEmpty from 'lodash/fp/isEmpty'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -15,10 +15,10 @@ type Props = {
 
 export default function(props: Props) {
   const {message, onClose: handleClose} = props
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const classes = useStyles()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isEmpty(message)) {
       setOpen(true)
     }
@@ -32,7 +32,7 @@ export default function(props: Props) {
   }
 
   const className = classNames(classes.snackbar, {
-    [classes.error]: message.match(/^Erreur /),
+    [classes.error]: message.match(/^Erreur/),
   })
 
   return (

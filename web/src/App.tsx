@@ -59,9 +59,12 @@ export default function() {
     setLoading(true)
   }
 
-  function stop(message?: string | void) {
+  function stop(nextMessage?: string | void) {
     setLoading(false)
-    setMessage(message || '')
+
+    if (!message && nextMessage) {
+      setMessage(nextMessage || '')
+    }
   }
 
   function close() {

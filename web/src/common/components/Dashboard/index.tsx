@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from 'react'
+import isNull from 'lodash/isNull'
 import Grid from '@material-ui/core/Grid'
 
 import * as userService from '../../../user/service'
@@ -6,6 +7,7 @@ import * as clientService from '../../../client/service'
 import * as quotationService from '../../../quotation/service'
 import * as invoiceService from '../../../invoice/service'
 import AsyncContext from '../../../common/contexts/async'
+import useRouting from '../../../common/hooks/routing'
 import UserContext, {useUserReducer} from '../../../user/context'
 import ClientContext, {useClientReducer} from '../../../client/context'
 import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
@@ -16,10 +18,12 @@ import {useStyles} from './styles'
 
 export default function() {
   const async = useContext(AsyncContext)
+  const router = useRouting()
   const [userState, userDispatch] = useUserReducer()
   const [clientState, clientDispatch] = useClientReducer()
   const [quotationState, quotationDispatch] = useQuotationReducer()
   const [invoiceState, invoiceDispatch] = useInvoiceReducer()
+  const isProfileRoute = router.location.pathname === '/dashboard/profile'
   const classes = useStyles()
 
   async function fetchUser() {
@@ -51,8 +55,8 @@ export default function() {
       await fetchQuotations()
       await fetchInvoices()
     } catch (error) {
-      console.error(error.message)
-      return async.stop('Erreur lors de la récupération des données serveur !')
+      console.error(error.toString())
+      return async.stop('Erreur : serveur !')
     }
 
     async.stop()
@@ -61,6 +65,18 @@ export default function() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (isNull(userState)) return
+    if (isNull(userState.siren) && !isProfileRoute) {
+      router.goTo('profile')
+      async.stop('Vous devez remplir votre profil avant de pouvoir continuer.')
+    }
+  }, [userState, router.location.pathname])
+
+  if (isNull(userState)) {
+    return null
+  }
 
   return (
     <Grid container justify="center" className={classes.container}>
