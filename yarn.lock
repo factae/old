@@ -1277,13 +1277,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.9.5.tgz#011eece9d3f839a806b63973e228f85967b79ed3"
   integrity sha512-vVjM0SVzgaOUpflq4GYBvCpozes8OgIIS5gVXVka+OfK3hvnkC1i93U8WiY2OtNE4XUWyyy/86Kf6e0IHTQw1Q==
 
-"@types/nodemailer@^4.6.7":
-  version "4.6.7"
-  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-4.6.7.tgz#ac3c594fac6daf7f71eb4d31c9e4c88b62dbcb87"
-  integrity sha512-slR1wz8I8O20CHNBNhYhObRZ8zeG5FnfFUWLZKk1f0UDYaLZOsBjUfCC9VEFi7oSRCC886DfKmq1JncPDMOrng==
-  dependencies:
-    "@types/node" "*"
-
 "@types/passport-jwt@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/passport-jwt/-/passport-jwt-3.0.1.tgz#bc4c2610815565de977ea1a580c047d71c646084"
@@ -1668,7 +1661,7 @@ ajv-keywords@^3.0.0, ajv-keywords@^3.1.0:
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.3.0.tgz#cb6499da9b83177af8bc1732b2f0a1a1a3aacf8c"
   integrity sha512-CMzN9S62ZOO4sA/mJZIO4S++ZM7KFWzH3PPWkveLhy4OZ9i1/VatgwWMD46w/XbGCBy7Ye0gCk+Za6mmyfKK7g==
 
-ajv@^6.0.1, ajv@^6.1.0, ajv@^6.5.3, ajv@^6.5.5:
+ajv@6.8.1, ajv@^6.0.1, ajv@^6.1.0, ajv@^6.5.3, ajv@^6.5.5:
   version "6.8.1"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.8.1.tgz#0890b93742985ebf8973cd365c5b23920ce3cb20"
   integrity sha512-eqxCp82P+JfqL683wwsL73XmFs1eG6qjw+RD3YHx+Jll1r0jNd4dh8QG9NYAeNGA/hnZjeEDgtTskgJULbxpWQ==
@@ -8029,11 +8022,6 @@ node-sass@^4.11.0:
     sass-graph "^2.2.4"
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
-
-nodemailer@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.0.0.tgz#d9761128771739dc87c1fdd747f569b7f135cb02"
-  integrity sha512-PMQJyLhoNAMoBU1hEh5aaUkpa/tcDNwzS7s7zow/myKfoEoZewMxUuWZqQ5yjYsAnvE484KSkYH5s6iPvcjhCg==
 
 "nopt@2 || 3":
   version "3.0.6"

@@ -7,7 +7,7 @@ export function handle(handler: Handler) {
     try {
       await handler(req, res)
     } catch (error) {
-      console.error(error)
+      console.error(error.toString())
 
       switch (error.code) {
         case 'ER_DUP_ENTRY':

@@ -11,7 +11,6 @@ import * as mail from './mail'
 import {User} from './user/model'
 
 const WEB_URL = `${process.env.WEB_URL}:${process.env.WEB_PORT}`
-const SECRET = process.env.API_SECRET || 'secret'
 const EXPIRY_TIME = 60 * 60 * 24 // 24h
 
 // ------------------------------------------------------------------- # Login #
@@ -25,7 +24,7 @@ function cookieOptions(options: CookieOptions) {
 export async function login(req: Request, res: Response) {
   const expiry = DateTime.utc().plus({seconds: EXPIRY_TIME})
   const expires = expiry.toJSDate()
-  const authToken = generateToken(req.user.id)
+  const authToken = generateToken(req.user.id, process.env.API_SECRET)
   const expiryToken = generateToken(expiry.toMillis())
 
   res
@@ -38,6 +37,10 @@ export async function login(req: Request, res: Response) {
 
 export async function register(req: Request, res: Response) {
   const {email, password} = req.body
+  const $user = getRepository(User)
+  const hash = bcrypt.hashSync(password)
+  const token = uuid()
+  const confirmUrl = `${WEB_URL}/confirm/${token}`
 
   if (!isEmail(email)) {
     res.status(400).send('email invalide')
@@ -47,12 +50,7 @@ export async function register(req: Request, res: Response) {
     res.status(400).send('mot de passe invalide (6 caractères min.)')
   }
 
-  const $user = getRepository(User)
-  const hash = bcrypt.hashSync(password)
-  const token = uuid()
-  const confirmUrl = `${WEB_URL}/confirm/${token}`
-
-  $user.insert({
+  await $user.insert({
     email,
     token,
     password: hash,
@@ -60,10 +58,10 @@ export async function register(req: Request, res: Response) {
     invoiceConditions: '- Paiement comptant à réception de la facture',
   })
 
-  mail.send({
+  await mail.send({
     to: email,
-    subject: 'Bienvenue sur factAE !',
-    html: `Merci de bien vouloir confirmer votre email en cliquant sur le lien suivant : <a href="${confirmUrl}">${confirmUrl}</a>`,
+    templateId: process.env.SENDGRID_CONFIRM_TEMPLATE_ID,
+    templateData: {url: confirmUrl},
   })
 
   res.sendStatus(204)
@@ -71,8 +69,8 @@ export async function register(req: Request, res: Response) {
 
 // ------------------------------------------------------------------- # Utils #
 
-function generateToken(data: any) {
-  return jwt.sign({}, SECRET, {
+function generateToken(data: any, secret?: string) {
+  return jwt.sign({}, secret || 'factAE', {
     subject: String(data),
     issuer: 'factAE',
     algorithm: 'HS512',

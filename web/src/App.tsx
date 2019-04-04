@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from 'react'
+import React from 'react'
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import {Font} from '@react-pdf/renderer'
 import {MuiPickersUtilsProvider} from 'material-ui-pickers'
@@ -11,11 +11,10 @@ import Snackbar from './common/components/Snackbar'
 import Navigation from './common/components/Navigation'
 import Login from './auth/components/Login'
 import Register from './auth/components/Register'
+import Dashboard from './common/components/Dashboard'
 import Confirm from './user/components/Confirm'
 import PrivateRoute from './auth/components/PrivateRoute'
 import theme from './theme'
-
-const Dashboard = lazy(() => import('./common/components/Dashboard'))
 
 Font.register(
   'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Regular.ttf',
@@ -80,15 +79,13 @@ export default function() {
           <Snackbar message={message} onClose={close} />
           <BrowserRouter>
             <Navigation />
-            <Suspense fallback={null}>
-              <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/confirm/:token" component={Confirm} />
-                <PrivateRoute path="/dashboard" component={Dashboard} />
-                <Redirect to="/dashboard" />
-              </Switch>
-            </Suspense>
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/confirm/:token" component={Confirm} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <Redirect to="/dashboard" />
+            </Switch>
           </BrowserRouter>
         </AsyncContext.Provider>
       </MuiPickersUtilsProvider>

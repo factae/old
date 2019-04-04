@@ -9,8 +9,6 @@ import {DateTime} from 'luxon'
 
 type Token = string | {sub?: string}
 
-const SECRET = process.env.REACT_APP_SECRET || 'secret'
-
 // ------------------------------------------------------------------- # Utils #
 
 function parseCookiesStr(cookiesStr: string) {
@@ -29,7 +27,7 @@ function parseCookiesStr(cookiesStr: string) {
 function parseExpiry(cookiesStr: string) {
   try {
     const cookies = parseCookiesStr(cookiesStr)
-    const token: Token = jwt.verify(cookies.expiry, SECRET, {
+    const token: Token = jwt.verify(cookies.expiry, 'factAE', {
       algorithms: ['HS512'],
       issuer: 'factAE',
     })
