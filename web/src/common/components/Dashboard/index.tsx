@@ -69,7 +69,7 @@ export default function() {
   useEffect(() => {
     if (isNull(userState)) return
     if (isNull(userState.siren) && !isProfileRoute) {
-      router.goTo('profile')
+      if (!isProfileRoute) router.goTo('profile')
       async.stop('Vous devez remplir votre profil avant de pouvoir continuer.')
     }
   }, [userState, router.location.pathname])

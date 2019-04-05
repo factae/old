@@ -54,7 +54,7 @@ export default function() {
         <Form
           className={classes.form}
           onSubmit={register}
-          onSuccess={{message: 'Bienvenue !', goTo: 'dashboard'}}
+          onSuccess={{message: '', goTo: 'dashboard'}}
         >
           <TextField
             grid={{xs: 12}}
