@@ -1,5 +1,7 @@
 import React from 'react'
+import classNames from 'classnames'
 import isNull from 'lodash/isNull'
+import isEmpty from 'lodash/isEmpty'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Table from '@material-ui/core/Table'
@@ -23,9 +25,12 @@ type Props = {
 export default function(props: Props) {
   const {items, total, taxRate} = props
   const classes = useStyles()
+  const containerClassName = classNames(classes.container, {
+    [classes.hide]: isEmpty(items),
+  })
 
   return (
-    <Grid item xs={12} className={classes.container}>
+    <Grid item xs={12} className={containerClassName}>
       <Paper>
         <Table>
           <TableHead>

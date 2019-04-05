@@ -43,7 +43,7 @@ restart the app once mysql is done.
 - [ ] Form: input number max digit
 - [ ] Form: input number prevent typing letters
 - [ ] Form: input number improve steps
-- [ ] Contract: hide item list if empty
+- [X] Contract: hide item list if empty
 - [ ] Contract: set up badge for status
 - [ ] Contract: add date
 - [ ] Invoice: once paid, put icon in green
