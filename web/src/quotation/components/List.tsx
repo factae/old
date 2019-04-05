@@ -21,7 +21,7 @@ export default function() {
       <TableHead>
         <TableRow>
           <TableCell>Client</TableCell>
-          <TableCell>Statut</TableCell>
+          <TableCell align="center">Statut</TableCell>
           <TableCell align="right">Total HT</TableCell>
           <TableCell align="right">Actions</TableCell>
         </TableRow>

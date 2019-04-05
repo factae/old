@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconPaid from '@material-ui/icons/AttachMoney'
 
+import Status from '../../contract/components/ListItem/Status'
 import ClientContext from '../../client/context'
 import AsyncContext from '../../common/contexts/async'
 import useRouting from '../../common/hooks/routing'
@@ -164,7 +165,7 @@ export default function(props: Props) {
       >
         <TableCell className={classNameCell}>{invoice.number}</TableCell>
         <TableCell className={classNameCell}>{clientName}</TableCell>
-        <TableCell className={classNameCell}>{invoice.status}</TableCell>
+        <Status status={invoice.status} />
         <TableCell className={classNameCell} align="right">
           {toEuro(invoice.total)}
         </TableCell>

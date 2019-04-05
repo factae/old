@@ -44,7 +44,7 @@ restart the app once mysql is done.
 - [ ] Form: input number prevent typing letters
 - [ ] Form: input number improve steps
 - [X] Contract: hide item list if empty
-- [ ] Contract: set up badge for status
+- [X] Contract: set up badge for status
 - [ ] Contract: add date
 - [ ] Invoice: once paid, put icon in green
 - [ ] Dashboard: show graph even if no data

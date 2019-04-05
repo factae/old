@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconSign from '@material-ui/icons/Check'
 
+import Status from '../../../contract/components/ListItem/Status'
 import ClientContext from '../../../client/context'
 import AsyncContext from '../../../common/contexts/async'
 import useRouting from '../../../common/hooks/routing'
@@ -150,7 +151,7 @@ export default function(props: Props) {
         onClick={isDraft ? () => goTo('quotationEdit', quotation.id) : noop}
       >
         <TableCell className={classNameCell}>{clientName}</TableCell>
-        <TableCell className={classNameCell}>{quotation.status}</TableCell>
+        <Status status={quotation.status} />
         <TableCell className={classNameCell} align="right">
           {toEuro(quotation.total)}
         </TableCell>
