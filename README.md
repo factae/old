@@ -38,8 +38,8 @@ restart the app once mysql is done.
 
 ### alpha
 
-- [ ] Confirm: improve email design
-- [ ] Confirm: prevent mail to be considered as SPAM
+- [X] Confirm: improve email design
+- [X] Confirm: prevent mail to be considered as SPAM
 - [ ] Form: input number max digit
 - [ ] Form: input number prevent typing letters
 - [ ] Form: input number improve steps
