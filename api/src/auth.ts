@@ -60,8 +60,11 @@ export async function register(req: Request, res: Response) {
 
   await mail.send({
     to: email,
-    templateId: process.env.SENDGRID_CONFIRM_TEMPLATE_ID,
-    templateData: {url: confirmUrl},
+    subject: 'Bienvenue sur factAE',
+    template: {
+      name: 'confirm-user',
+      data: {url: confirmUrl},
+    },
   })
 
   res.sendStatus(204)
