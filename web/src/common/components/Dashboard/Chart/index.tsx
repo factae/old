@@ -2,9 +2,11 @@ import React, {useContext, useEffect, useMemo, useRef} from 'react'
 import {Chart} from 'chart.js'
 import _ from 'lodash/fp'
 import {DateTime} from 'luxon'
-import {Theme} from '@material-ui/core'
+import {Theme, colors} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import {useTheme} from '@material-ui/styles'
 
+import useThresholds from '../../../../common/hooks/thresholds'
 import InvoiceContext from '../../../../invoice/context'
 import {Invoice} from '../../../../invoice/model'
 import {toEuro} from '../../../utils/currency'
@@ -48,6 +50,7 @@ export default function() {
   const ref = useRef<HTMLCanvasElement | null>(null)
   const [invoices] = useContext(InvoiceContext)
   const theme: Theme = useTheme()
+  const [lowTVA, highTVA, AE] = useThresholds()
 
   function isNullOrEmpty(invoices: Invoice[] | null) {
     return _.pipe([
@@ -142,6 +145,36 @@ export default function() {
         labels: months,
         datasets: [
           {
+            data: _.fill(0)(12)(lowTVA)(Array(12)),
+            label: `Plafond TVA (bas)`,
+            fill: false,
+            borderWidth: 2,
+            borderColor: colors.orange[400],
+            pointHitRadius: 20,
+            pointBorderWidth: 0,
+            pointRadius: 0,
+          },
+          {
+            data: _.fill(0)(12)(highTVA)(Array(12)),
+            label: `Plafond TVA (haut)`,
+            fill: false,
+            borderWidth: 2,
+            borderColor: colors.deepOrange[400],
+            pointHitRadius: 20,
+            pointBorderWidth: 0,
+            pointRadius: 0,
+          },
+          {
+            data: _.fill(0)(12)(AE)(Array(12)),
+            label: `Plafond micro-entrepreneur`,
+            fill: false,
+            borderWidth: 2,
+            borderColor: colors.red[400],
+            pointHitRadius: 20,
+            pointBorderWidth: 0,
+            pointRadius: 0,
+          },
+          {
             data: totals,
             label: `CA réel`,
             fill: false,
@@ -206,5 +239,9 @@ export default function() {
     })
   }, [ref.current, totals])
 
-  return <canvas ref={ref} height="400" />
+  return (
+    <Grid item xs={12}>
+      <canvas ref={ref} height="400" />
+    </Grid>
+  )
 }

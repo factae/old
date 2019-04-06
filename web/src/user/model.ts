@@ -4,6 +4,11 @@ export enum RateUnit {
   service = 3,
 }
 
+export enum Activity {
+  trade = 1,
+  service = 2,
+}
+
 export interface User {
   id: number
   email: string
@@ -25,7 +30,8 @@ export interface User {
   quotationConditions: string | null
   invoiceConditions: string | null
   rate: number | null
-  rateUnit: RateUnit
+  rateUnit: RateUnit | null
+  activity: Activity | null
 }
 
 export type PartialUser = Pick<User, 'email' | 'password'>

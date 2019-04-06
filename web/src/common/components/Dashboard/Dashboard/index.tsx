@@ -11,6 +11,7 @@ import IconQuotation from '@material-ui/icons/Assignment'
 
 import useRouting from '../../../../common/hooks/routing'
 import Chart from '../Chart'
+import Help from '../Help'
 
 import {useStyles} from './styles'
 
@@ -92,9 +93,8 @@ export default function() {
           </CardActionArea>
         </Card>
       </Grid>
-      <Grid item xs={12}>
         <Chart />
-      </Grid>
+      <Help />
     </Grid>
   )
 }

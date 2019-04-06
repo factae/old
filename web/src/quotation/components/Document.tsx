@@ -39,10 +39,16 @@ export default function(props: Props) {
     switch (quotation.rateUnit) {
       case RateUnit.day:
         return 'Taux journalier'
+
       case RateUnit.hour:
         return 'Taux horaire'
+
       case RateUnit.service:
         return 'Taux forfaitaire'
+
+      case null:
+      default:
+        return 'Taux'
     }
   }
 

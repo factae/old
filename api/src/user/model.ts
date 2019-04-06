@@ -9,6 +9,11 @@ export enum RateUnit {
   service = 3,
 }
 
+export enum Activity {
+  trade = 1,
+  service = 2,
+}
+
 @Entity()
 export class User {
   @Column({primary: true, generated: true})
@@ -65,8 +70,11 @@ export class User {
   @Column({nullable: true, default: null})
   rate: number
 
-  @Column({type: 'tinyint', default: RateUnit.hour})
+  @Column({type: 'tinyint', nullable: true, default: null})
   rateUnit: RateUnit
+
+  @Column({type: 'tinyint', nullable: true, default: null})
+  activity: Activity
 
   @Column({type: 'varchar', length: 36, nullable: true, default: null})
   token: string | null

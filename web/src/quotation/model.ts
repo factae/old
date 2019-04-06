@@ -9,7 +9,7 @@ export interface Quotation extends Contract {
   status: 'draft' | 'validated' | 'signed'
   conditions: string | null
   rate: number | null
-  rateUnit: RateUnit
+  rateUnit: RateUnit | null
   expiresAt: DateTime
   startsAt: DateTime
   endsAt: DateTime
@@ -24,7 +24,7 @@ export function emptyQuotation(user: User | null): Quotation {
     status: 'draft',
     conditions: get(user, 'quotationConditions', null),
     rate: get(user, 'rate', null),
-    rateUnit: get(user, 'rateUnit', RateUnit.hour),
+    rateUnit: get(user, 'rateUnit', null),
     expiresAt: now.plus({days: 60}),
     startsAt: now,
     endsAt: now,

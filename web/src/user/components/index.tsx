@@ -8,7 +8,7 @@ import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
 import * as userService from '../service'
 import UserContext from '../context'
-import {User, RateUnit} from '../model'
+import {User, RateUnit, Activity} from '../model'
 
 export default function() {
   const [defaultUser, dispatch] = useContext(UserContext)
@@ -29,6 +29,16 @@ export default function() {
 
       case RateUnit.service:
         return 'Par prestation'
+    }
+  }
+
+  function renderActivity(activity: Activity) {
+    switch (activity) {
+      case Activity.trade:
+        return 'Commerce ou hébergement'
+
+      case Activity.service:
+        return 'Prestation de service'
     }
   }
 
@@ -55,6 +65,15 @@ export default function() {
 
       <Section title="Auto-entrepreneur">
         <TextField name="siren" label="Siren" />
+        <Select name="activity" label="Type d'activité">
+          {keys(Activity)
+            .filter(activity => !isNaN(Number(activity)))
+            .map(activity => (
+              <option key={activity} value={activity}>
+                {renderActivity(Number(activity))}
+              </option>
+            ))}
+        </Select>
         <TextField name="tradingName" label="Nom commercial" required={false} />
         <TextField
           name="rate"
