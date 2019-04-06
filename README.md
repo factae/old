@@ -40,9 +40,6 @@ restart the app once mysql is done.
 
 - [X] Confirm: improve email design
 - [X] Confirm: prevent mail to be considered as SPAM
-- [ ] Form: input number max digit
-- [ ] Form: input number prevent typing letters
-- [ ] Form: input number improve steps
 - [X] Contract: hide item list if empty
 - [X] Contract: set up badge for status
 - [X] Contract: set up fixed size cols list
@@ -58,6 +55,8 @@ restart the app once mysql is done.
 - [ ] Set up payment
 - [ ] Set up paid modules
 - [ ] Set up contact page (help/support/feedbacks)
+- [ ] Improve validation (replace HTML5 one)
+- [ ] Set up prorata for new freelancers
 
 ## Credits
 

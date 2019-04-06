@@ -74,7 +74,7 @@ export default function() {
     }
   }, [userState, router.location.pathname])
 
-  if (async.loading) {
+  if (async.loading && isNull(userState)) {
     return null
   }
 
