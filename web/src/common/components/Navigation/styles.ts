@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/styles/makeStyles'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   navigation: {
-    marginBottom: theme.spacing.unit * 4,
     position: 'relative',
   },
   brand: {

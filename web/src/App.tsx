@@ -14,6 +14,7 @@ import Register from './auth/components/Register'
 import Dashboard from './common/components/Dashboard'
 import Confirm from './user/components/Confirm'
 import PrivateRoute from './auth/components/PrivateRoute'
+import Landing from './landing'
 import theme from './theme'
 
 Font.register(
@@ -80,11 +81,12 @@ export default function() {
           <BrowserRouter>
             <Navigation />
             <Switch>
+              <Route exact path="/" component={Landing} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/confirm/:token" component={Confirm} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <Redirect to="/dashboard" />
+              <Redirect to="/" />
             </Switch>
           </BrowserRouter>
         </AsyncContext.Provider>

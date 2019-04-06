@@ -6,6 +6,7 @@ export const useStyles = makeStyles((theme: Theme) => {
 
   return {
     container: {
+      marginTop: theme.spacing.unit * 4,
       [breakpoints.down('sm')]: {
         padding: '0 16px',
       },
