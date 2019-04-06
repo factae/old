@@ -10,11 +10,11 @@ import IconPaid from '@material-ui/icons/MonetizationOn'
 import {useStyles} from './styles'
 
 interface Props {
-  status: 'draft' | 'validated' | 'signed' | 'paid'
+  value: 'draft' | 'validated' | 'signed' | 'paid'
 }
 
-function renderChip(status: Props['status']) {
-  switch (status) {
+function renderChip(value: Props['value']) {
+  switch (value) {
     case 'draft':
       return <Chip variant="default" label="brouillon" icon={<IconDraft />} />
 
@@ -31,13 +31,13 @@ function renderChip(status: Props['status']) {
   }
 }
 
-export default function({status}: Props) {
+export default function({value}: Props) {
   const classes = useStyles()
   const classNameCell = classNames({[classes.nonDraft]: status !== 'draft'})
 
   return (
     <TableCell className={classNameCell} align="center">
-      {renderChip(status)}
+      {renderChip(value)}
     </TableCell>
   )
 }

@@ -23,8 +23,8 @@ export class Contract {
   @Column({type: 'enum', enum: ['quotation', 'invoice']})
   type: 'quotation' | 'invoice'
 
-  @Column({nullable: true, default: null})
-  number?: string
+  @Column({type: 'varchar', length: 16, nullable: true, default: null})
+  number: string | null
 
   @Column({type: 'enum', enum: ['draft', 'validated', 'signed', 'paid']})
   status: 'draft' | 'validated' | 'signed' | 'paid'
@@ -32,14 +32,14 @@ export class Contract {
   @OneToMany(() => ContractItem, item => item.contract)
   items: ContractItem[]
 
-  @Column({nullable: true, default: null})
-  conditions?: string
+  @Column({type: 'text', nullable: true, default: null})
+  conditions: string | null
 
-  @Column({nullable: true, default: null})
-  taxRate?: number
+  @Column({type: 'tinyint', nullable: true, default: null})
+  taxRate: number | null
 
-  @Column({nullable: true, default: null})
-  rate?: number
+  @Column({type: 'int', nullable: true, default: null})
+  rate: number | null
 
   @Column({type: 'tinyint', default: 0})
   rateUnit: RateUnit
@@ -48,26 +48,26 @@ export class Contract {
   total: number
 
   @Column({type: 'text', nullable: true, default: null})
-  pdf?: string
-
-  @Column({type: 'datetime'})
-  createdAt: string
+  pdf: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  startsAt: string
+  createdAt: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  endsAt: string
+  startsAt: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  expiresAt?: string
+  endsAt: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  validatedAt?: string
+  expiresAt: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  signedAt?: string
+  validatedAt: string | null
 
   @Column({type: 'datetime', nullable: true, default: null})
-  deliveredAt?: string
+  signedAt: string | null
+
+  @Column({type: 'datetime', nullable: true, default: null})
+  deliveredAt: string | null
 }

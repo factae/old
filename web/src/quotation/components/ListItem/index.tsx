@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconSign from '@material-ui/icons/Check'
 
+import Date from '../../../contract/components/ListItem/Date'
 import Status from '../../../contract/components/ListItem/Status'
 import ClientContext from '../../../client/context'
 import AsyncContext from '../../../common/contexts/async'
@@ -63,8 +64,8 @@ export default function(props: Props) {
       async.start()
       closeConfirm()
       quotation.status = 'validated'
-      dispatch({type: 'update', quotation})
       await service.update(quotation)
+      dispatch({type: 'update', quotation})
       setReadyToDownload(true)
     } catch (error) {
       handleDownloadError(error)
@@ -75,8 +76,8 @@ export default function(props: Props) {
     try {
       async.start()
       quotation.status = 'signed'
-      dispatch({type: 'update', quotation})
       await service.update(quotation)
+      dispatch({type: 'update', quotation})
       async.stop()
     } catch (error) {
       console.error(error)
@@ -87,8 +88,8 @@ export default function(props: Props) {
   async function handleDownloadSuccess(pdf: string) {
     setReadyToDownload(false)
     quotation.pdf = pdf
-    dispatch({type: 'update', quotation})
     await service.update(quotation)
+    dispatch({type: 'update', quotation})
     async.stop()
   }
 
@@ -150,8 +151,9 @@ export default function(props: Props) {
         className={classNames({[classes.draft]: isDraft})}
         onClick={isDraft ? () => goTo('quotationEdit', quotation.id) : noop}
       >
+        <Date value={quotation.createdAt} />
         <TableCell className={classNameCell}>{clientName}</TableCell>
-        <Status status={quotation.status} />
+        <Status value={quotation.status} />
         <TableCell className={classNameCell} align="right">
           {toEuro(quotation.total)}
         </TableCell>

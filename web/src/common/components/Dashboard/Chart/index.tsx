@@ -65,6 +65,7 @@ export default function() {
     const defaultData = _.zipObject(monthIds, totals)
 
     function byStatusAndCreatedAt(invoice: Invoice) {
+      if (_.isNull(invoice.createdAt)) return false
       if (invoice.status !== 'paid') return false
       if (invoice.createdAt < firstDayOfYear) return false
       if (invoice.createdAt > lastDayOfYear) return false
@@ -73,6 +74,10 @@ export default function() {
     }
 
     function byMonth(invoice: Invoice) {
+      if (_.isNull(invoice.createdAt)) {
+        return null
+      }
+
       return {
         month: invoice.createdAt.month,
         total: invoice.total,

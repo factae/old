@@ -1,5 +1,6 @@
 import {Request, Response} from 'express'
 import get from 'lodash/get'
+import isNull from 'lodash/isNull'
 import {DateTime} from 'luxon'
 import {getRepository} from 'typeorm'
 
@@ -18,20 +19,29 @@ export async function readAll(req: Request, res: Response) {
 
   res.json(
     quotations.map(quotation => {
-      const createdAt = DateTime.fromJSDate(new Date(quotation.createdAt))
-      const startsAt = DateTime.fromJSDate(new Date(quotation.startsAt))
-      const endsAt = DateTime.fromJSDate(new Date(quotation.endsAt))
-      const expiresAt = quotation.expiresAt
-        ? DateTime.fromJSDate(new Date(quotation.expiresAt))
-        : createdAt.plus({months: 1})
+      const createdAt = isNull(quotation.createdAt)
+        ? null
+        : DateTime.fromJSDate(new Date(quotation.createdAt)).toISO()
+
+      const startsAt = isNull(quotation.startsAt)
+        ? null
+        : DateTime.fromJSDate(new Date(quotation.startsAt)).toISO()
+
+      const endsAt = isNull(quotation.endsAt)
+        ? null
+        : DateTime.fromJSDate(new Date(quotation.endsAt)).toISO()
+
+      const expiresAt = isNull(quotation.expiresAt)
+        ? null
+        : DateTime.fromJSDate(new Date(quotation.expiresAt)).toISO()
 
       return {
         ...quotation,
         conditions: get(quotation, 'quotationConditions', null),
-        createdAt: createdAt.toISO(),
-        startsAt: startsAt.toISO(),
-        endsAt: endsAt.toISO(),
-        expiresAt: expiresAt.toISO(),
+        createdAt,
+        startsAt,
+        endsAt,
+        expiresAt,
       }
     }),
   )
@@ -70,6 +80,10 @@ export async function update(req: Request, res: Response) {
   req.body.client = req.body.clientId
   req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
   req.body.quotationConditions = req.body.conditions
+
+  if (req.body.status === 'validated') {
+    req.body.createdAt = DateTime.local().toISO()
+  }
 
   const quotation = await $quotation.save(req.body)
   quotation.items = await $item.save(

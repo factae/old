@@ -6,11 +6,14 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import InvoiceContext from '../context'
-import InvoiceListItem from './ListItem'
+import InvoiceContext from '../../context'
+import InvoiceListItem from '../ListItem'
+
+import {useStyles} from './styles'
 
 export default function() {
   const [invoices] = useContext(InvoiceContext)
+  const classes = useStyles()
 
   if (isNull(invoices)) {
     return null
@@ -20,11 +23,12 @@ export default function() {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Numéro</TableCell>
-          <TableCell>Client</TableCell>
-          <TableCell align="center">Statut</TableCell>
-          <TableCell align="right">Total HT</TableCell>
-          <TableCell align="right">Actions</TableCell>
+          <TableCell className={classes.number}>Numéro</TableCell>
+          <TableCell className={classes.date}>Date</TableCell>
+          <TableCell className={classes.client}>Client</TableCell>
+          <TableCell className={classes.status}>Statut</TableCell>
+          <TableCell className={classes.total}>Total HT</TableCell>
+          <TableCell className={classes.actions}>Actions</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

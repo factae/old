@@ -6,11 +6,14 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import QuotationContext from '../context'
-import QuotationListItem from './ListItem'
+import QuotationContext from '../../context'
+import QuotationListItem from '../ListItem'
+
+import {useStyles} from './styles'
 
 export default function() {
   const [quotations] = useContext(QuotationContext)
+  const classes = useStyles()
 
   if (isNull(quotations)) {
     return null
@@ -20,10 +23,11 @@ export default function() {
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell>Client</TableCell>
-          <TableCell align="center">Statut</TableCell>
-          <TableCell align="right">Total HT</TableCell>
-          <TableCell align="right">Actions</TableCell>
+          <TableCell className={classes.date}>Date</TableCell>
+          <TableCell className={classes.client}>Client</TableCell>
+          <TableCell className={classes.status}>Statut</TableCell>
+          <TableCell className={classes.total}>Total HT</TableCell>
+          <TableCell className={classes.actions}>Actions</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

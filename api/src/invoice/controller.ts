@@ -1,5 +1,6 @@
 import {Request, Response} from 'express'
 import get from 'lodash/get'
+import isNull from 'lodash/isNull'
 import {DateTime} from 'luxon'
 import {getRepository, Not, Equal, Between} from 'typeorm'
 
@@ -17,13 +18,17 @@ export async function readAll(req: Request, res: Response) {
     .getMany()
 
   res.json(
-    invoices.map(invoice => ({
-      ...invoice,
-      conditions: get(invoice, 'invoiceConditions', null),
-      createdAt: DateTime.fromJSDate(new Date(invoice.createdAt)).toISO(),
-      startsAt: DateTime.fromJSDate(new Date(invoice.startsAt)).toISO(),
-      endsAt: DateTime.fromJSDate(new Date(invoice.endsAt)).toISO(),
-    })),
+    invoices.map(invoice => {
+      const createdAt = isNull(invoice.createdAt)
+        ? null
+        : DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
+
+      return {
+        ...invoice,
+        conditions: get(invoice, 'invoiceConditions', null),
+        createdAt,
+      }
+    }),
   )
 }
 
@@ -70,10 +75,11 @@ export async function update(req: Request, res: Response) {
   })
 
   req.body.invoiceConditions = req.body.conditions
-  req.body.number =
-    req.body.status === 'validated'
-      ? `${now.toFormat('yyLL')}-${invoices.length + 1}`
-      : req.body.number
+
+  if (req.body.status === 'validated') {
+    req.body.number = `${now.toFormat('yyLL')}-${invoices.length + 1}`
+    req.body.createdAt = DateTime.local().toISO()
+  }
 
   const invoice = await $invoice.save(req.body)
   invoice.items = await $item.save(

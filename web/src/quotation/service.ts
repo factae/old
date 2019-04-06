@@ -1,6 +1,5 @@
 import assign from 'lodash/assign'
 import omit from 'lodash/omit'
-import {DateTime} from 'luxon'
 
 import * as date from '../common/utils/date'
 import {get, post, put} from '../common/utils/axios'
@@ -30,11 +29,9 @@ export async function readAll(): Promise<Quotation[]> {
 
 export async function create(quotation: Quotation) {
   quotation.type = 'quotation'
-  quotation.createdAt = DateTime.local()
 
   const res = await post('/quotation', {
     ...omit(quotation, 'id'),
-    createdAt: date.to(quotation.createdAt),
     expiresAt: date.to(quotation.expiresAt),
     startsAt: date.to(quotation.startsAt),
     endsAt: date.to(quotation.endsAt),
@@ -53,6 +50,7 @@ export async function create(quotation: Quotation) {
 export async function update(quotation: Quotation) {
   const res = await put('/quotation', {
     ...quotation,
+    createdAt: date.to(quotation.createdAt),
     expiresAt: date.to(quotation.expiresAt),
     startsAt: date.to(quotation.startsAt),
     endsAt: date.to(quotation.endsAt),
@@ -62,5 +60,6 @@ export async function update(quotation: Quotation) {
     throw new Error(res.statusText)
   }
 
+  quotation.createdAt = date.from(res.data.createdAt)
   quotation.items = res.data.items
 }

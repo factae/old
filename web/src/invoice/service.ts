@@ -1,8 +1,7 @@
 import assign from 'lodash/assign'
 import omit from 'lodash/omit'
-import {DateTime} from 'luxon'
 
-import {from, to} from '../common/utils/date'
+import * as date from '../common/utils/date'
 import {get, post, put} from '../common/utils/axios'
 import {Invoice} from './model'
 
@@ -18,8 +17,8 @@ export async function readAll(): Promise<Invoice[]> {
   return res.data.map((data: any) =>
     assign(data, {
       ...data,
-      createdAt: from(data.createdAt),
-      deliveredAt: from(data.deliveredAt),
+      createdAt: date.from(data.createdAt),
+      deliveredAt: date.from(data.deliveredAt),
     }),
   )
 }
@@ -28,12 +27,10 @@ export async function readAll(): Promise<Invoice[]> {
 
 export async function create(invoice: Invoice) {
   invoice.type = 'invoice'
-  invoice.createdAt = DateTime.local()
 
   const res = await post('/invoice', {
     ...omit(invoice, 'id'),
-    createdAt: to(invoice.createdAt),
-    deliveredAt: to(invoice.deliveredAt),
+    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
@@ -50,13 +47,15 @@ export async function create(invoice: Invoice) {
 export async function update(invoice: Invoice) {
   const res = await put('/invoice', {
     ...invoice,
-    deliveredAt: to(invoice.deliveredAt),
+    createdAt: date.to(invoice.createdAt),
+    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
     throw new Error(res.statusText)
   }
 
+  invoice.createdAt = date.from(res.data.createdAt)
   invoice.number = res.data.number
   invoice.items = res.data.items
 }

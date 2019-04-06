@@ -29,7 +29,7 @@ export default function(props: Props) {
   const [user] = useContext(UserContext)
   const theme = useTheme<Theme>()
 
-  if (isNull(user)) {
+  if (isNull(user) || isNull(invoice.createdAt)) {
     return null
   }
 

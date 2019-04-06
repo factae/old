@@ -45,8 +45,8 @@ restart the app once mysql is done.
 - [ ] Form: input number improve steps
 - [X] Contract: hide item list if empty
 - [X] Contract: set up badge for status
-- [ ] Contract: add date
-- [ ] Invoice: once paid, put icon in green
+- [X] Contract: set up fixed size cols list
+- [X] Contract: add date
 - [ ] Dashboard: show graph even if no data
 - [ ] Dashboard: show thresholds
 - [ ] Navigation: replace profile by menu with quotation, invoice, client,

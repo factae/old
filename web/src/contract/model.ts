@@ -15,27 +15,25 @@ export interface Contract {
   taxRate: number | null
   total: number
   pdf: string | null
-  createdAt: DateTime
+  createdAt: DateTime | null
   validatedAt: DateTime | null
 }
 
 // ---------------------------------------------------------- # Empty contract #
 
-const contract: Omit<Contract, 'taxRate' | 'createdAt'> = {
+const contract: Omit<Contract, 'taxRate'> = {
   id: -1,
   clientId: -1,
   items: [],
   total: 0,
   pdf: null,
+  createdAt: null,
   validatedAt: null,
 }
 
 export function emptyContract(user: User | null): Contract {
-  const now = DateTime.local()
-
   return {
     ...contract,
     taxRate: get(user, 'taxRate', null),
-    createdAt: now,
   }
 }

@@ -10,16 +10,17 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconPaid from '@material-ui/icons/AttachMoney'
 
-import Status from '../../contract/components/ListItem/Status'
-import ClientContext from '../../client/context'
-import AsyncContext from '../../common/contexts/async'
-import useRouting from '../../common/hooks/routing'
-import {toEuro} from '../../common/utils/currency'
-import {Invoice} from '../model'
-import QuotationContext from '../context'
-import * as service from '../service'
-import Confirm from './Confirm'
-import Document from './Document'
+import Date from '../../../contract/components/ListItem/Date'
+import Status from '../../../contract/components/ListItem/Status'
+import ClientContext from '../../../client/context'
+import AsyncContext from '../../../common/contexts/async'
+import useRouting from '../../../common/hooks/routing'
+import {toEuro} from '../../../common/utils/currency'
+import {Invoice} from '../../model'
+import QuotationContext from '../../context'
+import * as service from '../../service'
+import Confirm from '../Confirm'
+import Document from '../Document'
 
 import {useStyles} from './styles'
 
@@ -75,8 +76,8 @@ export default function(props: Props) {
     try {
       async.start()
       invoice.status = 'paid'
-      dispatch({type: 'update', invoice})
       await service.update(invoice)
+      dispatch({type: 'update', invoice})
       async.stop()
     } catch (error) {
       console.error(error.message)
@@ -87,8 +88,8 @@ export default function(props: Props) {
   async function handleDownloadSuccess(pdf: string) {
     setReadyToDownload(false)
     invoice.pdf = pdf
-    dispatch({type: 'update', invoice})
     await service.update(invoice)
+    dispatch({type: 'update', invoice})
     async.stop()
   }
 
@@ -164,8 +165,9 @@ export default function(props: Props) {
         onClick={isDraft ? () => goTo('invoiceEdit', invoice.id) : noop}
       >
         <TableCell className={classNameCell}>{invoice.number}</TableCell>
+        <Date value={invoice.createdAt} />
         <TableCell className={classNameCell}>{clientName}</TableCell>
-        <Status status={invoice.status} />
+        <Status value={invoice.status} />
         <TableCell className={classNameCell} align="right">
           {toEuro(invoice.total)}
         </TableCell>
