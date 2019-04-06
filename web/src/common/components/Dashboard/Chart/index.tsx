@@ -11,6 +11,8 @@ import InvoiceContext from '../../../../invoice/context'
 import {Invoice} from '../../../../invoice/model'
 import {toEuro} from '../../../utils/currency'
 
+import {useStyles} from './styles'
+
 const months = [
   'Janvier',
   'Février',
@@ -51,6 +53,7 @@ export default function() {
   const [invoices] = useContext(InvoiceContext)
   const theme: Theme = useTheme()
   const [lowTVA, highTVA, AE] = useThresholds()
+  const classes = useStyles()
 
   function isNullOrEmpty(invoices: Invoice[] | null) {
     return _.pipe([
@@ -135,9 +138,7 @@ export default function() {
   }, [totals])
 
   useEffect(() => {
-    if (_.isNull(ref.current)) {
-      return
-    }
+    if (_.isNull(ref.current)) return
 
     new Chart(ref.current, {
       type: 'line',
@@ -237,10 +238,10 @@ export default function() {
         },
       },
     })
-  }, [ref.current, totals])
+  }, [])
 
   return (
-    <Grid item xs={12}>
+    <Grid className={classes.container} item xs={12}>
       <canvas ref={ref} height="400" />
     </Grid>
   )

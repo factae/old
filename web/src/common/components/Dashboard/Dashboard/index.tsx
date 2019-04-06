@@ -93,7 +93,7 @@ export default function() {
           </CardActionArea>
         </Card>
       </Grid>
-        <Chart />
+      <Chart />
       <Help />
     </Grid>
   )
