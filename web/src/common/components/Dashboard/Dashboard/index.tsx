@@ -4,10 +4,10 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import IconClient from '@material-ui/icons/AssignmentInd'
-import IconInvoice from '@material-ui/icons/AssignmentTurnedIn'
-import IconProfile from '@material-ui/icons/AccountCircle'
-import IconQuotation from '@material-ui/icons/Assignment'
+import IconClient from '@material-ui/icons/People'
+import IconQuotation from '@material-ui/icons/AssignmentOutlined'
+import IconInvoice from '@material-ui/icons/EuroSymbol'
+import IconProfile from '@material-ui/icons/Face'
 
 import useRouting from '../../../../common/hooks/routing'
 import Chart from '../Chart'
@@ -21,6 +21,24 @@ export default function() {
 
   return (
     <Grid container spacing={16} className={classes.cards}>
+      <Grid item xs={12} sm={6} lg={3}>
+        <Card>
+          <CardActionArea onClick={() => goTo('client')}>
+            <CardContent>
+              <Typography
+                gutterBottom
+                variant="h4"
+                component="h2"
+                className={classes.cardTitle}
+              >
+                <IconClient className={classes.icon} />
+                Clients
+              </Typography>
+              <Typography component="p">Gérez vos clients.</Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
+      </Grid>
       <Grid item xs={12} sm={6} lg={3}>
         <Card>
           <CardActionArea onClick={() => goTo('quotation')}>
@@ -53,24 +71,6 @@ export default function() {
                 Factures
               </Typography>
               <Typography component="p">Gérez vos factures.</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} lg={3}>
-        <Card>
-          <CardActionArea onClick={() => goTo('client')}>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="h2"
-                className={classes.cardTitle}
-              >
-                <IconClient className={classes.icon} />
-                Clients
-              </Typography>
-              <Typography component="p">Gérez vos clients.</Typography>
             </CardContent>
           </CardActionArea>
         </Card>

@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import isNull from 'lodash/isNull'
 import {View, Text} from '@react-pdf/renderer'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import {toEuro} from '../../../../common/utils/currency'
 import {Contract} from '../../../model'

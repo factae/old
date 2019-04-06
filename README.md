@@ -49,14 +49,15 @@ restart the app once mysql is done.
 - [X] Contract: add date
 - [X] Dashboard: show graph even if no data
 - [X] Dashboard: show thresholds
-- [ ] Navigation: replace profile by menu with quotation, invoice, client,
+- [X] Navigation: replace profile by menu with quotation, invoice, client,
   profile, logout, contact
 
 ### beta
 
-- [ ] Add landing page
-- [ ] Add payment
+- [ ] Set up landing page
+- [ ] Set up payment
 - [ ] Set up paid modules
+- [ ] Set up contact page (help/support/feedbacks)
 
 ## Credits
 

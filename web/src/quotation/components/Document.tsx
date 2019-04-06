@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import isNull from 'lodash/isNull'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
 
 import Document from './../../contract/components/Document'

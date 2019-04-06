@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {View} from '@react-pdf/renderer'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import useStyle from './styles'
 

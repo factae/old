@@ -1,7 +1,7 @@
 import React from 'react'
 import isNull from 'lodash/isNull'
 import {View, Text} from '@react-pdf/renderer'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import {User} from '../../../../user/model'
 

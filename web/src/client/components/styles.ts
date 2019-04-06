@@ -1,5 +1,5 @@
-import {Theme} from '@material-ui/core'
-import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
+import makeStyles from '@material-ui/styles/makeStyles'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   cell: {

@@ -1,7 +1,7 @@
 import React from 'react'
 import {BlobProvider, Document, Page} from '@react-pdf/renderer'
 import isNull from 'lodash/isNull'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
 
 import Download from './Download'

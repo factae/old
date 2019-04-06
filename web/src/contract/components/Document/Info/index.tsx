@@ -2,7 +2,7 @@ import React from 'react'
 import {View, Text} from '@react-pdf/renderer'
 import keys from 'lodash/keys'
 import values from 'lodash/values'
-import {Theme} from '@material-ui/core'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import useStyle from './styles'
 
