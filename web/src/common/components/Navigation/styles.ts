@@ -1,8 +1,9 @@
-import {makeStyles} from '@material-ui/styles'
+import {Theme} from '@material-ui/core/styles/createMuiTheme'
+import makeStyles from '@material-ui/styles/makeStyles'
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles((theme: Theme) => ({
   navigation: {
-    marginBottom: 32,
+    marginBottom: theme.spacing.unit * 4,
     position: 'relative',
   },
   brand: {
@@ -18,4 +19,7 @@ export const useStyles = makeStyles({
     position: 'absolute',
     width: '100%',
   },
-})
+  icon: {
+    marginRight: theme.spacing.unit * 2,
+  },
+}))

@@ -1,23 +1,71 @@
-import React from 'react'
+import React, {Fragment, MouseEvent, useContext, useState} from 'react'
 import AppBar from '@material-ui/core/AppBar'
+import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import IconProfile from '@material-ui/icons/AccountCircle'
+import IconMenu from '@material-ui/icons/Menu'
+import IconClient from '@material-ui/icons/People'
+import IconQuotation from '@material-ui/icons/AssignmentOutlined'
+import IconInvoice from '@material-ui/icons/EuroSymbol'
+import IconProfile from '@material-ui/icons/Face'
+import IconContact from '@material-ui/icons/ContactSupport'
+import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
 import AsyncContext from '../../../common/contexts/async'
-import useAuth from '../../../auth/hook'
+import {useCheckAuth, useLogout} from '../../../auth/hooks'
 import useRouting from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const {loading} = React.useContext(AsyncContext)
+  const {loading} = useContext(AsyncContext)
   const classes = useStyles()
-  const auth = useAuth(document.cookie)
+  const handleLogout = useLogout()
+  const isAuth = useCheckAuth(document.cookie)
   const {goTo} = useRouting()
+  const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
+
+  function setAnchorEl(event: MouseEvent) {
+    setLocalAnchorEl(event.currentTarget as HTMLElement)
+  }
+
+  function closeMenu() {
+    setLocalAnchorEl(null)
+  }
+
+  function goToClients() {
+    goTo('client')
+    closeMenu()
+  }
+
+  function goToQuotations() {
+    goTo('quotation')
+    closeMenu()
+  }
+
+  function goToInvoices() {
+    goTo('invoice')
+    closeMenu()
+  }
+
+  function goToProfile() {
+    goTo('profile')
+    closeMenu()
+  }
+
+  function goToContact() {
+    /* goTo('contact') */
+    closeMenu()
+  }
+
+  function logout() {
+    closeMenu()
+    handleLogout()
+  }
 
   return (
     <AppBar position="relative" className={classes.navigation}>
@@ -26,22 +74,47 @@ export default function() {
           variant="h5"
           color="inherit"
           className={classes.brand}
-          onClick={() => goTo(auth ? 'dashboard' : 'login')}
+          onClick={() => goTo(isAuth ? 'dashboard' : 'login')}
         >
           <span className={classes.title}>factAE</span>
         </Typography>
 
-        {auth && (
-          <Tooltip title="Profil" aria-label="Profil">
+        {isAuth && (
+          <Fragment>
             <IconButton
-              aria-owns="menu-appbar"
-              aria-haspopup="true"
+              aria-owns={anchorEl ? 'menu' : undefined}
               color="inherit"
-              onClick={() => goTo('profile')}
+              onClick={setAnchorEl}
             >
-              <IconProfile />
+              <IconMenu />
             </IconButton>
-          </Tooltip>
+            <Menu
+              id="menu"
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={closeMenu}
+            >
+              <MenuItem onClick={goToClients}>
+                <IconClient className={classes.icon} /> Clients
+              </MenuItem>
+              <MenuItem onClick={goToQuotations}>
+                <IconQuotation className={classes.icon} /> Devis
+              </MenuItem>
+              <MenuItem onClick={goToInvoices}>
+                <IconInvoice className={classes.icon} /> Factures
+              </MenuItem>
+              <MenuItem onClick={goToProfile}>
+                <IconProfile className={classes.icon} /> Profil
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={goToContact}>
+                <IconContact className={classes.icon} /> Contact
+              </MenuItem>
+              <MenuItem onClick={logout}>
+                <IconLogout className={classes.icon} /> Déconnexion
+              </MenuItem>
+            </Menu>
+          </Fragment>
         )}
       </Toolbar>
       {loading && <LinearProgress className={classes.progress} />}

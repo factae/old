@@ -1,12 +1,12 @@
 import React from 'react'
 import {Route, RouteProps, Redirect} from 'react-router-dom'
 
-import useAuth from '../hook'
+import {useCheckAuth} from '../hooks'
 
 export default function(props: RouteProps) {
-  const auth = useAuth(document.cookie)
+  const isAuth = useCheckAuth(document.cookie)
 
-  if (!auth) {
+  if (!isAuth) {
     return <Redirect to="/login" />
   }
 
