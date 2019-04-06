@@ -132,8 +132,9 @@ export default function() {
   }, [totals])
 
   useEffect(() => {
-    if (_.isNull(ref.current)) return
-    if (_.isEmpty(totals)) return
+    if (_.isNull(ref.current)) {
+      return
+    }
 
     new Chart(ref.current, {
       type: 'line',

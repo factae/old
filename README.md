@@ -47,7 +47,7 @@ restart the app once mysql is done.
 - [X] Contract: set up badge for status
 - [X] Contract: set up fixed size cols list
 - [X] Contract: add date
-- [ ] Dashboard: show graph even if no data
+- [X] Dashboard: show graph even if no data
 - [ ] Dashboard: show thresholds
 - [ ] Navigation: replace profile by menu with quotation, invoice, client,
   profile, logout, contact
