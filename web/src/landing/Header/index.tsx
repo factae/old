@@ -3,7 +3,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import screenshot from './screenshot.png'
+import screenshot from './screenshot.jpeg'
 
 import {useStyles} from './styles'
 
