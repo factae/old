@@ -9,9 +9,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     flexDirection: 'column',
     overflow: 'hidden',
+    paddingTop: theme.spacing.unit * 8,
   },
-  title: {
-    marginTop: theme.spacing.unit * 4,
+  grid: {
+    height: '100%',
+    alignItems: 'flex-end',
   },
   subTitle: {
     marginBottom: theme.spacing.unit * 4,

@@ -12,9 +12,9 @@ export default function() {
 
   return (
     <section className={classes.container}>
-      <Grid container justify="center">
+      <Grid container justify="center" className={classes.grid}>
         <Grid item xs={12} md={10} lg={8} xl={6}>
-          <Typography component="h1" variant="h1" className={classes.title}>
+          <Typography component="h1" variant="h1">
             factAE
           </Typography>
 

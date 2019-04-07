@@ -5,10 +5,17 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
+import useRouting from '../../common/hooks/routing'
+
 import {useStyles} from './styles'
 
 export default function() {
   const classes = useStyles()
+  const {goTo} = useRouting()
+
+  function goToRegister() {
+    goTo('register')
+  }
 
   return (
     <section className={classes.container}>
@@ -52,6 +59,7 @@ export default function() {
                   color="secondary"
                   variant="contained"
                   className={classes.button}
+                  onClick={goToRegister}
                 >
                   Créer un compte
                 </Button>
@@ -107,8 +115,12 @@ export default function() {
                     - Toutes fonctionnalités futures
                   </Typography>
                 </div>
-                <Button variant="contained" className={classes.button}>
-                  Souscrire
+                <Button
+                  className={classes.buttonPremium}
+                  variant="contained"
+                  disabled
+                >
+                  Souscrire (bientôt)
                 </Button>
               </Paper>
             </Grid>
@@ -139,7 +151,13 @@ export default function() {
                     instance Premium de factAE !
                   </Typography>
                 </div>
-                <Button variant="contained" className={classes.button}>
+                <Button
+                  className={classes.button}
+                  href="https://github.com/soywod/factae"
+                  variant="contained"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Lire la documentation
                 </Button>
               </Paper>

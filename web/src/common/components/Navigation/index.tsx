@@ -1,5 +1,6 @@
 import React, {Fragment, MouseEvent, useContext, useState} from 'react'
 import AppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -17,7 +18,7 @@ import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
 import AsyncContext from '../../../common/contexts/async'
 import {useCheckAuth, useLogout} from '../../../auth/hooks'
-import useRouting from '../../../common/hooks/routing'
+import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
@@ -26,7 +27,7 @@ export default function() {
   const classes = useStyles()
   const handleLogout = useLogout()
   const isAuth = useCheckAuth(document.cookie)
-  const {goTo} = useRouting()
+  const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
 
   function setAnchorEl(event: MouseEvent) {
@@ -37,29 +38,11 @@ export default function() {
     setLocalAnchorEl(null)
   }
 
-  function goToClients() {
-    goTo('client')
-    closeMenu()
-  }
-
-  function goToQuotations() {
-    goTo('quotation')
-    closeMenu()
-  }
-
-  function goToInvoices() {
-    goTo('invoice')
-    closeMenu()
-  }
-
-  function goToProfile() {
-    goTo('profile')
-    closeMenu()
-  }
-
-  function goToContact() {
-    /* goTo('contact') */
-    closeMenu()
+  function goTo(route: Route) {
+    return () => {
+      routing.goTo(route)
+      closeMenu()
+    }
   }
 
   function logout() {
@@ -74,12 +57,12 @@ export default function() {
           variant="h5"
           color="inherit"
           className={classes.brand}
-          onClick={() => goTo(isAuth ? 'dashboard' : 'login')}
+          onClick={goTo(isAuth ? 'dashboard' : 'landing')}
         >
           <span className={classes.title}>factAE</span>
         </Typography>
 
-        {isAuth && (
+        {isAuth ? (
           <Fragment>
             <IconButton
               aria-owns={anchorEl ? 'menu' : undefined}
@@ -94,26 +77,43 @@ export default function() {
               open={Boolean(anchorEl)}
               onClose={closeMenu}
             >
-              <MenuItem onClick={goToClients}>
+              <MenuItem onClick={goTo('client')}>
                 <IconClient className={classes.icon} /> Clients
               </MenuItem>
-              <MenuItem onClick={goToQuotations}>
+              <MenuItem onClick={goTo('quotation')}>
                 <IconQuotation className={classes.icon} /> Devis
               </MenuItem>
-              <MenuItem onClick={goToInvoices}>
+              <MenuItem onClick={goTo('invoice')}>
                 <IconInvoice className={classes.icon} /> Factures
               </MenuItem>
-              <MenuItem onClick={goToProfile}>
+              <MenuItem onClick={goTo('profile')}>
                 <IconProfile className={classes.icon} /> Profil
               </MenuItem>
               <Divider />
-              <MenuItem onClick={goToContact}>
+              <MenuItem disabled>
                 <IconContact className={classes.icon} /> Contact
               </MenuItem>
               <MenuItem onClick={logout}>
                 <IconLogout className={classes.icon} /> Déconnexion
               </MenuItem>
             </Menu>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Button
+              className={classes.button}
+              variant="text"
+              onClick={goTo('register')}
+            >
+              Créer un compte
+            </Button>
+            <Button
+              className={classes.button}
+              variant="text"
+              onClick={goTo('login')}
+            >
+              Se connecter
+            </Button>
           </Fragment>
         )}
       </Toolbar>

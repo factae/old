@@ -71,4 +71,9 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing.unit * 3,
     width: '100%',
   },
+  buttonPremium: {
+    color: `${theme.palette.grey[300]} !important`,
+    borderColor: `${theme.palette.grey[300]} !important`,
+    cursor: 'not-allowed !important',
+  },
 }))

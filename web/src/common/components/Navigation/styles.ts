@@ -21,4 +21,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   icon: {
     marginRight: theme.spacing.unit * 2,
   },
+  button: {
+    color: theme.palette.common.white,
+  },
 }))
