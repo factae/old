@@ -53,6 +53,7 @@ export default function() {
   const ref = useRef<HTMLCanvasElement | null>(null)
   const [invoices] = useContext(InvoiceContext)
   const theme: Theme = useTheme()
+  const chart = useRef<Chart | null>(null)
   const [lowTVA, highTVA, AE] = useThresholds()
   const classes = useStyles()
 
@@ -140,8 +141,9 @@ export default function() {
 
   useEffect(() => {
     if (_.isNull(ref.current)) return
+    if (chart.current) chart.current.destroy()
 
-    new Chart(ref.current, {
+    chart.current = new Chart(ref.current, {
       type: 'line',
       data: {
         labels: months,
@@ -222,6 +224,13 @@ export default function() {
         ],
       },
       options: {
+        animation: {
+          duration: 0,
+        },
+        hover: {
+          animationDuration: 0,
+        },
+        responsiveAnimationDuration: 0,
         maintainAspectRatio: false,
         tooltips: {
           callbacks: {
@@ -239,7 +248,7 @@ export default function() {
         },
       },
     })
-  }, [])
+  }, [invoices])
 
   return (
     <Grid className={classes.container} item xs={12}>
