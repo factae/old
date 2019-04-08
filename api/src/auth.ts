@@ -17,35 +17,50 @@ const EXPIRY_TIME = 60 * 60 * 24 // 24h
 
 export async function register(req: Request, res: Response) {
   const {email, password} = req.body
-  const $user = getRepository(User)
+  const $user = await getRepository(User)
   const hash = bcrypt.hashSync(password)
   const token = uuid()
   const confirmUrl = `${WEB_URL}/confirm/${token}`
 
   if (!isEmail(email)) {
-    res.status(400).send('email invalide')
+    res.status(400).send(`email invalide`)
   }
 
   if (!isByteLength(password, {min: 6})) {
-    res.status(400).send('mot de passe invalide (6 caractères min.)')
+    res.status(400).send(`mot de passe invalide (6 caractères min.)`)
   }
 
-  await $user.insert({
-    email,
-    token,
-    password: hash,
-    quotationConditions: '- Type de paiement : virement bancaire',
-    invoiceConditions: '- Paiement comptant à réception de la facture',
-  })
+  try {
+    await $user.insert({
+      email,
+      token,
+      password: hash,
+      quotationConditions: '- Type de paiement : virement bancaire',
+      invoiceConditions: '- Paiement comptant à réception de la facture',
+    })
+  } catch (error) {
+    switch (error.code) {
+      case 'ER_DUP_ENTRY':
+        return res.status(400).send(`email déjà pris`)
+      default:
+        console.error(error.message)
+        return res.status(500).send(`échec ajout nouvel utilisateur`)
+    }
+  }
 
-  await mail.send({
-    to: email,
-    subject: 'Bienvenue sur factAE',
-    template: {
-      name: 'confirm-user',
-      data: {url: confirmUrl},
-    },
-  })
+  try {
+    await mail.send({
+      to: email,
+      subject: 'Bienvenue sur factAE',
+      template: {
+        name: 'confirm-user',
+        data: {url: confirmUrl},
+      },
+    })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send(`échec envoi mail d'activation`)
+  }
 
   res.sendStatus(204)
 }

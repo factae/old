@@ -2,45 +2,45 @@ import {Request, Response} from 'express'
 import bcrypt from 'bcryptjs'
 import passport, {AuthenticateOptions} from 'passport'
 import {Strategy, IStrategyOptions, VerifyFunction} from 'passport-local'
-import {getConnection} from 'typeorm'
+import {getRepository} from 'typeorm'
 
 import {User} from '../user/model'
 
-// ---------------------------------------------------------- # Local strategy #
+const badCredentials = new Error(`identifiants invalides`)
+const emailNotActivated = new Error(`email en attente d'activation`)
+
+// ---------------------------------------------------------------- # Strategy #
 
 const options: IStrategyOptions = {usernameField: 'email'}
 const verify: VerifyFunction = async (email, password, done) => {
   try {
-    const $user = await getConnection().getRepository(User)
-    const user = await $user.findOneOrFail({email, emailConfirmed: true})
-    const passwordsMatch = bcrypt.compareSync(password, user.password)
+    const $user = await getRepository(User)
+    const user = await $user.findOne({email})
 
-    done(null, passwordsMatch ? user : false)
+    if (!user) return done(badCredentials)
+    if (!user.emailConfirmed) return done(emailNotActivated)
+
+    const passwordsMatch = bcrypt.compareSync(password, user.password)
+    if (!passwordsMatch) return done(badCredentials)
+
+    done(null, user)
   } catch (error) {
-    switch (error.name) {
-      case 'EntityNotFound':
-        return done(null, false)
-      default:
-        return done(error)
-    }
+    done(error)
   }
 }
 
-const localStrategy = new Strategy(options, verify)
+const strategy = new Strategy(options, verify)
 
-passport.use(localStrategy)
+passport.use(strategy)
 
 // -------------------------------------------------------------- # Middleware #
 
-export function authByLoginPassword(
-  req: Request,
-  res: Response,
-  next: Function,
-) {
+export function authByCredentials(req: Request, res: Response, next: Function) {
   const options: AuthenticateOptions = {session: false}
   const validate = (error: Error, user: User) => {
-    if (error) return next(error)
-    if (!user) return res.sendStatus(403)
+    if (error) return res.status(401).send(error.message)
+    if (!user) return res.status(401).send(badCredentials.message)
+
     req.user = user
     next()
   }

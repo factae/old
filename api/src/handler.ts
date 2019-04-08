@@ -7,18 +7,8 @@ export function handle(handler: Handler) {
     try {
       await handler(req, res)
     } catch (error) {
-      console.error(error.toString())
-
-      switch (error.code) {
-        case 'ER_DUP_ENTRY':
-          res.status(400)
-          res.send('Resource already exists')
-          break
-
-        default:
-          res.status(500)
-          res.send(error.message)
-      }
+      console.error(error.message)
+      res.status(500).send(error.message)
     }
   }
 }

@@ -40,6 +40,10 @@ export default function() {
     },
   }
 
+  function goToLogin() {
+    goTo('login')
+  }
+
   async function register({email, password}: PartialUser) {
     if (isEmpty(email) || !isEmail(email)) {
       throw new Error('email invalide')
@@ -49,17 +53,8 @@ export default function() {
       throw new Error('mot de passe invalide (6 caractères min.)')
     }
 
-    try {
-      await auth.register(email, password)
-      goToLogin()
-    } catch (error) {
-      console.error(error.toString())
-      throw new Error(error.message)
-    }
-  }
-
-  function goToLogin() {
-    goTo('login')
+    await auth.register(email, password)
+    goToLogin()
   }
 
   useEffect(() => {

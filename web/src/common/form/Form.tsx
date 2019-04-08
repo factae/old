@@ -50,7 +50,7 @@ export default function<T>(defaultModel: T | null) {
     const successMessage = _.get(props, 'onSuccess.message', 'Enregistré.')
     const successReset = _.get(props, 'onSuccess.reset', false)
     const successGoTo = _.get(props, 'onSuccess.goTo', null)
-    const errorMessage = _.get(props, 'onError.message', 'Erreur')
+    const errorMessage = _.get(props, 'onError.message', null)
 
     function setModelPart(key: keyof T, value: FormValue) {
       if (_.isNull(model)) return
@@ -71,8 +71,11 @@ export default function<T>(defaultModel: T | null) {
         if (successNotify) async.stop(successMessage)
         if (successGoTo) goTo(successGoTo)
       } catch (error) {
-        console.error(error.toString())
-        async.stop(`${errorMessage} : ${error.message}`)
+        const message =
+          errorMessage || error.response ? error.response.data : error.message
+
+        console.error(message)
+        async.stop(`Erreur : ${message}`)
       }
     }
 

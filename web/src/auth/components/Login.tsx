@@ -23,6 +23,10 @@ export default function() {
   const defaultUser = useRef(emptyUser())
   const {Form, TextField} = useForm<PartialUser>(defaultUser.current)
 
+  function goToRegister() {
+    goTo('register')
+  }
+
   async function login({email, password}: PartialUser) {
     if (isEmpty(email) || !isEmail(email)) {
       throw new Error('email invalide')
@@ -32,17 +36,8 @@ export default function() {
       throw new Error('mot de passe invalide (6 caractères min.)')
     }
 
-    try {
-      await auth.login(email, password)
-      goTo('dashboard')
-    } catch (error) {
-      console.error(error.toString())
-      throw new Error(error.message)
-    }
-  }
-
-  function goToRegister() {
-    goTo('register')
+    await auth.login(email, password)
+    goTo('dashboard')
   }
 
   useEffect(() => {

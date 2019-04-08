@@ -2,11 +2,13 @@ import {Request, Response} from 'express'
 import passport, {AuthenticateOptions} from 'passport'
 import {ExtractJwt} from 'passport-jwt'
 import {Strategy, StrategyOptions, VerifyCallback} from 'passport-jwt'
-import {getConnection} from 'typeorm'
+import {getRepository} from 'typeorm'
 
 import {User} from '../user/model'
 
-// --------------------------------------------------------- # Cookie strategy #
+const authFailed = new Error(`échec de l'autentification`)
+
+// ---------------------------------------------------------------- # Strategy #
 
 const options: StrategyOptions = {
   jwtFromRequest: ExtractJwt.fromExtractors([req => req.cookies.token]),
@@ -17,32 +19,30 @@ const options: StrategyOptions = {
 const verify: VerifyCallback = async (payload, done) => {
   try {
     const id = Number(payload.sub)
-    const userRepository = await getConnection().getRepository(User)
-    const user = await userRepository.findOneOrFail({id})
+    const $user = await getRepository(User)
+    const user = await $user.findOne({id})
 
-    return done(null, user)
+    if (!user) return done(authFailed)
+    if (!user.emailConfirmed) return done(authFailed)
+
+    done(null, user)
   } catch (error) {
-    switch (error.name) {
-      case 'EntityNotFound':
-        return done(null, false)
-
-      default:
-        return done(error)
-    }
+    done(error)
   }
 }
 
-const cookieStrategy = new Strategy(options, verify)
+const strategy = new Strategy(options, verify)
 
-passport.use(cookieStrategy)
+passport.use(strategy)
 
 // -------------------------------------------------------------- # Middleware #
 
 export function authByCookie(req: Request, res: Response, next: Function) {
   const options: AuthenticateOptions = {session: false}
   const validate = (error: Error, user: User) => {
-    if (error) return next(error)
-    if (!user) return res.sendStatus(403)
+    if (error) return res.status(401).send(error.message)
+    if (!user) return res.status(401).send(authFailed.message)
+
     req.user = user
     next()
   }

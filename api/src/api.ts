@@ -8,7 +8,7 @@ import * as quotation from './quotation/controller'
 import * as invoice from './invoice/controller'
 import * as user from './user/controller'
 import * as payment from './payment/controller'
-import {authByLoginPassword} from './strategies/Local'
+import {authByCredentials} from './strategies/Local'
 import {authByCookie} from './strategies/Cookie'
 
 const URL = String(process.env.API_URL || 'http://localhost')
@@ -24,7 +24,7 @@ api.use(...middlewares)
 // Auth
 api.post('/register', handle(auth.register))
 api.post('/check', authByCookie, handle(auth.check))
-api.post('/login', authByLoginPassword, handle(auth.login))
+api.post('/login', authByCredentials, handle(auth.login))
 api.post('/logout', authByCookie, handle(auth.logout))
 
 // Client
