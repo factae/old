@@ -13,7 +13,7 @@ import MuiSelect from '@material-ui/core/Select'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import {SelectProps as MuiSelectProps} from '@material-ui/core/Select'
 
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 import FormContext from './Context'
 
 type SelectAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
@@ -29,7 +29,7 @@ export default function<T>(context: React.Context<FormContext<T>>) {
     const id = uuid()
     const {name: key, label, disabled, required} = props
     const handleChangeParent = props.onChange || noop
-    const {loading} = useContext(AsyncContext)
+    const {loading} = useAsyncContext()
     const labelRef = useRef<InputLabel>(null)
 
     const [defaultModel, setModelPart] = useContext(context)

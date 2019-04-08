@@ -90,4 +90,7 @@ export class User {
 
   @Column({type: 'text', nullable: true, default: null})
   invoiceConditions: string | null
+
+  @Column({type: 'datetime', nullable: true, default: null})
+  premium: string | null
 }

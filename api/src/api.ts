@@ -7,6 +7,7 @@ import * as client from './client/controller'
 import * as quotation from './quotation/controller'
 import * as invoice from './invoice/controller'
 import * as user from './user/controller'
+import * as payment from './payment/controller'
 import {authByLoginPassword} from './strategies/Local'
 import {authByCookie} from './strategies/Cookie'
 
@@ -43,6 +44,9 @@ api.put('/invoice', authByCookie, handle(invoice.update))
 api.get('/user', authByCookie, handle(user.read))
 api.post('/user', authByCookie, handle(user.update))
 api.get('/confirm/:token', handle(user.confirm))
+
+// Payment
+api.post('/payment', authByCookie, handle(payment.charge))
 
 // ----------------------------------------------------------------- # Exports #
 

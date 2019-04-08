@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import keys from 'lodash/keys'
 import isNaN from 'lodash/isNaN'
 import IconSave from '@material-ui/icons/Save'
@@ -6,17 +6,17 @@ import IconSave from '@material-ui/icons/Save'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
-import * as userService from '../service'
-import UserContext from '../context'
+import * as $user from '../service'
+import useUserContext from '../context'
 import {User, RateUnit, Activity} from '../model'
 
 export default function() {
-  const [defaultUser, dispatch] = useContext(UserContext)
+  const [defaultUser, setUser] = useUserContext()
   const {Form, TextField, Select} = useForm<User>(defaultUser)
 
-  async function updateUser(user: User) {
-    await userService.update(user)
-    dispatch({type: 'update', user})
+  async function updateUser(nextUser: User) {
+    await $user.update(nextUser)
+    setUser(nextUser)
   }
 
   function renderRate(unit: RateUnit) {

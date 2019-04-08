@@ -10,7 +10,7 @@ import {DatePicker as MuiDateField} from 'material-ui-pickers'
 import {TextFieldProps as MuiTextFieldProps} from '@material-ui/core/TextField'
 
 import FormContext from './Context'
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 
 type DateFieldAttributes = 'autoFocus' | 'disabled' | 'type' | 'required'
 
@@ -24,7 +24,7 @@ export type DateFieldProps<T> = Pick<MuiTextFieldProps, DateFieldAttributes> & {
 export default function<T>(context: React.Context<FormContext<T>>) {
   return function DateField(props: DateFieldProps<T>) {
     const debounce = useDebounce()
-    const {loading} = useContext(AsyncContext)
+    const {loading} = useAsyncContext()
     const {name: key, label, required} = props
     const handleChangeParent = debounce(props.onChange || noop)
     const grid = props.grid || {xs: 12, sm: 6, md: 4, lg: 3}

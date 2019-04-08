@@ -7,7 +7,7 @@ import {SvgIconProps} from '@material-ui/core/SvgIcon'
 import IconBack from '@material-ui/icons/ArrowBack'
 
 import useRouting from '../../../common/hooks/routing'
-import AsyncContext from '../../../common/contexts/async'
+import useAsyncContext from '../../../async/context'
 
 import {useStyles} from './styles'
 
@@ -21,7 +21,7 @@ interface Props {
 export default function(props: Props) {
   const {title, label, icon: Icon} = props
   const handleClick = props.onClick || noop
-  const {loading} = useContext(AsyncContext)
+  const {loading} = useAsyncContext()
   const {goBack} = useRouting()
   const classes = useStyles()
 

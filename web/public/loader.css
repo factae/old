@@ -1,4 +1,4 @@
-#loader {
+.loader {
   align-items: center;
   bottom: 0;
   display: flex;
@@ -7,6 +7,8 @@
   position: fixed;
   right: 0;
   top: 0;
+  background: rgba(255, 255, 255, .8);
+  z-index: 1301;
 }
 
 .lds-ellipsis {

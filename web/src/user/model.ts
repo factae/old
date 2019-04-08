@@ -1,3 +1,5 @@
+import {DateTime} from 'luxon'
+
 export enum RateUnit {
   hour = 1,
   day = 2,
@@ -32,6 +34,7 @@ export interface User {
   rate: number | null
   rateUnit: RateUnit | null
   activity: Activity | null
+  premium: DateTime | null
 }
 
 export type PartialUser = Pick<User, 'email' | 'password'>

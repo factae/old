@@ -17,9 +17,9 @@ function parseCookiesStr(cookiesStr: string): Cookies {
   return _.pipe([_.split(';'), _.map(splitByEqual), _.fromPairs])(cookiesStr)
 }
 
-function parseExpiry(cookiesStr: string) {
+function parseExpiry(rawCookies: string) {
   try {
-    const cookies = parseCookiesStr(cookiesStr)
+    const cookies = parseCookiesStr(rawCookies)
     const token: Token = jwt.verify(cookies.expiry, 'factAE', {
       algorithms: ['HS512'],
       issuer: 'factAE',
@@ -33,14 +33,8 @@ function parseExpiry(cookiesStr: string) {
 }
 // -------------------------------------------------------------------- # Hooks #
 
-export function useCheckAuth(rawCookies: string) {
-  const expiry = useRef(parseExpiry(rawCookies))
-
-  useEffect(() => {
-    expiry.current = parseExpiry(rawCookies)
-  }, [rawCookies])
-
-  return expiry.current > DateTime.utc()
+export function isAuth() {
+  return parseExpiry(document.cookie) > DateTime.utc()
 }
 
 export function useLogout() {

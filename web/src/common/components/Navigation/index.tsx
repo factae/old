@@ -1,9 +1,8 @@
-import React, {Fragment, MouseEvent, useContext, useState} from 'react'
+import React, {Fragment, MouseEvent, useState} from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import LinearProgress from '@material-ui/core/LinearProgress'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -16,19 +15,17 @@ import IconProfile from '@material-ui/icons/Face'
 import IconContact from '@material-ui/icons/ContactSupport'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
-import AsyncContext from '../../../common/contexts/async'
-import {useCheckAuth, useLogout} from '../../../auth/hooks'
+import {isAuth, useLogout} from '../../../auth/hooks'
 import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const {loading} = useContext(AsyncContext)
   const classes = useStyles()
   const handleLogout = useLogout()
-  const isAuth = useCheckAuth(document.cookie)
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
+  const auth = isAuth()
 
   function setAnchorEl(event: MouseEvent) {
     setLocalAnchorEl(event.currentTarget as HTMLElement)
@@ -57,12 +54,12 @@ export default function() {
           variant="h5"
           color="inherit"
           className={classes.brand}
-          onClick={goTo(isAuth ? 'dashboard' : 'landing')}
+          onClick={goTo(auth ? 'dashboard' : 'landing')}
         >
           <span className={classes.title}>factAE</span>
         </Typography>
 
-        {isAuth ? (
+        {auth ? (
           <Fragment>
             <IconButton
               aria-owns={anchorEl ? 'menu' : undefined}
@@ -117,7 +114,6 @@ export default function() {
           </Fragment>
         )}
       </Toolbar>
-      {loading && <LinearProgress className={classes.progress} />}
     </AppBar>
   )
 }

@@ -6,7 +6,7 @@ import {SvgIconProps} from '@material-ui/core/SvgIcon'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 
-import AsyncContext from '../../../common/contexts/async'
+import useAsyncContext from '../../../async/context'
 import {useStyles} from './styles'
 
 type Action = {
@@ -24,7 +24,7 @@ interface Props {
 
 export default function(props: Props) {
   const {title, subtitle, action, children} = props
-  const {loading} = useContext(AsyncContext)
+  const {loading} = useAsyncContext()
   const classes = useStyles()
 
   return (

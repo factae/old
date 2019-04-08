@@ -1,16 +1,14 @@
-import {useContext, useEffect} from 'react'
+import {useEffect} from 'react'
 
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 import useRouting from '../../common/hooks/routing'
 import {get} from '../../common/utils/axios'
 
 export default function() {
   const router = useRouting<{token: string}>()
-  const async = useContext(AsyncContext)
+  const async = useAsyncContext()
 
   async function confirm() {
-    async.start()
-
     try {
       const res = await get(`/confirm/${router.match.params.token}`)
 

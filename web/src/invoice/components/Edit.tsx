@@ -8,7 +8,7 @@ import {Invoice, emptyInvoice} from '../../invoice/model'
 import {ContractItem} from '../../contractItem/model'
 import useRouting from '../../common/hooks/routing'
 import InvoiceContext from '../context'
-import UserContext from '../../user/context'
+import useUserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
@@ -17,7 +17,7 @@ import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
-  const [user] = useContext(UserContext)
+  const [user] = useUserContext()
   const [clients] = useContext(ClientContext)
   const [invoices, dispatch] = useContext(InvoiceContext)
 

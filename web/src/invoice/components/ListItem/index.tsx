@@ -13,7 +13,7 @@ import IconPaid from '@material-ui/icons/AttachMoney'
 import Date from '../../../contract/components/ListItem/Date'
 import Status from '../../../contract/components/ListItem/Status'
 import ClientContext from '../../../client/context'
-import AsyncContext from '../../../common/contexts/async'
+import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import {toEuro} from '../../../common/utils/currency'
 import {Invoice} from '../../model'
@@ -31,7 +31,7 @@ interface Props {
 export default function(props: Props) {
   const {invoice} = props
 
-  const async = useContext(AsyncContext)
+  const async = useAsyncContext()
   const [clients] = useContext(ClientContext)
   const dispatch = useContext(QuotationContext)[1]
   const [confirm, setConfirm] = useState(false)

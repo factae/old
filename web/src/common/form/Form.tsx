@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, {createContext, useEffect, useState} from 'react'
 import useDebounce from 'react-captain/useDebounce'
 import classNames from 'classnames'
 import {ReactNode} from 'react'
@@ -6,7 +6,7 @@ import _ from 'lodash'
 import {DateTime} from 'luxon'
 
 import Context from './Context'
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 import useRouting, {Route} from '../../common/hooks/routing'
 
 export type FormProps<T> = {
@@ -38,7 +38,7 @@ export default function<T>(defaultModel: T | null) {
   }, [defaultModel])
 
   function Form(props: FormProps<T>) {
-    const async = useContext(AsyncContext)
+    const async = useAsyncContext()
     const debounce = useDebounce()
     const {goTo} = useRouting()
 

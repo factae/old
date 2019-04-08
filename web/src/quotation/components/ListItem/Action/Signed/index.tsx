@@ -4,7 +4,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconTransform from '@material-ui/icons/Redo'
 
-import AsyncContext from '../../../../../common/contexts/async'
+import useAsyncContext from '../../../../../async/context'
 import useRouting from '../../../../../common/hooks/routing'
 import {Quotation} from '../../../../model'
 
@@ -17,7 +17,7 @@ interface Props {
 export default function(props: Props) {
   const {quotation} = props
   const {goTo} = useRouting()
-  const {loading} = useContext(AsyncContext)
+  const {loading} = useAsyncContext()
   const classes = useStyles()
 
   return (

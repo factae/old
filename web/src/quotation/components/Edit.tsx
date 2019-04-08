@@ -13,7 +13,7 @@ import {ContractItem} from '../../contractItem/model'
 import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
 import QuotationContext from '../context'
-import UserContext from '../../user/context'
+import useUserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
@@ -22,7 +22,7 @@ import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
-  const [user] = useContext(UserContext)
+  const [user] = useUserContext()
   const [clients] = useContext(ClientContext)
   const [quotations, dispatch] = useContext(QuotationContext)
 

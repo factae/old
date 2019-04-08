@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import isNull from 'lodash/isNull'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
@@ -13,7 +13,7 @@ import ItemListView from '../../contract/components/Document/ItemList'
 import ConditionView from '../../contract/components/Document/Condition'
 import BankView from '../../contract/components/Document/Bank'
 import MentionView from '../../contract/components/Document/Mention'
-import UserContext from '../../user/context'
+import useUserContext from '../../user/context'
 import {Invoice} from '../model'
 import {Client} from '../../client/model'
 
@@ -26,7 +26,7 @@ interface Props {
 
 export default function(props: Props) {
   const {invoice, client} = props
-  const [user] = useContext(UserContext)
+  const [user] = useUserContext()
   const theme = useTheme<Theme>()
 
   if (isNull(user) || isNull(invoice.createdAt)) {

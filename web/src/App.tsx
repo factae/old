@@ -6,8 +6,9 @@ import LuxonUtils from '@date-io/luxon'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
-import AsyncContext from './common/contexts/async'
-import Snackbar from './common/components/Snackbar'
+import AsyncProvider from './async/provider'
+import UserProvider from './user/provider'
+import PaymentProvider from './payment/provider'
 import Navigation from './common/components/Navigation'
 import Login from './auth/components/Login'
 import Register from './auth/components/Register'
@@ -53,43 +54,27 @@ Font.register(
 )
 
 export default function() {
-  const [loading, setLoading] = React.useState(false)
-  const [message, setMessage] = React.useState('')
-
-  function start() {
-    setLoading(true)
-  }
-
-  function stop(nextMessage?: string | void) {
-    setLoading(false)
-
-    if (!message && nextMessage) {
-      setMessage(nextMessage || '')
-    }
-  }
-
-  function close() {
-    setMessage('')
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider locale="fr" utils={LuxonUtils}>
-        <AsyncContext.Provider value={{loading, start, stop}}>
-          <CssBaseline />
-          <Snackbar message={message} onClose={close} />
-          <BrowserRouter>
-            <Navigation />
-            <Switch>
-              <Route exact path="/" component={Landing} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/confirm/:token" component={Confirm} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <Redirect to="/" />
-            </Switch>
-          </BrowserRouter>
-        </AsyncContext.Provider>
+        <AsyncProvider>
+          <UserProvider>
+            <PaymentProvider>
+              <CssBaseline />
+              <BrowserRouter>
+                <Navigation />
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/register" component={Register} />
+                  <Route exact path="/confirm/:token" component={Confirm} />
+                  <PrivateRoute path="/dashboard" component={Dashboard} />
+                  <Redirect to="/" />
+                </Switch>
+              </BrowserRouter>
+            </PaymentProvider>
+          </UserProvider>
+        </AsyncProvider>
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   )

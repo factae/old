@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import isEmail from 'validator/lib/isEmail'
 import isEmpty from 'validator/lib/isEmpty'
 import isLength from 'validator/lib/isLength'
@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 import useRouting from '../../common/hooks/routing'
 import {PartialUser, emptyUser} from '../../user/model'
 import useForm from '../../common/form'
@@ -15,7 +15,7 @@ import * as $auth from '../../auth/service'
 import {useStyles} from './styles'
 
 export default function() {
-  const {loading} = useContext(AsyncContext)
+  const async = useAsyncContext()
   const {goTo} = useRouting()
   const classes = useStyles()
 
@@ -33,6 +33,7 @@ export default function() {
 
     try {
       await $auth.login(email, password)
+      window.location.href = '/dashboard'
     } catch (error) {
       console.error(error.toString())
 
@@ -43,6 +44,10 @@ export default function() {
       }
     }
   }
+
+  useEffect(() => {
+    async.stop()
+  }, [])
 
   return (
     <main className={classes.main}>
@@ -80,7 +85,6 @@ export default function() {
             color="primary"
             size="large"
             className={classes.submit}
-            disabled={loading}
           >
             Se connecter
           </Button>
@@ -94,7 +98,6 @@ export default function() {
         variant="outlined"
         size="small"
         color="default"
-        disabled={loading}
       >
         Pas de compte ?
       </Button>

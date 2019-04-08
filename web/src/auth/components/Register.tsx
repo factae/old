@@ -1,4 +1,4 @@
-import React, {useContext, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import isEmail from 'validator/lib/isEmail'
 import isEmpty from 'validator/lib/isEmpty'
 import isLength from 'validator/lib/isLength'
@@ -8,7 +8,7 @@ import {OutlinedInputProps} from '@material-ui/core/OutlinedInput'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
-import AsyncContext from '../../common/contexts/async'
+import useAsyncContext from '../../async/context'
 import useRouting from '../../common/hooks/routing'
 import {PartialUser, emptyUser} from '../../user/model'
 import useForm from '../../common/form'
@@ -17,7 +17,7 @@ import * as $auth from '../../auth/service'
 import {useStyles} from './styles'
 
 export default function() {
-  const {loading} = useContext(AsyncContext)
+  const async = useAsyncContext()
   const {goTo} = useRouting()
   const classes = useStyles()
 
@@ -55,6 +55,10 @@ export default function() {
       throw new Error('serveur')
     }
   }
+
+  useEffect(() => {
+    async.stop()
+  }, [])
 
   return (
     <main className={classes.main}>
@@ -99,7 +103,6 @@ export default function() {
             color="secondary"
             size="large"
             className={classes.submit}
-            disabled={loading}
           >
             Créer un compte
           </Button>
@@ -113,7 +116,6 @@ export default function() {
         variant="outlined"
         size="small"
         color="default"
-        disabled={loading}
       >
         Déjà un compte ?
       </Button>

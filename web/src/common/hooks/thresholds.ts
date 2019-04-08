@@ -1,13 +1,12 @@
-import {useContext} from 'react'
 import isNull from 'lodash/isNull'
 
 import {Activity} from '../../user/model'
-import UserContext from '../../user/context'
+import useUserContext from '../../user/context'
 
 type Thresholds = [number, number, number]
 
 export default function(): Thresholds {
-  const [user] = useContext(UserContext)
+  const [user] = useUserContext()
   if (isNull(user)) return [0, 0, 0]
 
   switch (user.activity) {

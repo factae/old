@@ -1,35 +1,29 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import isNull from 'lodash/isNull'
 import Grid from '@material-ui/core/Grid'
 
-import * as userService from '../../../user/service'
 import * as clientService from '../../../client/service'
 import * as quotationService from '../../../quotation/service'
 import * as invoiceService from '../../../invoice/service'
-import AsyncContext from '../../../common/contexts/async'
+import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
-import UserContext, {useUserReducer} from '../../../user/context'
 import ClientContext, {useClientReducer} from '../../../client/context'
 import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
 import InvoiceContext, {useInvoiceReducer} from '../../../invoice/context'
 import DashboardRoutes from './Routes'
+import useUserContext from '../../../user/context'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const async = useContext(AsyncContext)
+  const async = useAsyncContext()
   const router = useRouting()
-  const [userState, userDispatch] = useUserReducer()
+  const [user] = useUserContext()
   const [clientState, clientDispatch] = useClientReducer()
   const [quotationState, quotationDispatch] = useQuotationReducer()
   const [invoiceState, invoiceDispatch] = useInvoiceReducer()
   const isProfileRoute = router.location.pathname === '/dashboard/profile'
   const classes = useStyles()
-
-  async function fetchUser() {
-    const user = await userService.read()
-    userDispatch({type: 'update', user})
-  }
 
   async function fetchClients() {
     const clients = await clientService.readAll()
@@ -47,19 +41,15 @@ export default function() {
   }
 
   async function fetchData() {
-    async.start()
-
     try {
-      await fetchUser()
       await fetchClients()
       await fetchQuotations()
       await fetchInvoices()
+      async.stop()
     } catch (error) {
       console.error(error.toString())
       return async.stop('Erreur : serveur !')
     }
-
-    async.stop()
   }
 
   useEffect(() => {
@@ -67,31 +57,29 @@ export default function() {
   }, [])
 
   useEffect(() => {
-    if (isNull(userState)) return
-    if (isNull(userState.siren) && !isProfileRoute) {
+    if (isNull(user)) return
+    if (isNull(user.siren) && !isProfileRoute) {
       if (!isProfileRoute) router.goTo('profile')
       async.stop('Vous devez remplir votre profil avant de pouvoir continuer.')
     }
-  }, [userState, router.location.pathname])
+  }, [user, router.location.pathname])
 
-  if (async.loading && isNull(userState)) {
+  if (async.loading && isNull(user)) {
     return null
   }
 
   return (
     <Grid container justify="center" className={classes.container}>
       <Grid item xs={12} md={10} lg={9} xl={8}>
-        <UserContext.Provider value={[userState, userDispatch]}>
-          <ClientContext.Provider value={[clientState, clientDispatch]}>
-            <QuotationContext.Provider
-              value={[quotationState, quotationDispatch]}
-            >
-              <InvoiceContext.Provider value={[invoiceState, invoiceDispatch]}>
-                <DashboardRoutes />
-              </InvoiceContext.Provider>
-            </QuotationContext.Provider>
-          </ClientContext.Provider>
-        </UserContext.Provider>
+        <ClientContext.Provider value={[clientState, clientDispatch]}>
+          <QuotationContext.Provider
+            value={[quotationState, quotationDispatch]}
+          >
+            <InvoiceContext.Provider value={[invoiceState, invoiceDispatch]}>
+              <DashboardRoutes />
+            </InvoiceContext.Provider>
+          </QuotationContext.Provider>
+        </ClientContext.Provider>
       </Grid>
     </Grid>
   )
