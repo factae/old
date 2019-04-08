@@ -7,8 +7,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
 import AsyncProvider from './async/provider'
-import UserProvider from './user/provider'
-import PaymentProvider from './payment/provider'
+import AuthProvider from './auth/provider'
 import Navigation from './common/components/Navigation'
 import Login from './auth/components/Login'
 import Register from './auth/components/Register'
@@ -56,25 +55,23 @@ Font.register(
 export default function() {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <MuiPickersUtilsProvider locale="fr" utils={LuxonUtils}>
-        <AsyncProvider>
-          <UserProvider>
-            <PaymentProvider>
-              <CssBaseline />
-              <BrowserRouter>
-                <Navigation />
-                <Switch>
-                  <Route exact path="/" component={Landing} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/register" component={Register} />
-                  <Route exact path="/confirm/:token" component={Confirm} />
-                  <PrivateRoute path="/dashboard" component={Dashboard} />
-                  <Redirect to="/" />
-                </Switch>
-              </BrowserRouter>
-            </PaymentProvider>
-          </UserProvider>
-        </AsyncProvider>
+        <BrowserRouter>
+          <AsyncProvider>
+            <AuthProvider>
+              <Navigation />
+              <Switch>
+                <Route exact path="/" component={Landing} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/confirm/:token" component={Confirm} />
+                <PrivateRoute path="/dashboard" component={Dashboard} />
+                <Redirect to="/" />
+              </Switch>
+            </AuthProvider>
+          </AsyncProvider>
+        </BrowserRouter>
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   )

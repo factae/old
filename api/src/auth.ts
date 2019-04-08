@@ -13,26 +13,6 @@ import {User} from './user/model'
 const WEB_URL = `${process.env.WEB_URL}:${process.env.WEB_PORT}`
 const EXPIRY_TIME = 60 * 60 * 24 // 24h
 
-// ------------------------------------------------------------------- # Login #
-
-function cookieOptions(options: CookieOptions) {
-  return process.env.NODE_ENV === 'production'
-    ? {httpOnly: true, secure: true, domain: 'factae.fr', ...options}
-    : {httpOnly: true, secure: false, ...options}
-}
-
-export async function login(req: Request, res: Response) {
-  const expiry = DateTime.utc().plus({seconds: EXPIRY_TIME})
-  const expires = expiry.toJSDate()
-  const authToken = generateToken(req.user.id, process.env.API_SECRET)
-  const expiryToken = generateToken(expiry.toMillis())
-
-  res
-    .cookie('token', authToken, cookieOptions({expires}))
-    .cookie('expiry', expiryToken, cookieOptions({expires, httpOnly: false}))
-    .sendStatus(204)
-}
-
 // ---------------------------------------------------------------- # Register #
 
 export async function register(req: Request, res: Response) {
@@ -70,7 +50,44 @@ export async function register(req: Request, res: Response) {
   res.sendStatus(204)
 }
 
+// ------------------------------------------------------------------- # Login #
+
+export async function login(req: Request, res: Response) {
+  const expiry = DateTime.utc().plus({seconds: EXPIRY_TIME})
+  const expires = expiry.toJSDate()
+  const authToken = generateToken(req.user.id, process.env.API_SECRET)
+  const expiryToken = generateToken(expiry.toMillis())
+
+  res
+    .cookie('token', authToken, cookieOptions({expires}))
+    .cookie('expiry', expiryToken, cookieOptions({expires, httpOnly: false}))
+    .sendStatus(204)
+}
+
+// ------------------------------------------------------------------- # Check #
+
+export async function check(_req: Request, res: Response) {
+  res.sendStatus(204)
+}
+
+// ------------------------------------------------------------------ # Logout #
+
+export async function logout(_req: Request, res: Response) {
+  const expires = DateTime.fromISO('1990-02-02').toJSDate()
+
+  res
+    .cookie('token', '', cookieOptions({expires}))
+    .cookie('expiry', '', cookieOptions({expires, httpOnly: false}))
+    .sendStatus(204)
+}
+
 // ------------------------------------------------------------------- # Utils #
+
+function cookieOptions(options: CookieOptions) {
+  return process.env.NODE_ENV === 'production'
+    ? {httpOnly: true, secure: true, domain: 'factae.fr', ...options}
+    : {httpOnly: true, secure: false, ...options}
+}
 
 function generateToken(data: any, secret?: string) {
   return jwt.sign({}, secret || 'factAE', {

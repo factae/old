@@ -9,15 +9,16 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import useAsyncContext from '../../async/context'
+import useAuthContext from '../../auth/context'
 import useRouting from '../../common/hooks/routing'
 import {PartialUser, emptyUser} from '../../user/model'
 import useForm from '../../common/form'
-import * as $auth from '../../auth/service'
 
 import {useStyles} from './styles'
 
 export default function() {
   const async = useAsyncContext()
+  const auth = useAuthContext()
   const {goTo} = useRouting()
   const classes = useStyles()
 
@@ -49,11 +50,16 @@ export default function() {
     }
 
     try {
-      await $auth.register(email, password)
+      await auth.register(email, password)
+      goToLogin()
     } catch (error) {
       console.error(error.toString())
-      throw new Error('serveur')
+      throw new Error(error.message)
     }
+  }
+
+  function goToLogin() {
+    goTo('login')
   }
 
   useEffect(() => {
@@ -111,7 +117,7 @@ export default function() {
 
       <Button
         className={classes.changeAction}
-        onClick={() => goTo('login')}
+        onClick={goToLogin}
         fullWidth
         variant="outlined"
         size="small"

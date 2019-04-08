@@ -1,8 +1,12 @@
 import React from 'react'
 import {Route, RouteProps, Redirect} from 'react-router-dom'
+import isNull from 'lodash/isNull'
 
-import {isAuth} from '../hooks'
+import useAuthContext from '../context'
 
 export default function(props: RouteProps) {
-  return isAuth() ? <Route {...props} /> : <Redirect to="/login" />
+  const {auth} = useAuthContext()
+
+  if (isNull(auth)) return null
+  return auth ? <Route {...props} /> : <Redirect to="/login" />
 }

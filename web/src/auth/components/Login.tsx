@@ -7,22 +7,23 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import useAsyncContext from '../../async/context'
+import useAuthContext from '../../auth/context'
 import useRouting from '../../common/hooks/routing'
 import {PartialUser, emptyUser} from '../../user/model'
 import useForm from '../../common/form'
-import * as $auth from '../../auth/service'
 
 import {useStyles} from './styles'
 
 export default function() {
   const async = useAsyncContext()
+  const auth = useAuthContext()
   const {goTo} = useRouting()
   const classes = useStyles()
 
   const defaultUser = useRef(emptyUser())
   const {Form, TextField} = useForm<PartialUser>(defaultUser.current)
 
-  async function register({email, password}: PartialUser) {
+  async function login({email, password}: PartialUser) {
     if (isEmpty(email) || !isEmail(email)) {
       throw new Error('email invalide')
     }
@@ -32,17 +33,16 @@ export default function() {
     }
 
     try {
-      await $auth.login(email, password)
-      window.location.href = '/dashboard'
+      await auth.login(email, password)
+      goTo('dashboard')
     } catch (error) {
       console.error(error.toString())
-
-      if (/403$/.test(error.message)) {
-        throw new Error('email ou mot de passe invalide')
-      } else {
-        throw new Error('serveur')
-      }
+      throw new Error(error.message)
     }
+  }
+
+  function goToRegister() {
+    goTo('register')
   }
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function() {
 
         <Form
           className={classes.form}
-          onSubmit={register}
+          onSubmit={login}
           onSuccess={{message: '', goTo: 'dashboard'}}
         >
           <TextField
@@ -93,7 +93,7 @@ export default function() {
 
       <Button
         className={classes.changeAction}
-        onClick={() => goTo('register')}
+        onClick={goToRegister}
         fullWidth
         variant="outlined"
         size="small"

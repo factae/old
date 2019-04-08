@@ -1,6 +1,4 @@
 import React from 'react'
-import {DateTime} from 'luxon'
-import isNull from 'lodash/isNull'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
@@ -8,23 +6,15 @@ import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 
 import useRouting from '../../common/hooks/routing'
-import useUserContext from '../../user/context'
-import usePaymentContext from '../../payment/context'
 
 import {useStyles} from './styles'
 
 export default function() {
   const classes = useStyles()
   const {goTo} = useRouting()
-  const [user] = useUserContext()
-  const {openPaymentDialog} = usePaymentContext()
 
   function goToRegister() {
     goTo('register')
-  }
-
-  if (isNull(user)) {
-    return null
   }
 
   return (
@@ -126,25 +116,14 @@ export default function() {
                   </Typography>
                 </div>
 
-                {user.premium && user.premium > DateTime.local() ? (
-                  <Typography
-                    className={classes.pricingPremiumText}
-                    variant="body2"
-                  >
-                    <em>
-                      Vous avez déjà un abonnement (expire{' '}
-                      {user.premium.toRelative({locale: 'fr'})})
-                    </em>
-                  </Typography>
-                ) : (
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    onClick={openPaymentDialog}
-                  >
-                    Souscrire
-                  </Button>
-                )}
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  className={classes.button}
+                  onClick={goToRegister}
+                >
+                  Créer un compte
+                </Button>
               </Paper>
             </Grid>
             <Grid item xs={12} md={4}>

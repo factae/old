@@ -23,7 +23,9 @@ api.use(...middlewares)
 
 // Auth
 api.post('/register', handle(auth.register))
+api.post('/check', authByCookie, handle(auth.check))
 api.post('/login', authByLoginPassword, handle(auth.login))
+api.post('/logout', authByCookie, handle(auth.logout))
 
 // Client
 api.get('/client', authByCookie, handle(client.readAll))

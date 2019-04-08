@@ -15,17 +15,16 @@ import IconProfile from '@material-ui/icons/Face'
 import IconContact from '@material-ui/icons/ContactSupport'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
-import {isAuth, useLogout} from '../../../auth/hooks'
+import useAuthContext from '../../../auth/context'
 import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
 export default function() {
   const classes = useStyles()
-  const handleLogout = useLogout()
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
-  const auth = isAuth()
+  const {auth, logout} = useAuthContext()
 
   function setAnchorEl(event: MouseEvent) {
     setLocalAnchorEl(event.currentTarget as HTMLElement)
@@ -42,9 +41,9 @@ export default function() {
     }
   }
 
-  function logout() {
+  function handleLogout() {
     closeMenu()
-    handleLogout()
+    logout()
   }
 
   return (
@@ -90,7 +89,7 @@ export default function() {
               <MenuItem disabled>
                 <IconContact className={classes.icon} /> Contact
               </MenuItem>
-              <MenuItem onClick={logout}>
+              <MenuItem onClick={handleLogout}>
                 <IconLogout className={classes.icon} /> Déconnexion
               </MenuItem>
             </Menu>
