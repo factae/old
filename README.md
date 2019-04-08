@@ -36,7 +36,7 @@ restart the app once mysql is done.
 
 ## TODO
 
-### alpha
+### pre-alpha
 
 - [X] Confirm: improve email design
 - [X] Confirm: prevent mail to be considered as SPAM
@@ -49,10 +49,13 @@ restart the app once mysql is done.
 - [X] Navigation: replace profile by menu with quotation, invoice, client,
   profile, logout, contact
 
-### beta
+### alpha
 
-- [ ] Set up landing page
-- [ ] Set up payment
+- [X] Set up landing page
+- [X] Set up payment
+- [ ] Make logout from backend (to remove cookies)
+- [ ] Refactor contexts
+- [ ] Improve auth process (via service)
 - [ ] Set up paid modules
 - [ ] Set up contact page (help/support/feedbacks)
 - [ ] Improve validation (replace HTML5 one)
