@@ -71,12 +71,8 @@ export async function login(req: Request, res: Response) {
   const expiry = DateTime.utc().plus({seconds: EXPIRY_TIME})
   const expires = expiry.toJSDate()
   const authToken = generateToken(req.user.id, process.env.API_SECRET)
-  const expiryToken = generateToken(expiry.toMillis())
 
-  res
-    .cookie('token', authToken, cookieOptions({expires}))
-    .cookie('expiry', expiryToken, cookieOptions({expires, httpOnly: false}))
-    .sendStatus(204)
+  res.cookie('token', authToken, cookieOptions({expires})).sendStatus(204)
 }
 
 // ------------------------------------------------------------------- # Check #
@@ -89,11 +85,7 @@ export async function check(_req: Request, res: Response) {
 
 export async function logout(_req: Request, res: Response) {
   const expires = DateTime.fromISO('1990-02-02').toJSDate()
-
-  res
-    .cookie('token', '', cookieOptions({expires}))
-    .cookie('expiry', '', cookieOptions({expires, httpOnly: false}))
-    .sendStatus(204)
+  res.cookie('token', '', cookieOptions({expires})).sendStatus(204)
 }
 
 // ------------------------------------------------------------------- # Utils #

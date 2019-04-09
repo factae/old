@@ -20,7 +20,7 @@ import {Quotation} from '../../model'
 import QuotationContext from '../../context'
 import * as service from '../../service'
 import Confirm from './../Confirm'
-import Document from './../Document'
+import Document from '../Document'
 import ActionSigned from './Action/Signed'
 
 import {useStyles} from './styles'
@@ -80,7 +80,6 @@ export default function(props: Props) {
       dispatch({type: 'update', quotation})
       async.stop()
     } catch (error) {
-      console.error(error)
       async.stop('Erreur lors de la mise à jour du devis !')
     }
   }
@@ -94,7 +93,7 @@ export default function(props: Props) {
   }
 
   function handleDownloadError(error: Error) {
-    console.error(error)
+    console.error('pas bon', error)
     setReadyToDownload(false)
     async.stop('Erreur lors du téléchargement du devis !')
   }
@@ -105,7 +104,7 @@ export default function(props: Props) {
         return (
           <Tooltip placement="bottom" title="Télécharger">
             <span className={classes.icon}>
-              <IconButton onClick={openConfirm} disabled={async.loading}>
+              <IconButton onClick={openConfirm}>
                 <IconDownload />
               </IconButton>
             </span>
@@ -117,7 +116,7 @@ export default function(props: Props) {
           <Fragment>
             <Tooltip placement="bottom" title="Devis signé">
               <span className={classes.icon}>
-                <IconButton onClick={sign} disabled={async.loading}>
+                <IconButton onClick={sign}>
                   <IconSign />
                 </IconButton>
               </span>
@@ -128,7 +127,6 @@ export default function(props: Props) {
                   href={quotation.pdf || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  disabled={async.loading}
                 >
                   <IconDownload />
                 </IconButton>
@@ -139,9 +137,6 @@ export default function(props: Props) {
 
       case 'signed':
         return <ActionSigned quotation={quotation} />
-
-      default:
-        return null
     }
   }
 

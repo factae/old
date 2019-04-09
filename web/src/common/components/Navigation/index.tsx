@@ -16,15 +16,17 @@ import IconContact from '@material-ui/icons/ContactSupport'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
 import useAuthContext from '../../../auth/context'
+import useAsyncContext from '../../../async/context'
 import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const classes = useStyles()
+  const async = useAsyncContext()
+  const {auth, logout} = useAuthContext()
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
-  const {auth, logout} = useAuthContext()
+  const classes = useStyles()
 
   function setAnchorEl(event: MouseEvent) {
     setLocalAnchorEl(event.currentTarget as HTMLElement)
@@ -41,9 +43,16 @@ export default function() {
     }
   }
 
-  function handleLogout() {
-    closeMenu()
-    logout()
+  async function handleLogout() {
+    try {
+      async.start()
+      closeMenu()
+      await logout()
+      async.stop()
+    } catch (error) {
+      console.error(error.message)
+      async.stop(`Erreur : ${error.message}`)
+    }
   }
 
   return (

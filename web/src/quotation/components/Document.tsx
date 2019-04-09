@@ -46,7 +46,6 @@ export default function(props: Props) {
       case RateUnit.service:
         return 'Taux forfaitaire'
 
-      case null:
       default:
         return 'Taux'
     }
