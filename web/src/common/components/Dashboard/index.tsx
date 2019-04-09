@@ -3,11 +3,10 @@ import isNull from 'lodash/isNull'
 import Grid from '@material-ui/core/Grid'
 
 import * as clientService from '../../../client/service'
-import * as quotationService from '../../../quotation/service'
 import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import ClientContext, {useClientReducer} from '../../../client/context'
-import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
+import QuotationProvider from '../../../quotation/provider'
 import InvoiceProvider from '../../../invoice/provider'
 import DashboardRoutes from './Routes'
 import useUserContext from '../../../user/context'
@@ -19,7 +18,6 @@ export default function() {
   const router = useRouting()
   const [user] = useUserContext()
   const [clientState, clientDispatch] = useClientReducer()
-  const [quotationState, quotationDispatch] = useQuotationReducer()
   const isProfileRoute = router.location.pathname === '/dashboard/profile'
   const classes = useStyles()
 
@@ -28,15 +26,9 @@ export default function() {
     clientDispatch({type: 'update-all', clients})
   }
 
-  async function fetchQuotations() {
-    const quotations = await quotationService.readAll()
-    quotationDispatch({type: 'update-all', quotations})
-  }
-
   async function fetchData() {
     try {
       await fetchClients()
-      await fetchQuotations()
       async.stop()
     } catch (error) {
       console.error(error.toString())
@@ -60,13 +52,11 @@ export default function() {
     <Grid container justify="center" className={classes.container}>
       <Grid item xs={12} md={10} lg={9} xl={8}>
         <ClientContext.Provider value={[clientState, clientDispatch]}>
-          <QuotationContext.Provider
-            value={[quotationState, quotationDispatch]}
-          >
+          <QuotationProvider>
             <InvoiceProvider>
               <DashboardRoutes />
             </InvoiceProvider>
-          </QuotationContext.Provider>
+          </QuotationProvider>
         </ClientContext.Provider>
       </Grid>
     </Grid>

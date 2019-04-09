@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import isNull from 'lodash/fp/isNull'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -6,13 +6,13 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import QuotationContext from '../../context'
+import useQuotationContext from '../../context'
 import QuotationListItem from '../ListItem'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const [quotations] = useContext(QuotationContext)
+  const [quotations] = useQuotationContext()
   const classes = useStyles()
 
   if (isNull(quotations)) {

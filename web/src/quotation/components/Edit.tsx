@@ -12,7 +12,7 @@ import {Quotation, emptyQuotation} from '../../quotation/model'
 import {ContractItem} from '../../contractItem/model'
 import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
-import QuotationContext from '../context'
+import useQuotationContext from '../context'
 import useUserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
@@ -24,7 +24,7 @@ import ListItem from '../../contractItem/components/List'
 export default function() {
   const [user] = useUserContext()
   const [clients] = useContext(ClientContext)
-  const [quotations, dispatch] = useContext(QuotationContext)
+  const [quotations, dispatch] = useQuotationContext()
 
   const {goTo, match, location} = useRouting<{id: number}>()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)

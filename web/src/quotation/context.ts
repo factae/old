@@ -1,4 +1,4 @@
-import React from 'react'
+import {Dispatch, createContext, useContext} from 'react'
 import noop from 'lodash/fp/noop'
 
 import {Quotation} from './model'
@@ -18,34 +18,12 @@ type ActionUpdateAll = {
   quotations: Quotation[]
 }
 
-type Action = ActionCreate | ActionUpdate | ActionUpdateAll
-type State = Quotation[] | null
-type Context = [State, React.Dispatch<Action>]
+export type Action = ActionCreate | ActionUpdate | ActionUpdateAll
+export type State = Quotation[] | null
+type Context = [State, Dispatch<Action>]
 
-function reducer(state: State, action: Action) {
-  const quotations = state || []
+export const QuotationContext = createContext<Context>([null, noop])
 
-  switch (action.type) {
-    case 'create':
-      return [...quotations, action.quotation]
-
-    case 'update':
-      return quotations.map(q =>
-        q.id === action.quotation.id ? action.quotation : q,
-      )
-
-    case 'update-all':
-      return action.quotations
-
-    default:
-      return state
-  }
+export default function() {
+  return useContext(QuotationContext)
 }
-
-const context = React.createContext<Context>([null, noop])
-
-export function useQuotationReducer() {
-  return React.useReducer(reducer, null)
-}
-
-export default context
