@@ -7,6 +7,9 @@ export class ContractItem {
   @Column({primary: true, generated: true})
   id: number
 
+  @Column()
+  position: number
+
   @ManyToOne(() => Contract)
   contract: Contract
 

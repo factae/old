@@ -157,6 +157,7 @@ export default function() {
             pointHitRadius: 20,
             pointBorderWidth: 0,
             pointRadius: 0,
+            hidden: true,
           },
           {
             data: _.fill(0)(12)(highTVA)(Array(12)),
@@ -167,6 +168,7 @@ export default function() {
             pointHitRadius: 20,
             pointBorderWidth: 0,
             pointRadius: 0,
+            hidden: true,
           },
           {
             data: _.fill(0)(12)(AE)(Array(12)),
@@ -177,6 +179,7 @@ export default function() {
             pointHitRadius: 20,
             pointBorderWidth: 0,
             pointRadius: 0,
+            hidden: true,
           },
           {
             data: totals,
@@ -248,7 +251,7 @@ export default function() {
         },
       },
     })
-  }, [invoices])
+  }, [invoices, lowTVA])
 
   return (
     <Grid className={classes.container} item xs={12}>

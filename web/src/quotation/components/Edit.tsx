@@ -55,7 +55,7 @@ export default function() {
   }, [quotations])
 
   function addItem(item: ContractItem) {
-    setItems([...items, item])
+    setItems([...items, {...item, position: items.length}])
     setTotal(total + item.total)
   }
 

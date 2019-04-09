@@ -13,6 +13,7 @@ import IconQuotation from '@material-ui/icons/AssignmentOutlined'
 import IconInvoice from '@material-ui/icons/EuroSymbol'
 import IconProfile from '@material-ui/icons/Face'
 import IconContact from '@material-ui/icons/ContactSupport'
+import IconSettings from '@material-ui/icons/Settings'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
 import useAuthContext from '../../../auth/context'
@@ -72,7 +73,11 @@ export default function() {
         </Typography>
 
         {!userHasPremium && (
-          <Button className={classes.button} variant="text" onClick={openPaymentDialog}>
+          <Button
+            className={classes.button}
+            variant="text"
+            onClick={openPaymentDialog}
+          >
             Passez Premium
           </Button>
         )}
@@ -108,6 +113,10 @@ export default function() {
               <MenuItem disabled>
                 <IconContact className={classes.icon} /> Contact
               </MenuItem>
+              <MenuItem disabled>
+                <IconSettings className={classes.icon} /> Paramètres
+              </MenuItem>
+              <Divider />
               <MenuItem onClick={handleLogout}>
                 <IconLogout className={classes.icon} /> Déconnexion
               </MenuItem>

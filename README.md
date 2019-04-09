@@ -56,10 +56,18 @@ restart the app once mysql is done.
 - [X] Make logout from backend (to remove cookies)
 - [X] Refactor contexts
 - [X] Improve auth process (via service)
-- [ ] Set up paid modules
+- [ ] Delete line in contract
+- [ ] Set up module to copy contract (paid)
+- [ ] Set up module to auto send contracts (paid)
+- [ ] Set up module to send form to client (paid)
+- [ ] Set up settings page
 - [ ] Set up contact page (help/support/feedbacks)
 - [ ] Privacy policy + cookie usage
+- [ ] Improve SEO
 - [X] Fix back button
+
+### Backlog
+
 - [ ] Improve validation (replace HTML5 one)
 - [ ] Set up prorata for new freelancers
 

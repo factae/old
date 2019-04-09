@@ -12,6 +12,7 @@
 
 export interface ContractItem {
   id: number
+  position: number
   description: string
   unitPrice: number
   quantity: number
@@ -21,6 +22,7 @@ export interface ContractItem {
 export function emptyItem(unitPrice: number | null): ContractItem {
   return {
     id: -1,
+    position: 0,
     description: '',
     unitPrice: unitPrice || 0,
     quantity: 1,

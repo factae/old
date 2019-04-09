@@ -34,21 +34,19 @@ export default function(props: Props) {
 
   const async = useAsyncContext()
   const [clients] = useClientContext()
+  const client = find(clients, {id: quotation.clientId}) || null
   const dispatch = useQuotationContext()[1]
   const [confirm, setConfirm] = useState(false)
   const [readyToDownload, setReadyToDownload] = useState(false)
   const {goTo} = useRouting()
+  const classes = useStyles()
 
-  const client = find(clients, {id: quotation.clientId}) || null
+  if (isNull(clients)) return null
+  if (isNull(client)) return null
+
   const clientName = `${client!.firstName} ${client!.lastName}`
   const isDraft = quotation.status === 'draft'
-
-  const classes = useStyles()
   const classNameCell = classNames({[classes.nonDraft]: !isDraft})
-
-  if (isNull(clients) || isNull(client)) {
-    return null
-  }
 
   function openConfirm(event: MouseEvent) {
     event.stopPropagation()
