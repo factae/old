@@ -1,4 +1,4 @@
-import React, {Fragment, MouseEvent, useContext, useState} from 'react'
+import React, {Fragment, MouseEvent, useState} from 'react'
 import classNames from 'classnames'
 import find from 'lodash/find'
 import isNull from 'lodash/isNull'
@@ -12,7 +12,7 @@ import IconPaid from '@material-ui/icons/AttachMoney'
 
 import Date from '../../../contract/components/ListItem/Date'
 import Status from '../../../contract/components/ListItem/Status'
-import ClientContext from '../../../client/context'
+import useClientContext from '../../../client/context'
 import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import {toEuro} from '../../../common/utils/currency'
@@ -32,7 +32,7 @@ export default function(props: Props) {
   const {invoice} = props
 
   const async = useAsyncContext()
-  const [clients] = useContext(ClientContext)
+  const [clients] = useClientContext()
   const dispatch = useInvoiceContext()[1]
   const [confirm, setConfirm] = useState(false)
   const [readyToDownload, setReadyToDownload] = useState(false)

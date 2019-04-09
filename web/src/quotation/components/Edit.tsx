@@ -1,5 +1,4 @@
-import React, {Fragment} from 'react'
-import {useMemo, useContext, useEffect, useRef, useState} from 'react'
+import React, {Fragment, useMemo, useEffect, useRef, useState} from 'react'
 import find from 'lodash/find'
 import isNaN from 'lodash/isNaN'
 import isNil from 'lodash/isNil'
@@ -14,16 +13,16 @@ import {RateUnit} from '../../user/model'
 import useRouting from '../../common/hooks/routing'
 import useQuotationContext from '../context'
 import useUserContext from '../../user/context'
+import useClientContext from '../../client/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
-import ClientContext from '../../client/context'
 import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
   const [user] = useUserContext()
-  const [clients] = useContext(ClientContext)
+  const [clients] = useClientContext()
   const [quotations, dispatch] = useQuotationContext()
 
   const {goTo, match, location} = useRouting<{id: number}>()

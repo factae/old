@@ -1,4 +1,6 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, useEffect} from 'react'
+import isNull from 'lodash/isNull'
+import every from 'lodash/every'
 import {Route} from 'react-router-dom'
 
 import Dashboard from './Dashboard'
@@ -9,8 +11,30 @@ import InvoiceEdit from '../../../invoice/components/Edit'
 import Client from '../../../client/components'
 import ClientEdit from '../../../client/components/Edit'
 import UserEdit from '../../../user/components'
+import useAsyncContext from '../../../async/context'
+import useUserContext from '../../../user/context'
+import useClientContext from '../../../client/context'
+import useQuotationContext from '../../../quotation/context'
+import useInvoiceContext from '../../../invoice/context'
 
 export default function() {
+  const async = useAsyncContext()
+  const [user] = useUserContext()
+  const [clients] = useClientContext()
+  const [quotations] = useQuotationContext()
+  const [invoices] = useInvoiceContext()
+  const resourcesReady = every([user, clients, quotations, invoices], isReady)
+
+  function isReady(resource: any) {
+    return !isNull(resource)
+  }
+
+  useEffect(() => {
+    if (resourcesReady) {
+      async.stop()
+    }
+  }, [resourcesReady])
+
   return (
     <Fragment>
       <Route exact path="/dashboard" component={Dashboard} />

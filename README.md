@@ -54,7 +54,7 @@ restart the app once mysql is done.
 - [X] Set up landing page
 - [X] Set up payment
 - [X] Make logout from backend (to remove cookies)
-- [ ] Refactor contexts
+- [X] Refactor contexts
 - [X] Improve auth process (via service)
 - [ ] Set up paid modules
 - [ ] Set up contact page (help/support/feedbacks)

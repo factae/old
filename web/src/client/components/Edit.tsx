@@ -1,11 +1,11 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import find from 'lodash/fp/find'
 import isNil from 'lodash/isNil'
 import isNull from 'lodash/isNull'
 import IconSave from '@material-ui/icons/Save'
 
 import * as clientService from '../service'
-import ClientContext from '../context'
+import useClientContext from '../context'
 import {Client, emptyClient} from '../model'
 import useRouting from '../../common/hooks/routing'
 import useForm from '../../common/form'
@@ -14,7 +14,7 @@ import Section from '../../common/form/Section'
 
 export default function() {
   const {goTo, match} = useRouting<{id: number}>()
-  const [clients, dispatch] = useContext(ClientContext)
+  const [clients, dispatch] = useClientContext()
 
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
   const defaultClient = find<Client>({id})(clients) || emptyClient

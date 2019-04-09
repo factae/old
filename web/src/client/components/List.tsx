@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import isNull from 'lodash/isNull'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -6,11 +6,11 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 
-import ClientContext from '../context'
+import useClientContext from '../context'
 import ClientListItem from './ListItem'
 
 export default function() {
-  const [clients] = useContext(ClientContext)
+  const [clients] = useClientContext()
 
   if (isNull(clients)) {
     return null
