@@ -13,7 +13,7 @@ import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
 
 export default function() {
-  const {match} = useRouting<{id: number}>()
+  const {goTo, match} = useRouting<{id: number}>()
   const [clients, dispatch] = useContext(ClientContext)
 
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
@@ -43,8 +43,11 @@ export default function() {
     >
       <Header
         title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
-        label="Sauvegarder"
-        icon={IconSave}
+        onBack={() => goTo('client')}
+        action={{
+          label: 'Sauvegarder',
+          icon: IconSave,
+        }}
       />
       <Section title="Informations personnelles">
         <TextField name="firstName" label="Prénom" autoFocus />

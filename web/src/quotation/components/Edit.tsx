@@ -26,7 +26,7 @@ export default function() {
   const [clients] = useContext(ClientContext)
   const [quotations, dispatch] = useContext(QuotationContext)
 
-  const {match, location} = useRouting<{id: number}>()
+  const {goTo, match, location} = useRouting<{id: number}>()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
 
   const getDefaultQuotation = useMemo((): Quotation => {
@@ -107,8 +107,11 @@ export default function() {
       >
         <Header
           title={id === -1 ? 'Créer un devis' : 'Modifier un devis'}
-          label="Sauvegarder"
-          icon={IconSave}
+          onBack={() => goTo('quotation')}
+          action={{
+            label: 'Sauvegarder',
+            icon: IconSave,
+          }}
         />
 
         <Section title="Informations générales">

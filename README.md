@@ -58,6 +58,8 @@ restart the app once mysql is done.
 - [X] Improve auth process (via service)
 - [ ] Set up paid modules
 - [ ] Set up contact page (help/support/feedbacks)
+- [ ] Privacy policy + cookie usage
+- [X] Fix back button
 - [ ] Improve validation (replace HTML5 one)
 - [ ] Set up prorata for new freelancers
 

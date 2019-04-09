@@ -12,9 +12,12 @@ export default function() {
     <Fragment>
       <Header
         title="Devis"
-        label="Ajouter"
-        icon={IconAdd}
-        onClick={() => goTo('quotationEdit')}
+        onBack={() => goTo('dashboard')}
+        action={{
+          label: 'Ajouter',
+          icon: IconAdd,
+          onClick: () => goTo('quotationEdit'),
+        }}
       />
 
       <QuotationList />

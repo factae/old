@@ -21,7 +21,7 @@ export default function() {
   const [clients] = useContext(ClientContext)
   const [invoices, dispatch] = useInvoiceContext()
 
-  const {match, location} = useRouting<{id: number}>()
+  const {goTo, match, location} = useRouting<{id: number}>()
   const id = _.isNil(match.params.id) ? -1 : Number(match.params.id)
 
   const defaultInvoice = useMemo((): Invoice => {
@@ -83,8 +83,11 @@ export default function() {
       >
         <Header
           title={id === -1 ? 'Créer une facture' : 'Modifier une facture'}
-          label="Sauvegarder"
-          icon={IconSave}
+          onBack={() => goTo('invoice')}
+          action={{
+            label: 'Sauvegarder',
+            icon: IconSave,
+          }}
         />
 
         <Section title="Informations générales">

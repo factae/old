@@ -12,9 +12,12 @@ export default function() {
     <Fragment>
       <Header
         title="Factures"
-        label="Ajouter"
-        icon={IconAdd}
-        onClick={() => goTo('invoiceEdit')}
+        onBack={() => goTo('dashboard')}
+        action={{
+          label: 'Ajouter',
+          icon: IconAdd,
+          onClick: () => goTo('invoiceEdit'),
+        }}
       />
 
       <InvoiceList />

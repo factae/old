@@ -12,9 +12,12 @@ export default function() {
     <Fragment>
       <Header
         title="Clients"
-        label="Ajouter"
-        onClick={() => goTo('clientEdit')}
-        icon={IconAdd}
+        onBack={() => goTo('dashboard')}
+        action={{
+          label: 'Ajouter',
+          icon: IconAdd,
+          onClick: () => goTo('clientEdit'),
+        }}
       />
 
       <ClientList />

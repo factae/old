@@ -1,36 +1,33 @@
-import React, {useContext} from 'react'
-import noop from 'lodash/fp/noop'
+import React from 'react'
+import noop from 'lodash/noop'
 import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import {SvgIconProps} from '@material-ui/core/SvgIcon'
 import IconBack from '@material-ui/icons/ArrowBack'
 
-import useRouting from '../../../common/hooks/routing'
-import useAsyncContext from '../../../async/context'
-
 import {useStyles} from './styles'
 
-interface Props {
+type Props = {
   title: string
-  label: string
-  icon: React.ComponentType<SvgIconProps>
-  onClick?: () => void
+  onBack: () => void
+  action: {
+    label: string
+    icon: React.ComponentType<SvgIconProps>
+    onClick?: () => void
+  }
 }
 
 export default function(props: Props) {
-  const {title, label, icon: Icon} = props
-  const handleClick = props.onClick || noop
-  const {loading} = useAsyncContext()
-  const {goBack} = useRouting()
   const classes = useStyles()
+  const triggerAction = props.action.onClick || noop
 
   return (
     <Typography variant="h3" component="h1" className={classes.title}>
-      <IconButton onClick={goBack} disabled={loading}>
+      <IconButton onClick={props.onBack}>
         <IconBack />
       </IconButton>
-      {title}
+      {props.title}
       <div className={classes.action}>
         <Fab
           variant="extended"
@@ -39,11 +36,10 @@ export default function(props: Props) {
           aria-haspopup="true"
           size="medium"
           color="secondary"
-          disabled={loading}
-          onClick={handleClick}
+          onClick={triggerAction}
         >
-          <Icon className={classes.icon} />
-          {label}
+          <props.action.icon className={classes.icon} />
+          {props.action.label}
         </Fab>
       </div>
     </Typography>

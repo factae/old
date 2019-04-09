@@ -3,6 +3,7 @@ import keys from 'lodash/keys'
 import isNaN from 'lodash/isNaN'
 import IconSave from '@material-ui/icons/Save'
 
+import useRouting from '../../common/hooks/routing'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
@@ -13,6 +14,7 @@ import {User, RateUnit, Activity} from '../model'
 export default function() {
   const [defaultUser, setUser] = useUserContext()
   const {Form, TextField, Select} = useForm<User>(defaultUser)
+  const {goTo} = useRouting()
 
   async function updateUser(nextUser: User) {
     await $user.update(nextUser)
@@ -48,7 +50,14 @@ export default function() {
       onSuccess={{message: 'Profil enregistré.', goTo: 'dashboard'}}
       onError={{message: "Erreur lors de l'enregistrement du profil !"}}
     >
-      <Header title="Profil" label="Sauvegarder" icon={IconSave} />
+      <Header
+        title="Profil"
+        onBack={() => goTo('dashboard')}
+        action={{
+          label: 'Sauvegarder',
+          icon: IconSave,
+        }}
+      />
 
       <Section title="Identité personnelle">
         <TextField name="firstName" label="Prénom" autoFocus />
