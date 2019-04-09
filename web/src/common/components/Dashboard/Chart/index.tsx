@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef} from 'react'
 import {Chart} from 'chart.js'
 import _ from 'lodash/fp'
 import {DateTime} from 'luxon'
@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid'
 import {useTheme} from '@material-ui/styles'
 
 import useThresholds from '../../../../common/hooks/thresholds'
-import InvoiceContext from '../../../../invoice/context'
+import useInvoiceContext from '../../../../invoice/context'
 import {Invoice} from '../../../../invoice/model'
 import {toEuro} from '../../../utils/currency'
 
@@ -51,7 +51,7 @@ function getFirstAndLastDayOfYear() {
 
 export default function() {
   const ref = useRef<HTMLCanvasElement | null>(null)
-  const [invoices] = useContext(InvoiceContext)
+  const [invoices] = useInvoiceContext()
   const theme: Theme = useTheme()
   const chart = useRef<Chart | null>(null)
   const [lowTVA, highTVA, AE] = useThresholds()

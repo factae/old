@@ -4,12 +4,11 @@ import Grid from '@material-ui/core/Grid'
 
 import * as clientService from '../../../client/service'
 import * as quotationService from '../../../quotation/service'
-import * as invoiceService from '../../../invoice/service'
 import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import ClientContext, {useClientReducer} from '../../../client/context'
 import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
-import InvoiceContext, {useInvoiceReducer} from '../../../invoice/context'
+import InvoiceProvider from '../../../invoice/provider'
 import DashboardRoutes from './Routes'
 import useUserContext from '../../../user/context'
 
@@ -21,7 +20,6 @@ export default function() {
   const [user] = useUserContext()
   const [clientState, clientDispatch] = useClientReducer()
   const [quotationState, quotationDispatch] = useQuotationReducer()
-  const [invoiceState, invoiceDispatch] = useInvoiceReducer()
   const isProfileRoute = router.location.pathname === '/dashboard/profile'
   const classes = useStyles()
 
@@ -35,16 +33,10 @@ export default function() {
     quotationDispatch({type: 'update-all', quotations})
   }
 
-  async function fetchInvoices() {
-    const invoices = await invoiceService.readAll()
-    invoiceDispatch({type: 'update-all', invoices})
-  }
-
   async function fetchData() {
     try {
       await fetchClients()
       await fetchQuotations()
-      await fetchInvoices()
       async.stop()
     } catch (error) {
       console.error(error.toString())
@@ -71,9 +63,9 @@ export default function() {
           <QuotationContext.Provider
             value={[quotationState, quotationDispatch]}
           >
-            <InvoiceContext.Provider value={[invoiceState, invoiceDispatch]}>
+            <InvoiceProvider>
               <DashboardRoutes />
-            </InvoiceContext.Provider>
+            </InvoiceProvider>
           </QuotationContext.Provider>
         </ClientContext.Provider>
       </Grid>

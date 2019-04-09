@@ -17,7 +17,7 @@ import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import {toEuro} from '../../../common/utils/currency'
 import {Invoice} from '../../model'
-import QuotationContext from '../../context'
+import useInvoiceContext from '../../context'
 import * as service from '../../service'
 import Confirm from '../Confirm'
 import Document from '../Document'
@@ -33,7 +33,7 @@ export default function(props: Props) {
 
   const async = useAsyncContext()
   const [clients] = useContext(ClientContext)
-  const dispatch = useContext(QuotationContext)[1]
+  const dispatch = useInvoiceContext()[1]
   const [confirm, setConfirm] = useState(false)
   const [readyToDownload, setReadyToDownload] = useState(false)
   const {goTo} = useRouting()

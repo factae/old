@@ -7,7 +7,7 @@ import * as service from '../service'
 import {Invoice, emptyInvoice} from '../../invoice/model'
 import {ContractItem} from '../../contractItem/model'
 import useRouting from '../../common/hooks/routing'
-import InvoiceContext from '../context'
+import useInvoiceContext from '../context'
 import useUserContext from '../../user/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
@@ -19,7 +19,7 @@ import ListItem from '../../contractItem/components/List'
 export default function() {
   const [user] = useUserContext()
   const [clients] = useContext(ClientContext)
-  const [invoices, dispatch] = useContext(InvoiceContext)
+  const [invoices, dispatch] = useInvoiceContext()
 
   const {match, location} = useRouting<{id: number}>()
   const id = _.isNil(match.params.id) ? -1 : Number(match.params.id)
