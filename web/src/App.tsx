@@ -8,6 +8,8 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
 import AsyncProvider from './async/provider'
 import AuthProvider from './auth/provider'
+import UserProvider from './user/provider'
+import PaymentProvider from './payment/provider'
 import Navigation from './common/components/Navigation'
 import Login from './auth/components/Login'
 import Register from './auth/components/Register'
@@ -60,15 +62,19 @@ export default function() {
         <BrowserRouter>
           <AsyncProvider>
             <AuthProvider>
-              <Navigation />
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/confirm/:token" component={Confirm} />
-                <PrivateRoute path="/dashboard" component={Dashboard} />
-                <Redirect to="/" />
-              </Switch>
+              <UserProvider>
+                <PaymentProvider>
+                  <Navigation />
+                  <Switch>
+                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/register" component={Register} />
+                    <Route exact path="/confirm/:token" component={Confirm} />
+                    <PrivateRoute path="/dashboard" component={Dashboard} />
+                    <Redirect to="/" />
+                  </Switch>
+                </PaymentProvider>
+              </UserProvider>
             </AuthProvider>
           </AsyncProvider>
         </BrowserRouter>

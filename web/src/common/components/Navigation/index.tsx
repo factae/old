@@ -17,13 +17,17 @@ import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
 import useAuthContext from '../../../auth/context'
 import useAsyncContext from '../../../async/context'
+import usePaymentContext from '../../../payment/context'
+import {usePremium} from '../../../user/hooks'
 import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const async = useAsyncContext()
   const {auth, logout} = useAuthContext()
+  const async = useAsyncContext()
+  const userHasPremium = usePremium()
+  const {openPaymentDialog} = usePaymentContext()
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
@@ -66,6 +70,12 @@ export default function() {
         >
           <span className={classes.title}>factAE</span>
         </Typography>
+
+        {!userHasPremium && (
+          <Button className={classes.button} variant="text" onClick={openPaymentDialog}>
+            Passez Premium
+          </Button>
+        )}
 
         {auth ? (
           <Fragment>

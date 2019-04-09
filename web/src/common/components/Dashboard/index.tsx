@@ -12,8 +12,6 @@ import QuotationContext, {useQuotationReducer} from '../../../quotation/context'
 import InvoiceContext, {useInvoiceReducer} from '../../../invoice/context'
 import DashboardRoutes from './Routes'
 import useUserContext from '../../../user/context'
-import UserProvider from '../../../user/provider'
-import PaymentProvider from '../../../payment/provider'
 
 import {useStyles} from './styles'
 
@@ -69,21 +67,15 @@ export default function() {
   return (
     <Grid container justify="center" className={classes.container}>
       <Grid item xs={12} md={10} lg={9} xl={8}>
-        <UserProvider>
-          <PaymentProvider>
-            <ClientContext.Provider value={[clientState, clientDispatch]}>
-              <QuotationContext.Provider
-                value={[quotationState, quotationDispatch]}
-              >
-                <InvoiceContext.Provider
-                  value={[invoiceState, invoiceDispatch]}
-                >
-                  <DashboardRoutes />
-                </InvoiceContext.Provider>
-              </QuotationContext.Provider>
-            </ClientContext.Provider>
-          </PaymentProvider>
-        </UserProvider>
+        <ClientContext.Provider value={[clientState, clientDispatch]}>
+          <QuotationContext.Provider
+            value={[quotationState, quotationDispatch]}
+          >
+            <InvoiceContext.Provider value={[invoiceState, invoiceDispatch]}>
+              <DashboardRoutes />
+            </InvoiceContext.Provider>
+          </QuotationContext.Provider>
+        </ClientContext.Provider>
       </Grid>
     </Grid>
   )
