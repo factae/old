@@ -1,9 +1,11 @@
 import {Request, Response} from 'express'
-import get from 'lodash/get'
-import isNull from 'lodash/isNull'
+import _ from 'lodash/fp'
 import {DateTime} from 'luxon'
-import {getRepository, Not, Equal, Between} from 'typeorm'
+import {getRepository, Between, Not} from 'typeorm'
 
+import * as mail from '../mail'
+import {hasSetting} from '../user/utils'
+import {Client} from '../client/model'
 import {Contract} from '../contract/model'
 import {ContractItem} from '../contractItem/model'
 
@@ -19,15 +21,11 @@ export async function readAll(req: Request, res: Response) {
 
   res.json(
     invoices.map(invoice => {
-      const createdAt = isNull(invoice.createdAt)
+      const createdAt = _.isNull(invoice.createdAt)
         ? null
         : DateTime.fromJSDate(new Date(invoice.createdAt)).toISO()
 
-      return {
-        ...invoice,
-        conditions: get(invoice, 'invoiceConditions', null),
-        createdAt,
-      }
+      return {...invoice, createdAt}
     }),
   )
 }
@@ -39,10 +37,9 @@ export async function create(req: Request, res: Response) {
   const $item = await getRepository(ContractItem)
 
   delete req.body.id
-  req.body.number = '-'
   req.body.user = req.user.id
   req.body.client = req.body.clientId
-  req.body.invoiceConditions = req.body.conditions
+  req.body.createdAt = DateTime.local().toISO()
 
   const invoice = await $invoice.save(req.body)
   invoice.items = await $item.save(
@@ -60,26 +57,37 @@ export async function create(req: Request, res: Response) {
 
 export async function update(req: Request, res: Response) {
   const $invoice = await getRepository(Contract)
-  const $item = await getRepository(ContractItem)
+  const prevInvoice = await $invoice.findOne({id: req.body.id})
+
+  if (!prevInvoice) {
+    return res.status(404).send('facture introuvable')
+  }
+
+  if (prevInvoice.status === 'paid') {
+    return res.status(403).send('facture verrouillée')
+  }
+
   const now = DateTime.local()
+  const $item = await getRepository(ContractItem)
   const [firstDayOfMonth, lastDayOfMonth] = getFirstAndLastDay(now)
 
-  const invoices = await $invoice.find({
-    where: {
-      type: 'invoice',
-      status: Not(Equal('draft')),
-      clientId: req.body.clientId,
-      createdAt: Between(firstDayOfMonth, lastDayOfMonth),
-    },
-    order: {createdAt: 'DESC'},
-  })
+  if (prevInvoice.status === 'draft' && req.body.status === 'pending') {
+    const invoices = await $invoice.find({
+      where: {
+        id: Not(prevInvoice.id),
+        type: 'invoice',
+        client: req.body.clientId,
+        createdAt: Between(firstDayOfMonth, lastDayOfMonth),
+      },
+      order: {createdAt: 'DESC'},
+    })
 
-  req.body.invoiceConditions = req.body.conditions
-
-  if (req.body.status === 'validated') {
     req.body.number = `${now.toFormat('yyLL')}-${invoices.length + 1}`
-    req.body.createdAt = DateTime.local().toISO()
   }
+
+  req.body.user = req.user.id
+  req.body.client = req.body.clientId
+  req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
 
   const invoice = await $invoice.save(req.body)
   invoice.items = await $item.save(
@@ -90,8 +98,36 @@ export async function update(req: Request, res: Response) {
     }),
   )
 
+  const wasPending = prevInvoice.status === 'pending'
+  const isPending = invoice.status === 'pending'
+  const userHasAutoSend = hasSetting(req.user, 'invoiceAutoSend')
+
+  if (wasPending && isPending && userHasAutoSend) {
+    const pdf = _.replace('data:application/pdf;base64,', '', invoice.pdf)
+    const $client = await getRepository(Client)
+    const client = await $client.findOneOrFail({
+      select: ['email'],
+      where: {id: req.body.client},
+    })
+
+    await mail.send({
+      subject: '[factAE] Facture',
+      to: client.email,
+      bcc: req.user.email,
+      template: {
+        name: 'invoice',
+        data: {},
+      },
+      attachment: {
+        data: Buffer.from(pdf, 'base64'),
+        filename: `facture-${invoice.number}.pdf`,
+      },
+    })
+  }
   res.json(invoice)
 }
+
+// ------------------------------------------------------------------- # Utils #
 
 function getFirstAndLastDay(date: DateTime) {
   const firstDayOfMonth = date.set({

@@ -28,53 +28,50 @@ export class User {
   @Column({unique: true})
   email: string
 
-  @Column({default: false})
-  emailConfirmed: boolean
+  @Column({type: 'varchar', nullable: true, default: null})
+  password: string | null
 
-  @Column()
-  password: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  firstName: string | null
 
-  @Column({nullable: true, default: null})
-  firstName: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  lastName: string | null
 
-  @Column({nullable: true, default: null})
-  lastName: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  tradingName: string | null
 
-  @Column({nullable: true, default: null})
-  tradingName: string
-
-  @Column({nullable: true, default: null})
-  address: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  address: string | null
 
   @Column({type: 'int', nullable: true, default: null})
-  zip: number
+  zip: number | null
 
-  @Column({nullable: true, default: null})
-  city: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  city: string | null
 
-  @Column({nullable: true, default: null})
-  phone: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  phone: string | null
 
-  @Column({nullable: true, default: null})
-  rib: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  rib: string | null
 
-  @Column({nullable: true, default: null})
-  iban: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  iban: string | null
 
-  @Column({nullable: true, default: null})
-  bic: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  bic: string | null
 
-  @Column({nullable: true, default: null})
-  siren: string
+  @Column({type: 'varchar', nullable: true, default: null})
+  siren: string | null
 
-  @Column({nullable: true, default: null})
-  rate: number
-
-  @Column({type: 'tinyint', nullable: true, default: null})
-  rateUnit: RateUnit
+  @Column({type: 'int', nullable: true, default: null})
+  rate: number | null
 
   @Column({type: 'tinyint', nullable: true, default: null})
-  activity: Activity
+  rateUnit: RateUnit | null
+
+  @Column({type: 'tinyint', nullable: true, default: null})
+  activity: Activity | null
 
   @Column({type: 'varchar', length: 36, nullable: true, default: null})
   token: string | null
@@ -86,11 +83,26 @@ export class User {
   taxRate: number | null
 
   @Column({type: 'text', nullable: true, default: null})
-  quotationConditions: string
+  quotationConditions: string | null
+
+  @Column({default: false})
+  quotationAutoSend: boolean
 
   @Column({type: 'text', nullable: true, default: null})
   invoiceConditions: string | null
 
+  @Column({default: false})
+  invoiceAutoSend: boolean
+
+  @Column({default: false})
+  active: boolean
+
   @Column({type: 'datetime', nullable: true, default: null})
   premium: string | null
+
+  @Column({type: 'tinyint', default: 0})
+  step: number
+
+  @Column({type: 'boolean', default: false})
+  ready: boolean
 }

@@ -2,23 +2,25 @@ import React from 'react'
 import classNames from 'classnames'
 import Chip from '@material-ui/core/Chip'
 import TableCell from '@material-ui/core/TableCell'
-import IconValidated from '@material-ui/icons/Schedule'
 import IconDraft from '@material-ui/icons/DescriptionOutlined'
+import IconValidated from '@material-ui/icons/Schedule'
 import IconSigned from '@material-ui/icons/CheckCircle'
-import IconPaid from '@material-ui/icons/MonetizationOn'
+import IconPaid from '@material-ui/icons/EuroSymbol'
+
+import {Contract} from '../../../model'
 
 import {useStyles} from './styles'
 
 interface Props {
-  value: 'draft' | 'validated' | 'signed' | 'paid'
+  value: Contract['status']
 }
 
 function renderChip(value: Props['value']) {
   switch (value) {
     case 'draft':
-      return <Chip variant="default" label="brouillon" icon={<IconDraft />} />
+      return <Chip label="brouillon" icon={<IconDraft />} />
 
-    case 'validated':
+    case 'pending':
       return (
         <Chip variant="outlined" label="en cours" icon={<IconValidated />} />
       )
@@ -33,7 +35,7 @@ function renderChip(value: Props['value']) {
 
 export default function({value}: Props) {
   const classes = useStyles()
-  const classNameCell = classNames({[classes.nonDraft]: status !== 'draft'})
+  const classNameCell = classNames({[classes.nonPending]: status !== 'pending'})
 
   return (
     <TableCell className={classNameCell} align="center">

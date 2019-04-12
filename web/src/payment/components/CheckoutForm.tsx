@@ -51,7 +51,7 @@ function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
 
       await setUser({...user, premium: date.from(paymentRes.data)})
       closePaymentDialog()
-      async.stop('Paiement validé.')
+      async.stop('Paiement effectué. Merci pour votre achat !')
     } catch (error) {
       console.debug(error.toString())
       async.stop('Erreur lors de paiement !')

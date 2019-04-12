@@ -11,6 +11,8 @@ import InvoiceEdit from '../../../invoice/components/Edit'
 import Client from '../../../client/components'
 import ClientEdit from '../../../client/components/Edit'
 import UserEdit from '../../../user/components'
+import Stats from '../../../stats/components'
+import Settings from '../../../settings/components'
 import useAsyncContext from '../../../async/context'
 import useUserContext from '../../../user/context'
 import useClientContext from '../../../client/context'
@@ -21,8 +23,8 @@ export default function() {
   const async = useAsyncContext()
   const [user] = useUserContext()
   const [clients] = useClientContext()
-  const [quotations] = useQuotationContext()
-  const [invoices] = useInvoiceContext()
+  const {quotations} = useQuotationContext()
+  const {invoices} = useInvoiceContext()
   const resourcesReady = every([user, clients, quotations, invoices], isReady)
 
   function isReady(resource: any) {
@@ -45,6 +47,8 @@ export default function() {
       <Route exact path="/dashboard/client" component={Client} />
       <Route path="/dashboard/client/edit/:id?" component={ClientEdit} />
       <Route path="/dashboard/profile" component={UserEdit} />
+      <Route path="/dashboard/stats" component={Stats} />
+      <Route path="/dashboard/settings" component={Settings} />
     </Fragment>
   )
 }

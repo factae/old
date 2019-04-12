@@ -16,12 +16,12 @@ export class ContractItem {
   @Column()
   description: string
 
-  @Column()
-  unitPrice: number
+  @Column({type: 'int', nullable: true, default: null})
+  unitPrice: number | null
 
-  @Column()
-  quantity: number
+  @Column({type: 'int', nullable: true, default: null})
+  quantity: number | null
 
-  @Column()
-  total: number
+  @Column({type: 'int', nullable: true, default: null})
+  total: number | null
 }

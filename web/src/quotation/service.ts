@@ -42,6 +42,7 @@ export async function create(quotation: Quotation) {
   }
 
   quotation.id = res.data.id
+  quotation.createdAt = date.from(res.data.createdAt)
   quotation.items = res.data.items
 }
 
@@ -60,6 +61,5 @@ export async function update(quotation: Quotation) {
     throw new Error(res.statusText)
   }
 
-  quotation.createdAt = date.from(res.data.createdAt)
   quotation.items = res.data.items
 }

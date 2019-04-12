@@ -6,7 +6,7 @@ import {User, RateUnit} from '../user/model'
 
 export interface Quotation extends Contract {
   type: 'quotation'
-  status: 'draft' | 'validated' | 'signed'
+  status: 'draft' | 'pending' | 'signed'
   conditions: string | null
   rate: number | null
   rateUnit: RateUnit | null

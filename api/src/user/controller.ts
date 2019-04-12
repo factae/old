@@ -18,7 +18,7 @@ export async function update(req: Request, res: Response) {
   if (!req.user) return res.sendStatus(403)
 
   const $user = await getRepository(User)
-  $user.save({...req.user, ...omit(req.body, 'email')})
+  $user.save({...req.user, ...omit(req.body, 'id', 'email', 'premium')})
 
   res.sendStatus(204)
 }

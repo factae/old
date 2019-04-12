@@ -17,13 +17,14 @@ import useClientContext from '../../client/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
+import Submit from '../../common/form/Submit'
 import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
   const [user] = useUserContext()
   const [clients] = useClientContext()
-  const [quotations, dispatch] = useQuotationContext()
+  const {quotations, dispatch, download} = useQuotationContext()
 
   const {goTo, match, location} = useRouting<{id: number}>()
   const id = isNil(match.params.id) ? -1 : Number(match.params.id)
@@ -44,6 +45,7 @@ export default function() {
   const [items, setItems] = useState(quotation.current.items)
   const [total, setTotal] = useState(quotation.current.total)
   const {Form, TextField, DateField, Select} = useForm(quotation.current)
+  const submitRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     quotation.current = getDefaultQuotation
@@ -56,7 +58,7 @@ export default function() {
 
   function addItem(item: ContractItem) {
     setItems([...items, {...item, position: items.length}])
-    setTotal(total + item.total)
+    setTotal(total + (item.total || 0))
   }
 
   function setTaxRate(value: string | number | null | undefined) {
@@ -67,17 +69,27 @@ export default function() {
     setLocalRate(isNil(value) ? null : Number(value))
   }
 
+  function submitForm() {
+    if (submitRef.current) {
+      submitRef.current.click()
+    }
+  }
+
   async function saveQuotation(quotation: Quotation) {
     quotation.items = items
     quotation.total = total
 
     if (id === -1) {
       await service.create(quotation)
-      dispatch({type: 'create', quotation})
-    } else {
-      await service.update(quotation)
-      dispatch({type: 'update', quotation})
+      return dispatch({type: 'create', quotation})
     }
+
+    if (quotation.status === 'pending') {
+      quotation.pdf = await download(quotation)
+    }
+
+    await service.update(quotation)
+    dispatch({type: 'update', quotation})
   }
 
   if (isNil(user)) return null
@@ -108,6 +120,7 @@ export default function() {
           title={id === -1 ? 'Créer un devis' : 'Modifier un devis'}
           onBack={() => goTo('quotation')}
           action={{
+            ref: ref => (submitRef.current = ref),
             label: 'Sauvegarder',
             icon: IconSave,
           }}
@@ -167,6 +180,8 @@ export default function() {
 
       <EditItem rate={rate} onAdd={addItem} />
       <ListItem items={items} total={total} taxRate={taxRate} />
+
+      <Submit onClick={submitForm} />
     </Fragment>
   )
 }

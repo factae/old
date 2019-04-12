@@ -30,11 +30,15 @@ export interface User {
   taxId: string | null
   taxRate: number | null
   quotationConditions: string | null
+  quotationAutoSend: boolean
   invoiceConditions: string | null
+  invoiceAutoSend: boolean
   rate: number | null
   rateUnit: RateUnit | null
   activity: Activity | null
   premium: DateTime | null
+  step: number
+  ready: boolean
 }
 
 export type PartialUser = Pick<User, 'email' | 'password'>

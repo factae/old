@@ -23,7 +23,7 @@ const verify: VerifyCallback = async (payload, done) => {
     const user = await $user.findOne({id})
 
     if (!user) return done(authFailed)
-    if (!user.emailConfirmed) return done(authFailed)
+    if (!user.active) return done(authFailed)
 
     done(null, user)
   } catch (error) {

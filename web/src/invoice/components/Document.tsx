@@ -1,5 +1,5 @@
 import React from 'react'
-import isNull from 'lodash/isNull'
+import _ from 'lodash/fp'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
 
@@ -17,9 +17,9 @@ import useUserContext from '../../user/context'
 import {Invoice} from '../model'
 import {Client} from '../../client/model'
 
-interface Props {
-  invoice: Invoice
-  client: Client
+type Props = {
+  invoice: Invoice | null
+  client: Client | null
   onSuccess: (pdf: string) => void
   onError: (error: Error) => void
 }
@@ -29,14 +29,14 @@ export default function(props: Props) {
   const [user] = useUserContext()
   const theme = useTheme<Theme>()
 
-  if (isNull(user) || isNull(invoice.createdAt)) {
-    return null
-  }
+  if (_.isNull(user)) return null
+  if (_.isNull(client)) return null
+  if (_.isNull(invoice)) return null
+  if (_.isNull(invoice.createdAt)) return null
 
   const infos = {
     'Facture n°': invoice.number,
     'Date émission': invoice.createdAt.toFormat('dd/LL/yyyy'),
-    'Date livraison': invoice.deliveredAt.toFormat('dd/LL/yyyy'),
   }
 
   return (

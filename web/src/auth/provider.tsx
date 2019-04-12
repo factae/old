@@ -18,8 +18,16 @@ export default function({children}: Props) {
     }
   }
 
-  async function register(email: string, password: string) {
-    await $auth.register(email, password)
+  async function register(email: string) {
+    await $auth.register(email)
+  }
+
+  async function reset(email: string) {
+    await $auth.reset(email)
+  }
+
+  async function password(token: string, password: string) {
+    setAuth(await $auth.password(token, password))
   }
 
   async function login(email: string, password: string) {
@@ -35,7 +43,9 @@ export default function({children}: Props) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{auth, register, login, logout}}>
+    <AuthContext.Provider
+      value={{auth, register, reset, password, login, logout}}
+    >
       {children}
     </AuthContext.Provider>
   )

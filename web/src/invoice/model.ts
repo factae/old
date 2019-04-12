@@ -1,15 +1,13 @@
 import get from 'lodash/get'
-import {DateTime} from 'luxon'
 
 import {Contract, emptyContract} from '../contract/model'
 import {User} from '../user/model'
 
 export interface Invoice extends Contract {
   type: 'invoice'
-  status: 'draft' | 'validated' | 'paid'
+  status: 'draft' | 'pending' | 'paid'
   number: string
   conditions: string | null
-  deliveredAt: DateTime
 }
 
 export function emptyInvoice(user: User | null): Invoice {
@@ -19,6 +17,5 @@ export function emptyInvoice(user: User | null): Invoice {
     status: 'draft',
     number: '-',
     conditions: get(user, 'invoiceConditions', null),
-    deliveredAt: DateTime.local(),
   }
 }

@@ -20,9 +20,20 @@ type ActionUpdateAll = {
 
 export type Action = ActionCreate | ActionUpdate | ActionUpdateAll
 export type State = Invoice[] | null
-type Context = [State, Dispatch<Action>]
 
-export const InvoiceContext = createContext<Context>([null, noop])
+type Context = {
+  invoices: State
+  dispatch: Dispatch<Action>
+  download: (invoice: Invoice) => Promise<string>
+}
+
+const defaultContext: Context = {
+  invoices: null,
+  dispatch: noop,
+  download: () => Promise.resolve(''),
+}
+
+export const InvoiceContext = createContext(defaultContext)
 
 export default function() {
   return useContext(InvoiceContext)

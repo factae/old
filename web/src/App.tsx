@@ -11,10 +11,11 @@ import AuthProvider from './auth/provider'
 import UserProvider from './user/provider'
 import PaymentProvider from './payment/provider'
 import Navigation from './common/components/Navigation'
-import Login from './auth/components/Login'
 import Register from './auth/components/Register'
+import Login from './auth/components/Login'
+import ResetPassword from './auth/components/ResetPassword'
+import SetPassword from './auth/components/SetPassword'
 import Dashboard from './common/components/Dashboard'
-import Confirm from './user/components/Confirm'
 import PrivateRoute from './auth/components/PrivateRoute'
 import Landing from './landing'
 import theme from './theme'
@@ -67,9 +68,10 @@ export default function() {
                   <Navigation />
                   <Switch>
                     <Route exact path="/" component={Landing} />
-                    <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
-                    <Route exact path="/confirm/:token" component={Confirm} />
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/password/reset" component={ResetPassword} />
+                    <Route exact path="/password/:token" component={SetPassword} />
                     <PrivateRoute path="/dashboard" component={Dashboard} />
                     <Redirect to="/" />
                   </Switch>

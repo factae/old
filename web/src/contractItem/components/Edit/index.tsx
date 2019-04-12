@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import isNull from 'lodash/isNull'
+import some from 'lodash/some'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import IconAdd from '@material-ui/icons/AddCircleOutline'
@@ -22,7 +24,14 @@ export default function({rate, onAdd: addItemParent}: Props) {
   const classes = useStyles()
 
   function addItem(nextItem: ContractItem) {
-    nextItem.total = nextItem.quantity * nextItem.unitPrice
+    if (some([nextItem.quantity, nextItem.unitPrice], isNull)) {
+      nextItem.quantity = null
+      nextItem.unitPrice = null
+      nextItem.total = null
+    } else {
+      nextItem.total = Number(nextItem.quantity) * Number(nextItem.unitPrice)
+    }
+
     addItemParent(nextItem)
 
     setAutoFocus(true)
@@ -48,6 +57,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
           name="quantity"
           label="Quantité"
           type="number"
+          required={false}
         />
 
         <TextField
@@ -56,6 +66,7 @@ export default function({rate, onAdd: addItemParent}: Props) {
           label="Prix unitaire (€)"
           type="number"
           value={unitPrice}
+          required={false}
         />
 
         <Grid className={classes.buttonContainer} item xs={2}>

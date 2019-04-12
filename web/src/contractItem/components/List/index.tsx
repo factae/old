@@ -45,7 +45,9 @@ export default function(props: Props) {
             {items.map((item, key) => (
               <TableRow key={key}>
                 <TableCell>{item.description}</TableCell>
-                <TableCell align="right">{item.quantity}</TableCell>
+                <TableCell align="right">
+                  {isNull(item.quantity) ? '' : item.quantity}
+                </TableCell>
                 <TableCell align="right">{toEuro(item.unitPrice)}</TableCell>
                 <TableCell align="right">{toEuro(item.total)}</TableCell>
               </TableRow>

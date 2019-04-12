@@ -26,8 +26,12 @@ export class Contract {
   @Column({type: 'varchar', length: 16, nullable: true, default: null})
   number: string | null
 
-  @Column({type: 'enum', enum: ['draft', 'validated', 'signed', 'paid']})
-  status: 'draft' | 'validated' | 'signed' | 'paid'
+  @Column({
+    type: 'enum',
+    enum: ['draft', 'pending', 'signed', 'paid'],
+    default: 'draft',
+  })
+  status: 'draft' | 'pending' | 'signed' | 'paid'
 
   @OneToMany(() => ContractItem, item => item.contract)
   items: ContractItem[]
@@ -41,11 +45,11 @@ export class Contract {
   @Column({type: 'int', nullable: true, default: null})
   rate: number | null
 
-  @Column({type: 'tinyint', default: 0})
-  rateUnit: RateUnit
+  @Column({type: 'tinyint', nullable: true, default: null})
+  rateUnit: RateUnit | null
 
-  @Column()
-  total: number
+  @Column({type: 'int', nullable: true, default: null})
+  total: number | null
 
   @Column({type: 'text', nullable: true, default: null})
   pdf: string | null
@@ -67,7 +71,4 @@ export class Contract {
 
   @Column({type: 'datetime', nullable: true, default: null})
   signedAt: string | null
-
-  @Column({type: 'datetime', nullable: true, default: null})
-  deliveredAt: string | null
 }

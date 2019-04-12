@@ -11,6 +11,7 @@ import useRouting from '../../common/hooks/routing'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
+import Submit from '../../common/form/Submit'
 
 export default function() {
   const {goTo, match} = useRouting<{id: number}>()
@@ -49,21 +50,26 @@ export default function() {
           icon: IconSave,
         }}
       />
+
       <Section title="Informations personnelles">
         <TextField name="firstName" label="Prénom" autoFocus />
         <TextField name="lastName" label="Nom" />
         <TextField name="email" label="Email" type="email" />
         <TextField name="phone" label="Téléphone" />
       </Section>
+
       <Section title="Adresse postale">
         <TextField name="address" label="Adresse" />
         <TextField name="zip" label="Code postal" type="number" />
         <TextField name="city" label="Ville" />
       </Section>
+
       <Section title="Autre">
         <TextField name="tradingName" label="Nom commercial" required={false} />
         <TextField name="siren" label="Siren" required={false} />
       </Section>
+
+      <Submit />
     </Form>
   )
 }

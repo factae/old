@@ -18,12 +18,12 @@ const verify: VerifyFunction = async (email, password, done) => {
     const user = await $user.findOne({email})
 
     if (!user) return done(badCredentials)
-    if (!user.emailConfirmed) return done(emailNotActivated)
+    if (!user.active) return done(emailNotActivated)
 
-    const passwordsMatch = bcrypt.compareSync(password, user.password)
+    const passwordsMatch = bcrypt.compareSync(password, String(user.password))
     if (!passwordsMatch) return done(badCredentials)
 
-    done(null, user)
+    done(null, await $user.save({...user, token: null}))
   } catch (error) {
     done(error)
   }

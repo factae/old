@@ -28,8 +28,14 @@ export default function(props: Props) {
   const classes = useStyles()
 
   return (
-    <Fragment>
-      <Typography className={classNames(classes.title, {[classes.withSubtitle]: subtitle})} variant="h5" component="h2">
+    <section className={classes.container}>
+      <Typography
+        className={classNames(classes.title, {
+          [classes.withSubtitle]: subtitle,
+        })}
+        variant="h5"
+        component="h2"
+      >
         {title}
         {action && (
           <Tooltip
@@ -62,6 +68,6 @@ export default function(props: Props) {
       <Grid container spacing={16}>
         {children}
       </Grid>
-    </Fragment>
+    </section>
   )
 }

@@ -1,5 +1,6 @@
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import makeStyles from '@material-ui/styles/makeStyles'
+import premium from '@material-ui/core/colors/orange'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   navigation: {
@@ -23,5 +24,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   button: {
     color: theme.palette.common.white,
+  },
+  premium: {
+    textAlign: 'center',
+  },
+  iconPremium: {
+    color: premium[400],
   },
 }))

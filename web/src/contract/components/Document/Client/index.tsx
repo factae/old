@@ -1,5 +1,5 @@
 import React from 'react'
-import isNull from 'lodash/isNull'
+import _ from 'lodash/fp'
 import {View, Text} from '@react-pdf/renderer'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
@@ -10,13 +10,19 @@ import useStyle from './styles'
 type Props = {
   theme: Theme
   title: string
-  client: Client
+  client: Client | null
 }
 
 export default function({theme, title, client}: Props) {
   const styles = useStyle(theme)
 
+  if (_.isNull(client)) {
+    return null
+  }
+
   function renderName() {
+    if (_.isNull(client)) return null
+
     const fullName = `${client.firstName} ${client.lastName}`
     const name = client.tradingName
       ? `${client.tradingName} (${fullName})`
@@ -26,7 +32,9 @@ export default function({theme, title, client}: Props) {
   }
 
   function renderSiren() {
-    if (isNull(client.siren)) return null
+    if (_.isNull(client)) return null
+    if (_.isNull(client.siren)) return null
+
     return <Text style={styles.identification}>{client.siren}</Text>
   }
 

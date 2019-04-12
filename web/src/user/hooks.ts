@@ -1,13 +1,25 @@
 import {DateTime} from 'luxon'
+import getOr from 'lodash/fp/getOr'
 
+import {User} from './model'
 import useUserContext from './context'
 
-export function usePremium() {
-  const [user] = useUserContext()
+type Setting = 'quotationAutoSend' | 'invoiceAutoSend'
 
-  if (!user) return true
+function hasPremium(user: User | null) {
+  if (!user) return null
   if (!user.premium) return false
   if (user.premium < DateTime.local()) return false
 
-  return true
+  return user.premium
+}
+
+export function useUserPremium() {
+  const [user] = useUserContext()
+  return hasPremium(user)
+}
+
+export function useUserSetting(setting: Setting) {
+  const [user] = useUserContext()
+  return hasPremium(user) && getOr(false, setting, user)
 }

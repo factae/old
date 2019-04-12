@@ -12,7 +12,7 @@ import InvoiceListItem from '../ListItem'
 import {useStyles} from './styles'
 
 export default function() {
-  const [invoices] = useInvoiceContext()
+  const {invoices} = useInvoiceContext()
   const classes = useStyles()
 
   if (isNull(invoices)) {

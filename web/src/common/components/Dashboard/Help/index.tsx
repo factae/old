@@ -10,37 +10,8 @@ export default function() {
 
   return (
     <Grid item xs={12}>
-      <Typography variant="body1">
-        <strong>Le plafond micro-entrepreneur</strong>{' '}
-        <em>({toEuro(AE)} HT)</em> correspond au plafond maximum autorisé par
-        l'auto-entrepreneur. Un dépassement implique :
-      </Typography>
-      <ul>
-        <Typography component="li" variant="body1">
-          - la perte de votre statut auto-entrepreneur
-        </Typography>
-      </ul>
-      <Typography variant="body1">
-        <strong>Le plafond de TVA haut</strong> <em>({toEuro(lowTVA)} HT)</em>{' '}
-        correspond au plafond à partir du quel vous devenez redevable de la TVA.
-        Ceci prend effet le premier jour du mois dont le chiffre d'affaire hors
-        taxe dépasse ce seuil. Un dépassement implique :
-      </Typography>
-      <ul>
-        <Typography component="li" variant="body1">
-          - d'inscrire la TVA sur vos nouvelles factures + refacturer toutes
-          celles du mois en cours
-        </Typography>
-        <Typography component="li" variant="body1">
-          - de créer un compte pro sur impot.gouv.fr
-        </Typography>
-        <Typography component="li" variant="body1">
-          - de faire une demande de numéro de TVA intracommunautaire auprès du
-          SIE (Service des Impôts des Entreprises)
-        </Typography>
-      </ul>
       <Typography component="div" variant="body1">
-        <strong>Le plafond de TVA bas</strong> <em>({toEuro(highTVA)} HT)</em>{' '}
+        <strong>Le plafond de TVA bas</strong> <em>({toEuro(lowTVA)} HT)</em>{' '}
         correspond au plafond à partir du quel vous pouvez devenir redevable de
         la TVA (en fonction de votre chiffre d'affaire passé). Un dépassement
         implique :
@@ -62,6 +33,35 @@ export default function() {
               plafond de TVA bas et haut => vérifier l'année encore d'avant
             </Typography>
           </ul>
+        </Typography>
+      </ul>
+      <Typography variant="body1">
+        <strong>Le plafond de TVA haut</strong> <em>({toEuro(highTVA)} HT)</em>{' '}
+        correspond au plafond à partir du quel vous devenez redevable de la TVA.
+        Ceci prend effet le premier jour du mois dont le chiffre d'affaire hors
+        taxe dépasse ce seuil. Un dépassement implique :
+      </Typography>
+      <ul>
+        <Typography component="li" variant="body1">
+          - d'inscrire la TVA sur vos nouvelles factures + refacturer toutes
+          celles du mois en cours
+        </Typography>
+        <Typography component="li" variant="body1">
+          - de créer un compte pro sur impot.gouv.fr
+        </Typography>
+        <Typography component="li" variant="body1">
+          - de faire une demande de numéro de TVA intracommunautaire auprès du
+          SIE (Service des Impôts des Entreprises)
+        </Typography>
+      </ul>
+      <Typography variant="body1">
+        <strong>Le plafond micro-entrepreneur</strong>{' '}
+        <em>({toEuro(AE)} HT)</em> correspond au plafond maximum autorisé par
+        l'auto-entrepreneur. Un dépassement implique :
+      </Typography>
+      <ul>
+        <Typography component="li" variant="body1">
+          - la perte de votre statut auto-entrepreneur
         </Typography>
       </ul>
       <Typography variant="body1">Liens utiles :</Typography>

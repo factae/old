@@ -18,7 +18,6 @@ export async function readAll(): Promise<Invoice[]> {
     assign(data, {
       ...data,
       createdAt: date.from(data.createdAt),
-      deliveredAt: date.from(data.deliveredAt),
     }),
   )
 }
@@ -30,7 +29,6 @@ export async function create(invoice: Invoice) {
 
   const res = await post('/invoice', {
     ...omit(invoice, 'id'),
-    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
@@ -38,7 +36,7 @@ export async function create(invoice: Invoice) {
   }
 
   invoice.id = res.data.id
-  invoice.number = res.data.number
+  invoice.createdAt = date.from(res.data.createdAt)
   invoice.items = res.data.items
 }
 
@@ -48,14 +46,12 @@ export async function update(invoice: Invoice) {
   const res = await put('/invoice', {
     ...invoice,
     createdAt: date.to(invoice.createdAt),
-    deliveredAt: date.to(invoice.deliveredAt),
   })
 
   if (res.status !== 200) {
     throw new Error(res.statusText)
   }
 
-  invoice.createdAt = date.from(res.data.createdAt)
   invoice.number = res.data.number
   invoice.items = res.data.items
 }

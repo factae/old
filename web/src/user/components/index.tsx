@@ -7,6 +7,7 @@ import useRouting from '../../common/hooks/routing'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
+import Submit from '../../common/form/Submit'
 import * as $user from '../service'
 import useUserContext from '../context'
 import {User, RateUnit, Activity} from '../model'
@@ -48,7 +49,7 @@ export default function() {
     <Form
       onSubmit={updateUser}
       onSuccess={{message: 'Profil enregistré.', goTo: 'dashboard'}}
-      onError={{message: "Erreur lors de l'enregistrement du profil !"}}
+      onError={{message: "Erreur lors de l'enregistrement du profil."}}
     >
       <Header
         title="Profil"
@@ -59,20 +60,17 @@ export default function() {
         }}
       />
 
-      <Section title="Identité personnelle">
+      <Section title="Identité (personne)">
         <TextField name="firstName" label="Prénom" autoFocus />
         <TextField name="lastName" label="Nom de famille" />
         <TextField name="email" label="Email" type="email" disabled />
         <TextField name="phone" label="Téléphone" />
-      </Section>
-
-      <Section title="Adresse postale">
         <TextField name="address" label="Adresse" />
         <TextField name="zip" label="Code postal" type="number" />
         <TextField name="city" label="Ville" />
       </Section>
 
-      <Section title="Auto-entrepreneur">
+      <Section title="Identité (entreprise)">
         <TextField name="siren" label="Siren" />
         <Select name="activity" label="Type d'activité">
           {keys(Activity)
@@ -83,10 +81,20 @@ export default function() {
               </option>
             ))}
         </Select>
-        <TextField name="tradingName" label="Nom commercial" required={false} />
+        <TextField
+          name="tradingName"
+          label="Nom commercial (optionnel)"
+          required={false}
+        />
+      </Section>
+
+      <Section
+        title="Tarification par défaut"
+        subtitle="Correspond au taux horaire / journalier / forfaitaire qui s'affichera par défaut sur vos devis."
+      >
         <TextField
           name="rate"
-          label="Tarif (€)"
+          label="Montant (€)"
           type="number"
           required={false}
         />
@@ -99,35 +107,29 @@ export default function() {
               </option>
             ))}
         </Select>
+      </Section>
+      <Section
+        title="Conditions"
+        subtitle="Correspond aux conditions (de paiement, de livraison, d'exécution etc) qui s'afficheront par défaut sur vos documents. Champs libres."
+      >
         <TextField
           name="quotationConditions"
-          label="Conditions des devis"
+          label="Devis"
           multiline
           rows={4}
           grid={{xs: 12}}
-          required={false}
         />
         <TextField
           name="invoiceConditions"
-          label="Conditions des factures"
+          label="Factures"
           multiline
           rows={4}
           grid={{xs: 12}}
-          required={false}
         />
       </Section>
 
       <Section
-        title="Banque"
-        subtitle="Vos coordonnées bancaires ne seront utilisées que pour la génération des devis et des factures."
-      >
-        <TextField name="rib" label="RIB" />
-        <TextField name="iban" label="IBAN" />
-        <TextField name="bic" label="BIC" />
-      </Section>
-
-      <Section
-        title="N° TVA Intracom."
+        title="N° de TVA Intracommunautaire"
         subtitle="Renseignez uniquement si vous êtes assujetti à la TVA."
       >
         <TextField name="taxId" label="Numéro de TVA" required={false} />
@@ -138,6 +140,17 @@ export default function() {
           required={false}
         />
       </Section>
+
+      <Section
+        title="Coordonnées bancaires (optionnel)"
+        subtitle="Si vous les remplissez, elles s'afficheront en bas de vos devis et factures. "
+      >
+        <TextField name="rib" label="RIB" required={false} />
+        <TextField name="iban" label="IBAN" required={false} />
+        <TextField name="bic" label="BIC" required={false} />
+      </Section>
+
+      <Submit />
     </Form>
   )
 }

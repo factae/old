@@ -19,7 +19,7 @@ export const useStyles = makeStyles({
     textAlign: 'right',
   },
   actions: {
-    width: '15%',
+    width: '20%',
     textAlign: 'right',
   },
 })

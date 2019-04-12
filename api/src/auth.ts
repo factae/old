@@ -16,32 +16,27 @@ const EXPIRY_TIME = 60 * 60 * 24 // 24h
 // ---------------------------------------------------------------- # Register #
 
 export async function register(req: Request, res: Response) {
-  const {email, password} = req.body
-  const $user = await getRepository(User)
-  const hash = bcrypt.hashSync(password)
-  const token = uuid()
-  const confirmUrl = `${WEB_URL}/confirm/${token}`
+  const {email} = req.body
 
   if (!isEmail(email)) {
     res.status(400).send(`email invalide`)
   }
 
-  if (!isByteLength(password, {min: 6})) {
-    res.status(400).send(`mot de passe invalide (6 caractères min.)`)
-  }
+  const $user = await getRepository(User)
+  const token = uuid()
+  const url = `${WEB_URL}/password/${token}`
 
   try {
     await $user.insert({
       email,
       token,
-      password: hash,
       quotationConditions: '- Type de paiement : virement bancaire',
       invoiceConditions: '- Paiement comptant à réception de la facture',
     })
   } catch (error) {
     switch (error.code) {
       case 'ER_DUP_ENTRY':
-        return res.status(400).send(`email déjà pris`)
+        return res.status(400).send(`un compte existe déjà avec ce mail`)
       default:
         console.error(error.message)
         return res.status(500).send(`échec ajout nouvel utilisateur`)
@@ -51,10 +46,10 @@ export async function register(req: Request, res: Response) {
   try {
     await mail.send({
       to: email,
-      subject: 'Bienvenue sur factAE',
+      subject: '[factAE] - Bienvenue !',
       template: {
         name: 'confirm-user',
-        data: {url: confirmUrl},
+        data: {url},
       },
     })
   } catch (error) {
@@ -70,9 +65,82 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const expiry = DateTime.utc().plus({seconds: EXPIRY_TIME})
   const expires = expiry.toJSDate()
-  const authToken = generateToken(req.user.id, process.env.API_SECRET)
+  const authToken = jwt.sign({}, String(process.env.API_SECRET), {
+    subject: String(req.user.id),
+    issuer: 'factAE',
+    algorithm: 'HS512',
+    expiresIn: EXPIRY_TIME,
+  })
 
   res.cookie('token', authToken, cookieOptions({expires})).sendStatus(204)
+}
+
+// ------------------------------------------------------------ # Set password #
+
+export async function password(req: Request, res: Response) {
+  const {token, password} = req.body
+  const $user = await getRepository(User)
+
+  if (!isByteLength(password, {min: 6})) {
+    res.status(400).send(`mot de passe invalide (6 caractères min.)`)
+  }
+
+  try {
+    const user = await $user.findOne({token})
+    if (!user) return res.status(400).send(`token invalide`)
+
+    req.user = await $user.save({
+      ...user,
+      token: null,
+      active: true,
+      password: bcrypt.hashSync(password),
+    })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send(`échec mise à jour mot de passe`)
+  }
+
+  return await login(req, res)
+}
+
+// ---------------------------------------------------------- # Reset password #
+
+export async function reset(req: Request, res: Response) {
+  const {email} = req.body
+
+  if (!isEmail(email)) {
+    res.status(400).send(`email invalide`)
+  }
+
+  const $user = await getRepository(User)
+  const token = uuid()
+  const url = `${WEB_URL}/password/${token}`
+
+  try {
+    const user = await $user.findOne({email})
+    if (!user) return res.status(400).send(`email inconnu`)
+
+    await $user.save({...user, token, active: false})
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send(`échec réinitialisation mot de passe`)
+  }
+
+  try {
+    await mail.send({
+      to: email,
+      subject: `[factAE] - Mot de passe oublié`,
+      template: {
+        name: 'reset-password',
+        data: {url},
+      },
+    })
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).send(`échec envoi mail d'activation`)
+  }
+
+  res.sendStatus(204)
 }
 
 // ------------------------------------------------------------------- # Check #
@@ -94,13 +162,4 @@ function cookieOptions(options: CookieOptions) {
   return process.env.NODE_ENV === 'production'
     ? {httpOnly: true, secure: true, domain: 'factae.fr', ...options}
     : {httpOnly: true, secure: false, ...options}
-}
-
-function generateToken(data: any, secret?: string) {
-  return jwt.sign({}, secret || 'factAE', {
-    subject: String(data),
-    issuer: 'factAE',
-    algorithm: 'HS512',
-    expiresIn: EXPIRY_TIME,
-  })
 }

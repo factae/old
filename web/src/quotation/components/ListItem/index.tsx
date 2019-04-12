@@ -1,176 +1,62 @@
-import React, {Fragment, MouseEvent, useState} from 'react'
+import React, {Suspense, lazy} from 'react'
 import classNames from 'classnames'
-import find from 'lodash/find'
-import isNull from 'lodash/isNull'
-import noop from 'lodash/noop'
-import IconButton from '@material-ui/core/IconButton'
+import _ from 'lodash/fp'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
-import Tooltip from '@material-ui/core/Tooltip'
-import IconDownload from '@material-ui/icons/SaveAlt'
-import IconSign from '@material-ui/icons/Check'
 
 import Date from '../../../contract/components/ListItem/Date'
 import Status from '../../../contract/components/ListItem/Status'
 import useClientContext from '../../../client/context'
-import useAsyncContext from '../../../async/context'
 import useRouting from '../../../common/hooks/routing'
 import {toEuro} from '../../../common/utils/currency'
 import {Quotation} from '../../model'
-import useQuotationContext from '../../context'
-import * as service from '../../service'
-import Confirm from './../Confirm'
-import Document from '../Document'
-import ActionSigned from './Action/Signed'
 
 import {useStyles} from './styles'
 
-interface Props {
+type Props = {
   quotation: Quotation
 }
 
-export default function(props: Props) {
-  const {quotation} = props
-
-  const async = useAsyncContext()
-  const [clients] = useClientContext()
-  const client = find(clients, {id: quotation.clientId}) || null
-  const dispatch = useQuotationContext()[1]
-  const [confirm, setConfirm] = useState(false)
-  const [readyToDownload, setReadyToDownload] = useState(false)
-  const {goTo} = useRouting()
+export default function({quotation}: Props) {
   const classes = useStyles()
+  const {goTo} = useRouting()
+  const [clients] = useClientContext()
 
-  if (isNull(clients)) return null
-  if (isNull(client)) return null
-
-  const clientName = `${client!.firstName} ${client!.lastName}`
-  const isDraft = quotation.status === 'draft'
-  const classNameCell = classNames({[classes.nonDraft]: !isDraft})
-
-  function openConfirm(event: MouseEvent) {
-    event.stopPropagation()
-    setConfirm(true)
+  if (_.isNull(clients)) {
+    return null
   }
 
-  function closeConfirm() {
-    setConfirm(false)
+  function buildClientName() {
+    const client = _.find({id: quotation.clientId}, clients)
+    if (_.isNil(client)) return ''
+
+    const firstName = _.startCase(client.firstName || '')
+    const lastName = _.upperCase(client.lastName || '')
+
+    return _.trim(`${firstName} ${lastName}`)
   }
 
-  async function lockAndDownload() {
-    try {
-      async.start()
-      closeConfirm()
-      quotation.status = 'validated'
-      await service.update(quotation)
-      dispatch({type: 'update', quotation})
-      setReadyToDownload(true)
-    } catch (error) {
-      handleDownloadError(error)
-    }
-  }
+  const Action = lazy(() =>
+    import(`./Action/${_.capitalize(quotation.status)}`),
+  )
 
-  async function sign() {
-    try {
-      async.start()
-      quotation.status = 'signed'
-      await service.update(quotation)
-      dispatch({type: 'update', quotation})
-      async.stop()
-    } catch (error) {
-      async.stop('Erreur lors de la mise à jour du devis !')
-    }
-  }
-
-  async function handleDownloadSuccess(pdf: string) {
-    setReadyToDownload(false)
-    quotation.pdf = pdf
-    await service.update(quotation)
-    dispatch({type: 'update', quotation})
-    async.stop()
-  }
-
-  function handleDownloadError(error: Error) {
-    console.error('pas bon', error)
-    setReadyToDownload(false)
-    async.stop('Erreur lors du téléchargement du devis !')
-  }
-
-  function renderAction() {
-    switch (quotation.status) {
-      case 'draft':
-        return (
-          <Tooltip placement="bottom" title="Télécharger">
-            <span className={classes.icon}>
-              <IconButton onClick={openConfirm}>
-                <IconDownload />
-              </IconButton>
-            </span>
-          </Tooltip>
-        )
-
-      case 'validated':
-        return (
-          <Fragment>
-            <Tooltip placement="bottom" title="Devis signé">
-              <span className={classes.icon}>
-                <IconButton onClick={sign}>
-                  <IconSign />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip placement="bottom" title="Télécharger">
-              <span className={classes.icon}>
-                <IconButton
-                  href={quotation.pdf || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <IconDownload />
-                </IconButton>
-              </span>
-            </Tooltip>
-          </Fragment>
-        )
-
-      case 'signed':
-        return <ActionSigned quotation={quotation} />
-    }
-  }
+  const isEditable = quotation.status !== 'signed'
+  const className = classNames({[classes.editable]: isEditable})
+  const handleRowClick = isEditable
+    ? () => goTo('quotationEdit', quotation.id)
+    : _.noop
 
   return (
-    <Fragment>
-      <TableRow
-        className={classNames({[classes.draft]: isDraft})}
-        onClick={isDraft ? () => goTo('quotationEdit', quotation.id) : noop}
-      >
-        <Date value={quotation.createdAt} />
-        <TableCell className={classNameCell}>{clientName}</TableCell>
-        <Status value={quotation.status} />
-        <TableCell className={classNameCell} align="right">
-          {toEuro(quotation.total)}
-        </TableCell>
-        <TableCell className={classNameCell} align="right">
-          {renderAction()}
-        </TableCell>
-      </TableRow>
-
-      {isDraft && (
-        <Confirm
-          open={confirm}
-          onCancel={closeConfirm}
-          onConfirm={lockAndDownload}
-        />
-      )}
-
-      {readyToDownload && (
-        <Document
-          onSuccess={handleDownloadSuccess}
-          onError={handleDownloadError}
-          quotation={quotation}
-          client={client}
-        />
-      )}
-    </Fragment>
+    <TableRow className={className} onClick={handleRowClick}>
+      <Date value={quotation.createdAt} />
+      <TableCell>{buildClientName()}</TableCell>
+      <Status value={quotation.status} />
+      <TableCell align="right">{toEuro(quotation.total)}</TableCell>
+      <TableCell align="right">
+        <Suspense fallback={null}>
+          <Action quotation={quotation} />
+        </Suspense>
+      </TableCell>
+    </TableRow>
   )
 }

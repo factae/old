@@ -4,6 +4,11 @@ import isArray from 'lodash/isArray'
 
 type SendParams = {
   to: string | string[]
+  bcc?: string
+  attachment?: {
+    filename: string
+    data: Buffer
+  }
   subject: string
   template: {
     name: string
@@ -17,15 +22,24 @@ const API_KEY = process.env.MAILGUN_API_KEY || ''
 const API_FROM = process.env.MAILGUN_API_FROM || ''
 
 export async function send(params: SendParams) {
-  const {subject, template} = params
   const to = isArray(params.to) ? params.to : [params.to]
   const form = new FormData()
 
   form.append('from', API_FROM)
   form.append('to', to.join(';'))
-  form.append('subject', subject)
-  form.append('template', template.name)
-  form.append('h:X-Mailgun-Variables', JSON.stringify(template.data))
+  form.append('subject', params.subject)
+  form.append('template', params.template.name)
+  form.append('h:X-Mailgun-Variables', JSON.stringify(params.template.data))
+
+  if (params.bcc) {
+    form.append('bcc', params.bcc)
+  }
+
+  if (params.attachment) {
+    form.append('attachment', params.attachment.data, {
+      filename: params.attachment.filename,
+    })
+  }
 
   const res = await axios(`${API_URL}/${API_DOMAIN}/messages`, {
     auth: {

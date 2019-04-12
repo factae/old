@@ -5,6 +5,7 @@ import isLength from 'validator/lib/isLength'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import IconNext from '@material-ui/icons/ChevronRight'
 
 import useAsyncContext from '../../async/context'
 import useAuthContext from '../../auth/context'
@@ -25,6 +26,10 @@ export default function() {
 
   function goToRegister() {
     goTo('register')
+  }
+
+  function goToReset() {
+    goTo('reset')
   }
 
   async function login({email, password}: PartialUser) {
@@ -49,6 +54,10 @@ export default function() {
       <Paper elevation={8} className={classes.paper}>
         <Typography component="h1" variant="h3" className={classes.title}>
           factAE
+        </Typography>
+
+        <Typography variant="subtitle1" className={classes.subtitle}>
+          Se connecter
         </Typography>
 
         <Form
@@ -81,7 +90,8 @@ export default function() {
             size="large"
             className={classes.submit}
           >
-            Se connecter
+            <IconNext />
+            Suivant
           </Button>
         </Form>
       </Paper>
@@ -94,7 +104,17 @@ export default function() {
         size="small"
         color="default"
       >
-        Pas de compte ?
+        Créer un compte
+      </Button>
+      <Button
+        className={classes.changeAction}
+        onClick={goToReset}
+        fullWidth
+        variant="outlined"
+        size="small"
+        color="default"
+      >
+        Mot de passe oublié
       </Button>
     </main>
   )

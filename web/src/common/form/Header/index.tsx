@@ -1,6 +1,7 @@
 import React from 'react'
 import noop from 'lodash/noop'
-import Fab from '@material-ui/core/Fab'
+import get from 'lodash/get'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import {SvgIconProps} from '@material-ui/core/SvgIcon'
@@ -10,8 +11,9 @@ import {useStyles} from './styles'
 
 type Props = {
   title: string
-  onBack: () => void
-  action: {
+  onBack?: () => void
+  action?: {
+    ref?: (ref: HTMLButtonElement) => void
     label: string
     icon: React.ComponentType<SvgIconProps>
     onClick?: () => void
@@ -20,28 +22,31 @@ type Props = {
 
 export default function(props: Props) {
   const classes = useStyles()
-  const triggerAction = props.action.onClick || noop
+  const triggerAction = get(props, 'action.onClick', noop)
+  const ref = get(props, 'action.ref', noop)
 
   return (
     <Typography variant="h3" component="h1" className={classes.title}>
-      <IconButton onClick={props.onBack}>
-        <IconBack />
-      </IconButton>
+      {props.onBack && (
+        <IconButton onClick={props.onBack}>
+          <IconBack />
+        </IconButton>
+      )}
       {props.title}
-      <div className={classes.action}>
-        <Fab
-          variant="extended"
-          type="submit"
-          aria-owns="menu-appbar"
-          aria-haspopup="true"
-          size="medium"
-          color="secondary"
-          onClick={triggerAction}
-        >
-          <props.action.icon className={classes.icon} />
-          {props.action.label}
-        </Fab>
-      </div>
+      {props.action && (
+        <div className={classes.action}>
+          <Button
+            buttonRef={ref}
+            type="submit"
+            variant="contained"
+            color="secondary"
+            onClick={triggerAction}
+          >
+            <props.action.icon className={classes.icon} />
+            {props.action.label}
+          </Button>
+        </div>
+      )}
     </Typography>
   )
 }

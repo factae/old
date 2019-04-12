@@ -12,13 +12,14 @@ import useClientContext from '../../client/context'
 import useForm from '../../common/form'
 import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
+import Submit from '../../common/form/Submit'
 import EditItem from '../../contractItem/components/Edit'
 import ListItem from '../../contractItem/components/List'
 
 export default function() {
   const [user] = useUserContext()
   const [clients] = useClientContext()
-  const [invoices, dispatch] = useInvoiceContext()
+  const {invoices, dispatch, download} = useInvoiceContext()
 
   const {goTo, match, location} = useRouting<{id: number}>()
   const id = _.isNil(match.params.id) ? -1 : Number(match.params.id)
@@ -37,7 +38,8 @@ export default function() {
   const [taxRate, setLocalTaxRate] = useState(invoice.current.taxRate)
   const [items, setItems] = useState(invoice.current.items)
   const [total, setTotal] = useState(invoice.current.total)
-  const {Form, TextField, DateField, Select} = useForm(invoice.current)
+  const {Form, TextField, Select} = useForm(invoice.current)
+  const submitRef = useRef<HTMLButtonElement | null>(null)
 
   useEffect(() => {
     invoice.current = defaultInvoice
@@ -49,11 +51,17 @@ export default function() {
 
   function addItem(item: ContractItem) {
     setItems([...items, item])
-    setTotal(total + item.total)
+    setTotal(total + (item.total || 0))
   }
 
   function setTaxRate(value: string | number | null | undefined) {
     setLocalTaxRate(_.isNil(value) ? null : Number(value))
+  }
+
+  function submitForm() {
+    if (submitRef.current) {
+      submitRef.current.click()
+    }
   }
 
   async function saveInvoice(invoice: Invoice) {
@@ -62,11 +70,15 @@ export default function() {
 
     if (id === -1) {
       await service.create(invoice)
-      dispatch({type: 'create', invoice})
-    } else {
-      await service.update(invoice)
-      dispatch({type: 'update', invoice})
+      return dispatch({type: 'create', invoice})
     }
+
+    if (invoice.status === 'pending') {
+      invoice.pdf = await download(invoice)
+    }
+
+    await service.update(invoice)
+    dispatch({type: 'update', invoice})
   }
 
   if (_.isNil(user)) return null
@@ -84,6 +96,7 @@ export default function() {
           title={id === -1 ? 'Créer une facture' : 'Modifier une facture'}
           onBack={() => goTo('invoice')}
           action={{
+            ref: ref => (submitRef.current = ref),
             label: 'Sauvegarder',
             icon: IconSave,
           }}
@@ -107,8 +120,6 @@ export default function() {
             />
           )}
 
-          <DateField name="deliveredAt" label="Date de livraison" />
-
           <TextField
             grid={{xs: 12}}
             multiline
@@ -122,6 +133,8 @@ export default function() {
 
       <EditItem rate={user.rate} onAdd={addItem} />
       <ListItem items={items} taxRate={taxRate} total={total} />
+
+      <Submit onClick={submitForm} />
     </Fragment>
   )
 }

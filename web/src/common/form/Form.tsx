@@ -3,14 +3,14 @@ import useDebounce from 'react-captain/useDebounce'
 import classNames from 'classnames'
 import {ReactNode} from 'react'
 import _ from 'lodash'
-import {DateTime} from 'luxon'
 
-import Context from './Context'
+import Context, {ModelValue} from './Context'
 import useAsyncContext from '../../async/context'
 import useRouting, {Route} from '../../common/hooks/routing'
 
 export type FormProps<T> = {
   className?: string
+  innerRef?: (ref: HTMLFormElement) => void
   children?: ReactNode
   onChange?: (model: T) => void
   onSubmit?: (model: T) => void
@@ -26,7 +26,6 @@ export type FormProps<T> = {
   }
 }
 
-type FormValue = string | number | DateTime | null | undefined
 type FormEvent = React.FormEvent<HTMLFormElement>
 
 export default function<T>(defaultModel: T | null) {
@@ -52,7 +51,7 @@ export default function<T>(defaultModel: T | null) {
     const successGoTo = _.get(props, 'onSuccess.goTo', null)
     const errorMessage = _.get(props, 'onError.message', null)
 
-    function setModelPart(key: keyof T, value: FormValue) {
+    function setModelPart(key: keyof T, value: ModelValue) {
       if (_.isNull(model)) return
 
       const nextModel: T = _.assign(model, {[key]: value})
@@ -62,7 +61,6 @@ export default function<T>(defaultModel: T | null) {
 
     async function handleSubmit(event: FormEvent) {
       event.preventDefault()
-      if (_.isNull(model)) return
       if (successNotify) async.start()
 
       try {
@@ -81,7 +79,11 @@ export default function<T>(defaultModel: T | null) {
 
     return (
       <FormContext.Provider value={[defaultModel, setModelPart]}>
-        <form className={classNames(props.className)} onSubmit={handleSubmit}>
+        <form
+          className={classNames(props.className)}
+          onSubmit={handleSubmit}
+          ref={props.innerRef}
+        >
           {props.children}
         </form>
       </FormContext.Provider>

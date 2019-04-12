@@ -1,22 +1,10 @@
-/* interface ContractItem { */
-/*   id: number */
-/*   quotationId: number | null */
-/*   invoiceId: number | null */
-/*   date: DateTime */
-/*   designation: string */
-/*   reference: string */
-/*   unitPrice: number */
-/*   quantity: number */
-/*   total: number */
-/* } */
-
 export interface ContractItem {
   id: number
   position: number
   description: string
-  unitPrice: number
-  quantity: number
-  total: number
+  unitPrice: number | null
+  quantity: number | null
+  total: number | null
 }
 
 export function emptyItem(unitPrice: number | null): ContractItem {
@@ -24,8 +12,8 @@ export function emptyItem(unitPrice: number | null): ContractItem {
     id: -1,
     position: 0,
     description: '',
-    unitPrice: unitPrice || 0,
+    unitPrice: unitPrice || null,
     quantity: 1,
-    total: 0,
+    total: null,
   }
 }

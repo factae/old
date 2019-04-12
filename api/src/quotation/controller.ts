@@ -1,9 +1,11 @@
 import {Request, Response} from 'express'
-import get from 'lodash/get'
-import isNull from 'lodash/isNull'
+import _ from 'lodash/fp'
 import {DateTime} from 'luxon'
 import {getRepository} from 'typeorm'
 
+import * as mail from '../mail'
+import {hasSetting} from '../user/utils'
+import {Client} from '../client/model'
 import {Contract} from '../contract/model'
 import {ContractItem} from '../contractItem/model'
 
@@ -19,25 +21,24 @@ export async function readAll(req: Request, res: Response) {
 
   res.json(
     quotations.map(quotation => {
-      const createdAt = isNull(quotation.createdAt)
+      const createdAt = _.isNull(quotation.createdAt)
         ? null
         : DateTime.fromJSDate(new Date(quotation.createdAt)).toISO()
 
-      const startsAt = isNull(quotation.startsAt)
+      const startsAt = _.isNull(quotation.startsAt)
         ? null
         : DateTime.fromJSDate(new Date(quotation.startsAt)).toISO()
 
-      const endsAt = isNull(quotation.endsAt)
+      const endsAt = _.isNull(quotation.endsAt)
         ? null
         : DateTime.fromJSDate(new Date(quotation.endsAt)).toISO()
 
-      const expiresAt = isNull(quotation.expiresAt)
+      const expiresAt = _.isNull(quotation.expiresAt)
         ? null
         : DateTime.fromJSDate(new Date(quotation.expiresAt)).toISO()
 
       return {
         ...quotation,
-        conditions: get(quotation, 'quotationConditions', null),
         createdAt,
         startsAt,
         endsAt,
@@ -56,7 +57,7 @@ export async function create(req: Request, res: Response) {
   delete req.body.id
   req.body.user = req.user.id
   req.body.client = req.body.clientId
-  req.body.quotationConditions = req.body.conditions
+  req.body.createdAt = DateTime.local().toISO()
 
   const quotation = await $quotation.save(req.body)
   quotation.items = await $item.save(
@@ -75,15 +76,19 @@ export async function create(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
   const $quotation = await getRepository(Contract)
   const $item = await getRepository(ContractItem)
+  const currQuotation = await $quotation.findOne({id: req.body.id})
+
+  if (!currQuotation) {
+    return res.status(404).send('devis introuvable')
+  }
+
+  if (currQuotation.status === 'signed') {
+    return res.status(403).send('devis verrouillé')
+  }
 
   req.body.user = req.user.id
   req.body.client = req.body.clientId
   req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
-  req.body.quotationConditions = req.body.conditions
-
-  if (req.body.status === 'validated') {
-    req.body.createdAt = DateTime.local().toISO()
-  }
 
   const quotation = await $quotation.save(req.body)
   quotation.items = await $item.save(
@@ -93,6 +98,32 @@ export async function update(req: Request, res: Response) {
       return item
     }),
   )
+
+  const isPending = quotation.status === 'pending'
+  const userHasAutoSend = hasSetting(req.user, 'quotationAutoSend')
+
+  if (isPending && userHasAutoSend) {
+    const pdf = _.replace('data:application/pdf;base64,', '', quotation.pdf)
+    const $client = await getRepository(Client)
+    const client = await $client.findOneOrFail({
+      select: ['email'],
+      where: {id: req.body.client},
+    })
+
+    await mail.send({
+      subject: '[factAE] Devis',
+      to: client.email,
+      bcc: req.user.email,
+      template: {
+        name: 'quotation',
+        data: {},
+      },
+      attachment: {
+        data: Buffer.from(pdf, 'base64'),
+        filename: `devis-${quotation.id}.pdf`,
+      },
+    })
+  }
 
   res.json(quotation)
 }

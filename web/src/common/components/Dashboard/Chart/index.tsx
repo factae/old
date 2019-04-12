@@ -51,7 +51,7 @@ function getFirstAndLastDayOfYear() {
 
 export default function() {
   const ref = useRef<HTMLCanvasElement | null>(null)
-  const [invoices] = useInvoiceContext()
+  const {invoices} = useInvoiceContext()
   const theme: Theme = useTheme()
   const chart = useRef<Chart | null>(null)
   const [lowTVA, highTVA, AE] = useThresholds()

@@ -11,6 +11,7 @@ type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 export interface Contract {
   id: number
   clientId: number
+  status: 'draft' | 'pending' | 'signed' | 'paid'
   items: ContractItem[]
   taxRate: number | null
   total: number
@@ -24,6 +25,7 @@ export interface Contract {
 const contract: Omit<Contract, 'taxRate'> = {
   id: -1,
   clientId: -1,
+  status: 'draft',
   items: [],
   total: 0,
   pdf: null,

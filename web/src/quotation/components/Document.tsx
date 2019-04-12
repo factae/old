@@ -1,5 +1,5 @@
 import React from 'react'
-import isNull from 'lodash/isNull'
+import _ from 'lodash/fp'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
 
@@ -19,9 +19,9 @@ import {Client} from '../../client/model'
 import {RateUnit} from '../../user/model'
 import {toEuro} from '../../common/utils/currency'
 
-interface Props {
-  quotation: Quotation
-  client: Client
+type Props = {
+  quotation: Quotation | null
+  client: Client | null
   onSuccess: (pdf: string) => void
   onError: (error: Error) => void
 }
@@ -31,11 +31,15 @@ export default function(props: Props) {
   const [user] = useUserContext()
   const theme = useTheme<Theme>()
 
-  if (isNull(user) || isNull(quotation.createdAt)) {
-    return null
-  }
+  if (_.isNull(user)) return null
+  if (_.isNull(client)) return null
+  if (_.isNull(quotation)) return null
+  if (_.isNull(quotation.createdAt)) return null
 
   function rateLabel() {
+    if (_.isNull(quotation)) return ''
+    if (_.isNull(quotation.rateUnit)) return ''
+
     switch (quotation.rateUnit) {
       case RateUnit.day:
         return 'Taux journalier'
@@ -45,18 +49,18 @@ export default function(props: Props) {
 
       case RateUnit.service:
         return 'Taux forfaitaire'
-
-      default:
-        return 'Taux'
     }
   }
 
-  const infos = {
+  const infos: {[key: string]: string} = {
     'Date émission': quotation.createdAt.toFormat('dd/LL/yyyy'),
-    'Expiration offre': quotation.expiresAt.toFormat('dd/LL/yyyy'),
+    "Date d'expiration": quotation.expiresAt.toFormat('dd/LL/yyyy'),
     'Début prestation': quotation.startsAt.toFormat('dd/LL/yyyy'),
     'Fin prestation': quotation.endsAt.toFormat('dd/LL/yyyy'),
-    [rateLabel()]: toEuro(quotation.rate),
+  }
+
+  if (quotation.rate) {
+    infos[rateLabel()] = toEuro(quotation.rate)
   }
 
   return (

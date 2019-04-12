@@ -12,7 +12,7 @@ import QuotationListItem from '../ListItem'
 import {useStyles} from './styles'
 
 export default function() {
-  const [quotations] = useQuotationContext()
+  const {quotations} = useQuotationContext()
   const classes = useStyles()
 
   if (isNull(quotations)) {

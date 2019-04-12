@@ -6,20 +6,21 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import IconMenu from '@material-ui/icons/Menu'
 import IconClient from '@material-ui/icons/People'
 import IconQuotation from '@material-ui/icons/AssignmentOutlined'
 import IconInvoice from '@material-ui/icons/EuroSymbol'
 import IconProfile from '@material-ui/icons/Face'
-import IconContact from '@material-ui/icons/ContactSupport'
+import IconSupport from '@material-ui/icons/ContactSupport'
 import IconSettings from '@material-ui/icons/Settings'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
+import IconPremium from '@material-ui/icons/Star'
 
 import useAuthContext from '../../../auth/context'
 import useAsyncContext from '../../../async/context'
-import usePaymentContext from '../../../payment/context'
-import {usePremium} from '../../../user/hooks'
+import {useUserPremium} from '../../../user/hooks'
 import useRouting, {Route} from '../../../common/hooks/routing'
 
 import {useStyles} from './styles'
@@ -27,8 +28,7 @@ import {useStyles} from './styles'
 export default function() {
   const {auth, logout} = useAuthContext()
   const async = useAsyncContext()
-  const userHasPremium = usePremium()
-  const {openPaymentDialog} = usePaymentContext()
+  const premium = useUserPremium()
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
   const classes = useStyles()
@@ -72,14 +72,20 @@ export default function() {
           <span className={classes.title}>factAE</span>
         </Typography>
 
-        {!userHasPremium && (
-          <Button
-            className={classes.button}
-            variant="text"
-            onClick={openPaymentDialog}
+        {premium && (
+          <Tooltip
+            title={
+              <div className={classes.premium}>
+                Premium actif
+                <br />
+                Expire {premium.toRelative({locale: 'fr'})}
+              </div>
+            }
           >
-            Passez Premium
-          </Button>
+            <IconButton onClick={goTo('settings')}>
+              <IconPremium className={classes.iconPremium} />
+            </IconButton>
+          </Tooltip>
         )}
 
         {auth ? (
@@ -111,9 +117,9 @@ export default function() {
               </MenuItem>
               <Divider />
               <MenuItem disabled>
-                <IconContact className={classes.icon} /> Contact
+                <IconSupport className={classes.icon} /> Support
               </MenuItem>
-              <MenuItem disabled>
+              <MenuItem onClick={goTo('settings')}>
                 <IconSettings className={classes.icon} /> Paramètres
               </MenuItem>
               <Divider />

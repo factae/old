@@ -20,9 +20,20 @@ type ActionUpdateAll = {
 
 export type Action = ActionCreate | ActionUpdate | ActionUpdateAll
 export type State = Quotation[] | null
-type Context = [State, Dispatch<Action>]
 
-export const QuotationContext = createContext<Context>([null, noop])
+type Context = {
+  quotations: State
+  dispatch: Dispatch<Action>
+  download: (quotation: Quotation) => Promise<string>
+}
+
+const defaultContext: Context = {
+  quotations: null,
+  dispatch: noop,
+  download: () => Promise.resolve(''),
+}
+
+export const QuotationContext = createContext(defaultContext)
 
 export default function() {
   return useContext(QuotationContext)

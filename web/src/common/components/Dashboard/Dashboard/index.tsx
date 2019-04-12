@@ -1,100 +1,210 @@
-import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardContent from '@material-ui/core/CardContent'
+import React, {Fragment} from 'react'
+import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import IconClient from '@material-ui/icons/People'
 import IconQuotation from '@material-ui/icons/AssignmentOutlined'
 import IconInvoice from '@material-ui/icons/EuroSymbol'
 import IconProfile from '@material-ui/icons/Face'
+import IconStats from '@material-ui/icons/BarChart'
+import IconSettings from '@material-ui/icons/Settings'
+import IconSupport from '@material-ui/icons/ContactSupport'
+import IconSession from '@material-ui/icons/PowerSettingsNew'
+import IconLi from '@material-ui/icons/ArrowForward'
 
-import useRouting from '../../../../common/hooks/routing'
-import Chart from '../Chart'
-import Help from '../Help'
+import useUserContext from '../../../../user/context'
+import Header from '../../../form/Header'
+import Stepper from '../Stepper'
 
 import {useStyles} from './styles'
 
 export default function() {
+  const [user] = useUserContext()
   const classes = useStyles()
-  const {goTo} = useRouting()
+
+  if (!user) return null
+  if (!user.ready) return <Stepper />
 
   return (
-    <Grid container spacing={16} className={classes.cards}>
-      <Grid item xs={12} sm={6} lg={3}>
-        <Card>
-          <CardActionArea onClick={() => goTo('client')}>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="h2"
-                className={classes.cardTitle}
-              >
-                <IconClient className={classes.icon} />
-                Clients
-              </Typography>
-              <Typography component="p">Gérez vos clients.</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+    <Fragment>
+      <Header title="Administration" />
+
+      <Grid
+        className={classes.main}
+        container
+        spacing={16}
+        alignItems="stretch"
+      >
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconProfile className={classes.iconSubtitle} />
+              Profil
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/profile">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Mettre à jour son profil</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconClient className={classes.iconSubtitle} />
+              Clients
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/client/edit">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Ajouter un nouveau client</span>
+            </Link>
+
+            <Link className={classes.link} to="/dashboard/client">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Lister les clients</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconQuotation className={classes.iconSubtitle} />
+              Devis
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/quotation/edit">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Créer un nouveau devis</span>
+            </Link>
+
+            <Link className={classes.link} to="/dashboard/quotation">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Lister les devis</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconInvoice className={classes.iconSubtitle} />
+              Factures
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/invoice/edit">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Créer une nouvelle facture</span>
+            </Link>
+
+            <Link className={classes.link} to="/dashboard/invoice">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Lister les factures</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconStats className={classes.iconSubtitle} />
+              Statistiques
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/stats">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Chiffre d'affaire en temps réel</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconSettings className={classes.iconSubtitle} />
+              Paramètres
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/settings">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Modifier ses paramètres</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconSupport className={classes.iconSubtitle} />
+              Support
+            </Typography>
+
+            <Link className={classes.link} to="#">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Proposer une amélioration</span>
+            </Link>
+
+            <Link className={classes.link} to="#">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Signaler un bug</span>
+            </Link>
+
+            <Link className={classes.link} to="#">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Demander de l'aide</span>
+            </Link>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconSession className={classes.iconSubtitle} />
+              Session
+            </Typography>
+
+            <Link className={classes.link} to="#">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Se déconnecter</span>
+            </Link>
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={6} lg={3}>
-        <Card>
-          <CardActionArea onClick={() => goTo('quotation')}>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="h2"
-                className={classes.cardTitle}
-              >
-                <IconQuotation className={classes.icon} />
-                Devis
-              </Typography>
-              <Typography component="p">Gérez vos devis.</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} lg={3}>
-        <Card>
-          <CardActionArea onClick={() => goTo('invoice')}>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="h2"
-                className={classes.cardTitle}
-              >
-                <IconInvoice className={classes.icon} />
-                Factures
-              </Typography>
-              <Typography component="p">Gérez vos factures.</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-      <Grid item xs={12} sm={6} lg={3}>
-        <Card>
-          <CardActionArea onClick={() => goTo('profile')}>
-            <CardContent>
-              <Typography
-                gutterBottom
-                variant="h4"
-                component="h2"
-                className={classes.cardTitle}
-              >
-                <IconProfile className={classes.icon} />
-                Profil
-              </Typography>
-              <Typography component="p">Gérez votre profil.</Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Grid>
-      <Chart />
-      <Help />
-    </Grid>
+    </Fragment>
   )
 }

@@ -6,6 +6,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginTop: theme.spacing.unit * 3,
   },
   hide: {
-    visibility: 'hidden',
+    display: 'none',
   },
 }))
