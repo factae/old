@@ -106,7 +106,7 @@ export async function update(req: Request, res: Response) {
     const pdf = _.replace('data:application/pdf;base64,', '', quotation.pdf)
     const $client = await getRepository(Client)
     const client = await $client.findOneOrFail({
-      select: ['email'],
+      select: ['email', 'firstName', 'lastName'],
       where: {id: req.body.client},
     })
 
@@ -116,7 +116,10 @@ export async function update(req: Request, res: Response) {
       bcc: req.user.email,
       template: {
         name: 'quotation',
-        data: {},
+        data: {
+          from: `${req.user.firstName} ${req.user.lastName}`,
+          to: `${client.firstName} ${client.lastName}`,
+        },
       },
       attachment: {
         data: Buffer.from(pdf, 'base64'),
