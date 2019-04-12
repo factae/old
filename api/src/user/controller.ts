@@ -1,5 +1,6 @@
 import {Request, Response} from 'express'
 import {getRepository} from 'typeorm'
+import {DateTime} from 'luxon'
 import isNil from 'lodash/isNil'
 import omit from 'lodash/omit'
 
@@ -18,7 +19,14 @@ export async function update(req: Request, res: Response) {
   if (!req.user) return res.sendStatus(403)
 
   const $user = await getRepository(User)
-  $user.save({...req.user, ...omit(req.body, 'id', 'email', 'premium')})
+  const wasReady = Boolean(req.user.ready)
+  const isReady = Boolean(req.body.ready)
+
+  if (!wasReady && isReady) {
+    req.user.premium = req.body.premium
+  }
+
+  await $user.save({...req.user, ...omit(req.body, 'id', 'email', 'premium')})
 
   res.sendStatus(204)
 }
