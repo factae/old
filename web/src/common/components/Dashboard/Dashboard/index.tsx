@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, {Fragment, MouseEvent} from 'react'
 import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
@@ -13,6 +13,7 @@ import IconSupport from '@material-ui/icons/ContactSupport'
 import IconSession from '@material-ui/icons/PowerSettingsNew'
 import IconLi from '@material-ui/icons/ArrowForward'
 
+import useAuthContext from '../../../../auth/context'
 import useUserContext from '../../../../user/context'
 import Header from '../../../form/Header'
 import Stepper from '../Stepper'
@@ -20,11 +21,17 @@ import Stepper from '../Stepper'
 import {useStyles} from './styles'
 
 export default function() {
+  const auth = useAuthContext()
   const [user] = useUserContext()
   const classes = useStyles()
 
   if (!user) return null
   if (!user.ready) return <Stepper />
+
+  function logout(event: MouseEvent) {
+    event.preventDefault()
+    auth.logout()
+  }
 
   return (
     <Fragment>
@@ -198,10 +205,10 @@ export default function() {
               Session
             </Typography>
 
-            <Link className={classes.link} to="#">
+            <a className={classes.link} href="" onClick={logout}>
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Se déconnecter</span>
-            </Link>
+            </a>
           </Paper>
         </Grid>
       </Grid>

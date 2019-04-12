@@ -14,7 +14,7 @@ export default function(props: Props) {
   const [user, setUser] = useState<User | null>(null)
 
   async function fetchUser() {
-    if (!auth) return
+    if (!auth) return setUser(null)
 
     try {
       setUser(await $user.read())
