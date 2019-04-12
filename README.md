@@ -56,20 +56,23 @@ restart the app once mysql is done.
 - [X] Make logout from backend (to remove cookies)
 - [X] Refactor contexts
 - [X] Improve auth process (via service)
-- [ ] Delete line in contract
-- [ ] Set up module to copy contract (paid)
-- [ ] Set up module to auto send contracts (paid)
-- [ ] Set up module to send form to client (paid)
-- [ ] Set up settings page
-- [ ] Set up contact page (help/support/feedbacks)
-- [ ] Privacy policy + cookie usage
-- [ ] Improve SEO
+- [X] Delete line in contract
+- [X] Set up module to auto send contracts (paid)
+- [X] Set up module to send form to client (paid)
+- [X] Set up settings page
 - [X] Fix back button
+- [ ] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
+- [ ] Split dashboard tasks (Activité/Compte)
+- [ ] Set up module to copy contract (signed/paid)
+- [ ] Set up contact page (help/support/feedback)
+- [ ] Improve SEO
+- [ ] Add privacy policy + cookie usage
 
 ### Backlog
 
-- [ ] Improve validation (replace HTML5 one)
+- [ ] Improve form validation (replace HTML5 ones)
 - [ ] Set up prorata for new freelancers
+- [ ] Set up online sign system (Blockusign)
 
 ## Credits
 
