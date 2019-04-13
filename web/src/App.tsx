@@ -21,37 +21,16 @@ import Landing from './landing'
 import theme from './theme'
 
 Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Regular.ttf',
+  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Regular.ttf',
   {
-    family: 'Roboto',
+    family: 'Quicksand',
   },
 )
 
 Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Italic.ttf',
+  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Bold.ttf',
   {
-    family: 'Roboto Italic',
-  },
-)
-
-Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/apache/roboto/Roboto-Bold.ttf',
-  {
-    family: 'Roboto Bold',
-  },
-)
-
-Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/apache/robotocondensed/RobotoCondensed-Regular.ttf',
-  {
-    family: 'Roboto Condensed',
-  },
-)
-
-Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/apache/robotocondensed/RobotoCondensed-Bold.ttf',
-  {
-    family: 'Roboto Condensed Bold',
+    family: 'Quicksand Bold',
   },
 )
 
@@ -70,8 +49,16 @@ export default function() {
                     <Route exact path="/" component={Landing} />
                     <Route exact path="/register" component={Register} />
                     <Route exact path="/login" component={Login} />
-                    <Route exact path="/password/reset" component={ResetPassword} />
-                    <Route exact path="/password/:token" component={SetPassword} />
+                    <Route
+                      exact
+                      path="/password/reset"
+                      component={ResetPassword}
+                    />
+                    <Route
+                      exact
+                      path="/password/:token"
+                      component={SetPassword}
+                    />
                     <PrivateRoute path="/dashboard" component={Dashboard} />
                     <Redirect to="/" />
                   </Switch>

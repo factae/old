@@ -35,8 +35,6 @@ export default function(theme: Theme) {
       paddingHorizontal: 12,
       paddingVertical: 6,
       textAlign: 'right',
-      fontFamily: 'Roboto Condensed Bold',
-      textTransform: 'uppercase',
     },
     description: {
       flex: 2,
@@ -46,19 +44,17 @@ export default function(theme: Theme) {
       color: theme.palette.grey[400],
     },
     subTotal: {
-      fontFamily: 'Roboto Condensed',
+      fontFamily: 'Quicksand',
       flex: 4,
     },
     totalLabel: {
       flex: 4,
-      fontFamily: 'Roboto Condensed Bold',
-      textTransform: 'uppercase',
       fontSize: 11,
+      fontFamily: 'Quicksand Bold',
     },
     totalAmount: {
-      fontFamily: 'Roboto Condensed Bold',
-      textTransform: 'uppercase',
       fontSize: 11,
+      fontFamily: 'Quicksand Bold',
     },
   })
 }

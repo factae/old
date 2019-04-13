@@ -19,7 +19,7 @@ export default function() {
           </Typography>
 
           <Typography component="h2" variant="h5" className={classes.subTitle}>
-            L'outil d'aide à la facturation pour les auto-entrepreneurs
+            Outil d'aide à la facturation pour les auto-entrepreneurs
           </Typography>
 
           <div className={classes.screenshotContainer}>

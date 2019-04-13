@@ -7,11 +7,9 @@ export default function(theme: Theme) {
       flex: 1,
     },
     title: {
+      fontSize: 12,
       color: theme.palette.primary.main,
-      fontFamily: 'Roboto Condensed Bold',
-      fontSize: 14,
-      marginBottom: theme.spacing.unit / 2,
-      textTransform: 'uppercase',
+      marginBottom: theme.spacing.unit / 4,
     },
     identification: {
       fontSize: 9,

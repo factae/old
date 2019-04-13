@@ -7,7 +7,6 @@ export default function(theme: Theme) {
       flex: 1,
     },
     name: {
-      fontFamily: 'Roboto Bold',
       fontSize: 14,
     },
     identification: {

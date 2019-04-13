@@ -70,17 +70,17 @@ export default function(props: Props) {
       onError={props.onError}
     >
       <Section theme={theme}>
-        <UserView theme={theme} user={user} />
         <TitleView title="Devis" />
+        <InfoView theme={theme} infos={infos} />
       </Section>
 
       <Section theme={theme}>
+        <UserView theme={theme} user={user} />
         <ClientView
           theme={theme}
           title="Devis à l'attention de"
           client={client}
         />
-        <InfoView theme={theme} infos={infos} />
       </Section>
 
       <Section theme={theme}>
