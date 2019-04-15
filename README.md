@@ -64,7 +64,7 @@ restart the app once mysql is done.
 - [X] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
 - [X] Split dashboard tasks (Activité/Compte)
 - [X] Set up module to copy contract (signed/paid)
-- [ ] Set up contact page (help/support/feedback)
+- [X] Set up contact page (help/support/feedback)
 - [ ] Improve SEO
 - [ ] Add privacy policy + cookie usage
 
@@ -73,6 +73,8 @@ restart the app once mysql is done.
 - [ ] Improve form validation (replace HTML5 ones)
 - [ ] Set up prorata for new freelancers
 - [ ] Set up online sign system (Blockusign)
+- [ ] Set up custom theme colors (paid)
+- [ ] Change mails UX
 
 ## Credits
 

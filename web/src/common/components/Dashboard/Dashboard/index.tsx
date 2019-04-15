@@ -162,20 +162,29 @@ export default function() {
               Support
             </Typography>
 
-            <Link className={classes.link} to="#">
+            <a
+              className={classes.link}
+              href="mailto:mail@soywod.me?subject=[factAE] - Proposer une amélioration"
+            >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Proposer une amélioration</span>
-            </Link>
+            </a>
 
-            <Link className={classes.link} to="#">
+            <a
+              className={classes.link}
+              href="mailto:mail@soywod.me?subject=[factAE] - Signaler un bug"
+            >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Signaler un bug</span>
-            </Link>
+            </a>
 
-            <Link className={classes.link} to="#">
+            <a
+              className={classes.link}
+              href="mailto:mail@soywod.me?subject=[factAE] - Demander de l'aide"
+            >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Demander de l'aide</span>
-            </Link>
+            </a>
           </Paper>
         </Grid>
 

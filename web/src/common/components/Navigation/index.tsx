@@ -14,7 +14,6 @@ import IconMenu from '@material-ui/icons/Menu'
 import IconClient from '@material-ui/icons/People'
 import IconDocument from '@material-ui/icons/AssignmentOutlined'
 import IconProfile from '@material-ui/icons/Face'
-import IconSupport from '@material-ui/icons/ContactSupport'
 import IconSettings from '@material-ui/icons/Settings'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 import IconPremium from '@material-ui/icons/Star'
@@ -115,13 +114,9 @@ export default function() {
                 <IconProfile className={classes.icon} /> Profil
               </MenuItem>
               <Divider />
-              <MenuItem disabled>
-                <IconSupport className={classes.icon} /> Support
-              </MenuItem>
               <MenuItem onClick={goTo('settings')}>
                 <IconSettings className={classes.icon} /> Paramètres
               </MenuItem>
-              <Divider />
               <MenuItem onClick={handleLogout}>
                 <IconLogout className={classes.icon} /> Déconnexion
               </MenuItem>
