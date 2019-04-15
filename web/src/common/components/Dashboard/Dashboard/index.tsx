@@ -4,8 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import IconClient from '@material-ui/icons/People'
-import IconQuotation from '@material-ui/icons/AssignmentOutlined'
-import IconInvoice from '@material-ui/icons/EuroSymbol'
+import IconDocument from '@material-ui/icons/AssignmentOutlined'
 import IconProfile from '@material-ui/icons/Face'
 import IconStats from '@material-ui/icons/BarChart'
 import IconSettings from '@material-ui/icons/Settings'
@@ -35,7 +34,7 @@ export default function() {
 
   return (
     <Fragment>
-      <Header title="Administration" />
+      <Header title="Activité" />
 
       <Grid
         className={classes.main}
@@ -43,24 +42,6 @@ export default function() {
         spacing={16}
         alignItems="stretch"
       >
-        <Grid item xs={12} md={6} lg={3}>
-          <Paper className={classes.paper}>
-            <Typography
-              className={classes.subtitle}
-              component="h3"
-              variant="h5"
-            >
-              <IconProfile className={classes.iconSubtitle} />
-              Profil
-            </Typography>
-
-            <Link className={classes.link} to="/dashboard/profile">
-              <IconLi className={classes.iconLink} fontSize="small" />
-              <span>Mettre à jour son profil</span>
-            </Link>
-          </Paper>
-        </Grid>
-
         <Grid item xs={12} md={6} lg={3}>
           <Paper className={classes.paper}>
             <Typography
@@ -91,41 +72,18 @@ export default function() {
               component="h3"
               variant="h5"
             >
-              <IconQuotation className={classes.iconSubtitle} />
-              Devis
+              <IconDocument className={classes.iconSubtitle} />
+              Documents
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/quotation/edit">
+            <Link className={classes.link} to="/dashboard/document/edit">
               <IconLi className={classes.iconLink} fontSize="small" />
-              <span>Créer un nouveau devis</span>
+              <span>Créer un devis, facture ou avoir</span>
             </Link>
 
-            <Link className={classes.link} to="/dashboard/quotation">
+            <Link className={classes.link} to="/dashboard/document">
               <IconLi className={classes.iconLink} fontSize="small" />
-              <span>Lister les devis</span>
-            </Link>
-          </Paper>
-        </Grid>
-
-        <Grid item xs={12} md={6} lg={3}>
-          <Paper className={classes.paper}>
-            <Typography
-              className={classes.subtitle}
-              component="h3"
-              variant="h5"
-            >
-              <IconInvoice className={classes.iconSubtitle} />
-              Factures
-            </Typography>
-
-            <Link className={classes.link} to="/dashboard/invoice/edit">
-              <IconLi className={classes.iconLink} fontSize="small" />
-              <span>Créer une nouvelle facture</span>
-            </Link>
-
-            <Link className={classes.link} to="/dashboard/invoice">
-              <IconLi className={classes.iconLink} fontSize="small" />
-              <span>Lister les factures</span>
+              <span>Lister les documents</span>
             </Link>
           </Paper>
         </Grid>
@@ -148,6 +106,33 @@ export default function() {
           </Paper>
         </Grid>
 
+        <Grid item xs={12} md={6} lg={3}>
+          <Paper className={classes.paper}>
+            <Typography
+              className={classes.subtitle}
+              component="h3"
+              variant="h5"
+            >
+              <IconProfile className={classes.iconSubtitle} />
+              Profil
+            </Typography>
+
+            <Link className={classes.link} to="/dashboard/profile">
+              <IconLi className={classes.iconLink} fontSize="small" />
+              <span>Mettre à jour son profil</span>
+            </Link>
+          </Paper>
+        </Grid>
+      </Grid>
+
+      <Header title="Compte" />
+
+      <Grid
+        className={classes.main}
+        container
+        spacing={16}
+        alignItems="stretch"
+      >
         <Grid item xs={12} md={6} lg={3}>
           <Paper className={classes.paper}>
             <Typography

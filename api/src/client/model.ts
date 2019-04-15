@@ -1,7 +1,7 @@
 import {Entity, Column, ManyToOne, OneToMany} from 'typeorm'
 
 import {User} from '../user/model'
-import {Contract} from '../contract/model'
+import {Document} from '../document/model'
 
 @Entity()
 export class Client {
@@ -11,8 +11,8 @@ export class Client {
   @ManyToOne(() => User, user => user.id)
   user: User
 
-  @OneToMany(() => Contract, contract => contract.id)
-  contract: Contract[]
+  @OneToMany(() => Document, document => document.id)
+  document: Document[]
 
   @Column()
   firstName: string
@@ -27,10 +27,13 @@ export class Client {
   address: string
 
   @Column()
-  zip: number
+  zip: string
 
   @Column()
   city: string
+
+  @Column()
+  country: string
 
   @Column()
   email: string

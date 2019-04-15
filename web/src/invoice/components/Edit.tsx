@@ -1,112 +1,93 @@
-import React, {Fragment, useMemo, useEffect, useRef, useState} from 'react'
+import React, {Fragment, useEffect, useRef, useState} from 'react'
 import _ from 'lodash/fp'
-import IconSave from '@material-ui/icons/Save'
 
-import * as service from '../service'
-import {Invoice, emptyInvoice} from '../../invoice/model'
-import {ContractItem} from '../../contractItem/model'
-import useRouting from '../../common/hooks/routing'
-import useInvoiceContext from '../context'
+import * as $document from '../../document/service'
+import {DocumentItem} from '../../document/item/model'
+import {getClientName} from '../../client/model'
+import useDocumentContext from '../../document/context'
 import useUserContext from '../../user/context'
 import useClientContext from '../../client/context'
 import useForm from '../../common/form'
-import Header from '../../common/form/Header'
 import Section from '../../common/form/Section'
 import Submit from '../../common/form/Submit'
-import EditItem from '../../contractItem/components/Edit'
-import ListItem from '../../contractItem/components/List'
+import EditItem from '../../document/item/components/Edit'
+import ListItem from '../../document/item/components/List'
 
-export default function() {
+import {Invoice, emptyInvoice} from '../model'
+
+type Props = {
+  invoice?: Invoice
+}
+
+export default function(props: Props) {
   const [user] = useUserContext()
   const [clients] = useClientContext()
-  const {invoices, dispatch, download} = useInvoiceContext()
+  const {documents, dispatch, download} = useDocumentContext()
 
-  const {goTo, match, location} = useRouting<{id: number}>()
-  const id = _.isNil(match.params.id) ? -1 : Number(match.params.id)
-
-  const defaultInvoice = useMemo((): Invoice => {
-    const {state} = location
-    if (_.isObject(state)) return state
-
-    const invoice = _.find<Invoice>({id})(invoices)
-    if (!_.isNil(invoice)) return invoice
-
-    return emptyInvoice(user)
-  }, [invoices])
-
-  const invoice = useRef(defaultInvoice)
+  const invoice = useRef(props.invoice || emptyInvoice(user))
   const [taxRate, setLocalTaxRate] = useState(invoice.current.taxRate)
   const [items, setItems] = useState(invoice.current.items)
   const [total, setTotal] = useState(invoice.current.total)
-  const {Form, TextField, Select} = useForm(invoice.current)
-  const submitRef = useRef<HTMLButtonElement | null>(null)
+  const {Form, TextField, Select, submit} = useForm(invoice.current)
 
   useEffect(() => {
-    invoice.current = defaultInvoice
-
     setLocalTaxRate(invoice.current.taxRate)
     setItems(invoice.current.items)
     setTotal(invoice.current.total)
-  }, [invoices])
+  }, [documents])
 
-  function addItem(item: ContractItem) {
-    setItems([...items, item])
+  function addItem(item: DocumentItem) {
+    setItems([...items, {...item, position: items.length}])
     setTotal(total + (item.total || 0))
+  }
+
+  function deleteItem(index: number) {
+    const item = items[index]
+    setItems(_.reject(item, items))
+    setTotal(total - (item.total || 0))
   }
 
   function setTaxRate(value: string | number | null | undefined) {
     setLocalTaxRate(_.isNil(value) ? null : Number(value))
   }
 
-  function submitForm() {
-    if (submitRef.current) {
-      submitRef.current.click()
-    }
-  }
-
   async function saveInvoice(invoice: Invoice) {
     invoice.items = items
     invoice.total = total
 
-    if (id === -1) {
-      await service.create(invoice)
-      return dispatch({type: 'create', invoice})
+    if (invoice.id === -1) {
+      await $document.create(invoice)
+      return dispatch({type: 'create', document: invoice})
     }
 
     if (invoice.status === 'pending') {
+      await $document.update(invoice)
       invoice.pdf = await download(invoice)
     }
 
-    await service.update(invoice)
-    dispatch({type: 'update', invoice})
+    await $document.update(invoice)
+    dispatch({type: 'update', document: invoice})
   }
 
-  if (_.isNil(user)) return null
-  if (_.isNil(clients)) return null
-  if (_.isNil(invoices) && id > -1) return null
+  if (_.isNull(user)) return null
+  if (_.isNull(clients)) return null
+  if (_.isNull(documents) && !_.isNil(props.invoice)) return null
 
   return (
     <Fragment>
       <Form
         onSubmit={saveInvoice}
-        onSuccess={{message: 'Facture enregistrée.', goTo: 'invoice'}}
-        onError={{message: "Erreur lors de l'enregistrement de la facture !"}}
+        onSuccess={{
+          message: 'Facture enregistrée',
+          goTo: ['document', {type: 'invoice'}],
+        }}
+        onError={{message: 'Erreur : échec enregistrement facture'}}
       >
-        <Header
-          title={id === -1 ? 'Créer une facture' : 'Modifier une facture'}
-          onBack={() => goTo('invoice')}
-          action={{
-            ref: ref => (submitRef.current = ref),
-            label: 'Sauvegarder',
-            icon: IconSave,
-          }}
-        />
-
         <Section title="Informations générales">
           <Select name="clientId" label="Client" autoFocus>
             {clients.map(client => (
               <option key={client.id} value={client.id}>
-                {client.firstName} {client.lastName}
+                {getClientName(client)}
               </option>
             ))}
           </Select>
@@ -132,9 +113,15 @@ export default function() {
       </Form>
 
       <EditItem rate={user.rate} onAdd={addItem} />
-      <ListItem items={items} taxRate={taxRate} total={total} />
 
-      <Submit onClick={submitForm} />
+      <ListItem
+        items={items}
+        onDelete={deleteItem}
+        total={total}
+        taxRate={taxRate}
+      />
+
+      <Submit onClick={submit} disabled={!Boolean(items.length)} />
     </Fragment>
   )
 }

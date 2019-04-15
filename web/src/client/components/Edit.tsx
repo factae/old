@@ -2,7 +2,6 @@ import React from 'react'
 import find from 'lodash/fp/find'
 import isNil from 'lodash/isNil'
 import isNull from 'lodash/isNull'
-import IconSave from '@material-ui/icons/Save'
 
 import * as clientService from '../service'
 import useClientContext from '../context'
@@ -45,28 +44,22 @@ export default function() {
       <Header
         title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
         onBack={() => goTo('client')}
-        action={{
-          label: 'Sauvegarder',
-          icon: IconSave,
-        }}
       />
 
-      <Section title="Informations personnelles">
+      <Section title="Société">
+        <TextField name="tradingName" label="Nom commercial" required={false} />
+        <TextField name="siren" label="Siren" required={false} />
+      </Section>
+
+      <Section title="Contact">
         <TextField name="firstName" label="Prénom" autoFocus />
         <TextField name="lastName" label="Nom" />
         <TextField name="email" label="Email" type="email" />
         <TextField name="phone" label="Téléphone" />
-      </Section>
-
-      <Section title="Adresse postale">
         <TextField name="address" label="Adresse" />
-        <TextField name="zip" label="Code postal" type="number" />
+        <TextField name="zip" label="Code postal" />
         <TextField name="city" label="Ville" />
-      </Section>
-
-      <Section title="Autre">
-        <TextField name="tradingName" label="Nom commercial" required={false} />
-        <TextField name="siren" label="Siren" required={false} />
+        <TextField name="country" label="Pays" />
       </Section>
 
       <Submit />

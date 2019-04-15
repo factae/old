@@ -3,11 +3,8 @@ import isNull from 'lodash/isNull'
 import every from 'lodash/every'
 import {Route} from 'react-router-dom'
 
-import Dashboard from './Dashboard'
-import Quotation from '../../../quotation/components'
-import QuotationEdit from '../../../quotation/components/Edit'
-import Invoice from '../../../invoice/components'
-import InvoiceEdit from '../../../invoice/components/Edit'
+import Document from '../../../document/components'
+import DocumentEdit from '../../../document/components/Edit'
 import Client from '../../../client/components'
 import ClientEdit from '../../../client/components/Edit'
 import UserEdit from '../../../user/components'
@@ -16,16 +13,15 @@ import Settings from '../../../settings/components'
 import useAsyncContext from '../../../async/context'
 import useUserContext from '../../../user/context'
 import useClientContext from '../../../client/context'
-import useQuotationContext from '../../../quotation/context'
-import useInvoiceContext from '../../../invoice/context'
+import useDocumentContext from '../../../document/context'
+import Dashboard from './Dashboard'
 
 export default function() {
   const async = useAsyncContext()
   const [user] = useUserContext()
   const [clients] = useClientContext()
-  const {quotations} = useQuotationContext()
-  const {invoices} = useInvoiceContext()
-  const resourcesReady = every([user, clients, quotations, invoices], isReady)
+  const {documents} = useDocumentContext()
+  const resourcesReady = every([user, clients, documents], isReady)
 
   function isReady(resource: any) {
     return !isNull(resource)
@@ -40,15 +36,13 @@ export default function() {
   return (
     <Fragment>
       <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/dashboard/quotation" component={Quotation} />
-      <Route path="/dashboard/quotation/edit/:id?" component={QuotationEdit} />
-      <Route exact path="/dashboard/invoice" component={Invoice} />
-      <Route path="/dashboard/invoice/edit/:id?" component={InvoiceEdit} />
       <Route exact path="/dashboard/client" component={Client} />
       <Route path="/dashboard/client/edit/:id?" component={ClientEdit} />
-      <Route path="/dashboard/profile" component={UserEdit} />
-      <Route path="/dashboard/stats" component={Stats} />
-      <Route path="/dashboard/settings" component={Settings} />
+      <Route exact path="/dashboard/profile" component={UserEdit} />
+      <Route exact path="/dashboard/stats" component={Stats} />
+      <Route exact path="/dashboard/settings" component={Settings} />
+      <Route exact path="/dashboard/document" component={Document} />
+      <Route path="/dashboard/document/edit/:id?" component={DocumentEdit} />
     </Fragment>
   )
 }

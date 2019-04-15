@@ -51,26 +51,19 @@ export default function() {
       onSuccess={{message: 'Profil enregistré.', goTo: 'dashboard'}}
       onError={{message: "Erreur lors de l'enregistrement du profil."}}
     >
-      <Header
-        title="Profil"
-        onBack={() => goTo('dashboard')}
-        action={{
-          label: 'Sauvegarder',
-          icon: IconSave,
-        }}
-      />
+      <Header title="Profil" onBack={() => goTo('dashboard')} />
 
-      <Section title="Identité (personne)">
+      <Section title="Contact">
         <TextField name="firstName" label="Prénom" autoFocus />
         <TextField name="lastName" label="Nom de famille" />
         <TextField name="email" label="Email" type="email" disabled />
         <TextField name="phone" label="Téléphone" />
         <TextField name="address" label="Adresse" />
-        <TextField name="zip" label="Code postal" type="number" />
+        <TextField name="zip" label="Code postal" />
         <TextField name="city" label="Ville" />
       </Section>
 
-      <Section title="Identité (entreprise)">
+      <Section title="Auto-entreprise">
         <TextField name="siren" label="Siren" />
         <Select name="activity" label="Type d'activité">
           {keys(Activity)

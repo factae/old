@@ -22,3 +22,10 @@ export function post(url: string, data?: {}) {
 export function put(url: string, data?: {}) {
   return axios({...baseConfig, url, data, method: 'PUT'})
 }
+
+// ------------------------------------------------------------------ # Delete #
+
+export {_delete as delete}
+function _delete(url: string) {
+  return axios({...baseConfig, url, data: {}, method: 'DELETE'})
+}

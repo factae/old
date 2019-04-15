@@ -22,6 +22,7 @@ export default function() {
         <TableRow>
           <TableCell>Prénom</TableCell>
           <TableCell>Nom</TableCell>
+          <TableCell>Société</TableCell>
           <TableCell>Email</TableCell>
           <TableCell>Téléphone</TableCell>
         </TableRow>

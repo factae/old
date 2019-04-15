@@ -9,10 +9,8 @@ export type Route =
   | 'reset'
   | 'login'
   | 'dashboard'
-  | 'quotation'
-  | 'quotationEdit'
-  | 'invoice'
-  | 'invoiceEdit'
+  | 'document'
+  | 'documentEdit'
   | 'client'
   | 'clientEdit'
   | 'profile'
@@ -24,10 +22,8 @@ const routes: Routes = {
   reset: '/password/reset',
   login: '/login',
   dashboard: '/dashboard',
-  quotation: '/dashboard/quotation',
-  quotationEdit: '/dashboard/quotation/edit',
-  invoice: '/dashboard/invoice',
-  invoiceEdit: '/dashboard/invoice/edit',
+  document: '/dashboard/document',
+  documentEdit: '/dashboard/document/edit',
   client: '/dashboard/client',
   clientEdit: '/dashboard/client/edit',
   profile: '/dashboard/profile',
@@ -37,7 +33,7 @@ const routes: Routes = {
 export default function useRouting<T>() {
   const {history, ...routerProps} = useReactRouter<T>()
 
-  function goTo(route: Route, params?: any) {
+  function goTo(route: Route, params = {}) {
     const url = get(routes, route)
     return history.push(`${url}${isNumber(params) ? `/${params}` : ''}`, params)
   }

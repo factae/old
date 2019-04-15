@@ -9,15 +9,17 @@ import IconBack from '@material-ui/icons/ArrowBack'
 
 import {useStyles} from './styles'
 
+export type HeaderAction = {
+  ref?: (ref: HTMLButtonElement) => void
+  label: string
+  icon: React.ComponentType<SvgIconProps>
+  onClick?: () => void
+}
+
 type Props = {
   title: string
   onBack?: () => void
-  action?: {
-    ref?: (ref: HTMLButtonElement) => void
-    label: string
-    icon: React.ComponentType<SvgIconProps>
-    onClick?: () => void
-  }
+  action?: HeaderAction
 }
 
 export default function(props: Props) {

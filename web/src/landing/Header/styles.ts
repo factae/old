@@ -16,6 +16,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'flex-end',
   },
   subTitle: {
+    marginTop: theme.spacing.unit,
     marginBottom: theme.spacing.unit * 4,
   },
   screenshotContainer: {

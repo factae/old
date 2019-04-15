@@ -1,32 +1,36 @@
-import get from 'lodash/get'
+import _ from 'lodash/fp'
 import {DateTime} from 'luxon'
 
-import {Contract, emptyContract} from '../contract/model'
 import {User, RateUnit} from '../user/model'
+import {Document, DocumentBase, emptyDocumentBase} from '../document/model'
 
-export interface Quotation extends Contract {
+export type Quotation = DocumentBase & {
   type: 'quotation'
   status: 'draft' | 'pending' | 'signed'
   conditions: string | null
   rate: number | null
   rateUnit: RateUnit | null
-  expiresAt: DateTime
-  startsAt: DateTime
-  endsAt: DateTime
+  expiresAt: string
+  startsAt: string
+  endsAt: string
+}
+
+export function isQuotation(document: Document): document is Quotation {
+  return document.type === 'quotation'
 }
 
 export function emptyQuotation(user: User | null): Quotation {
   const now = DateTime.local()
 
   return {
-    ...emptyContract(user),
+    ...emptyDocumentBase(user),
     type: 'quotation',
     status: 'draft',
-    conditions: get(user, 'quotationConditions', null),
-    rate: get(user, 'rate', null),
-    rateUnit: get(user, 'rateUnit', null),
-    expiresAt: now.plus({days: 60}),
-    startsAt: now,
-    endsAt: now,
+    conditions: _.getOr(null, 'quotationConditions', user),
+    rate: _.getOr(null, 'rate', user),
+    rateUnit: _.getOr(null, 'rateUnit', user),
+    expiresAt: now.plus({days: 60}).toISO(),
+    startsAt: now.toISO(),
+    endsAt: now.toISO(),
   }
 }

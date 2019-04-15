@@ -8,7 +8,8 @@ import Grid from '@material-ui/core/Grid'
 import {useTheme} from '@material-ui/styles'
 
 import useThresholds from '../../../../common/hooks/thresholds'
-import useInvoiceContext from '../../../../invoice/context'
+import useDocumentContext from '../../../../document/context'
+import {Document} from '../../../../document/model'
 import {Invoice} from '../../../../invoice/model'
 import {toEuro} from '../../../utils/currency'
 
@@ -51,13 +52,16 @@ function getFirstAndLastDayOfYear() {
 
 export default function() {
   const ref = useRef<HTMLCanvasElement | null>(null)
-  const {invoices} = useInvoiceContext()
+  const {documents} = useDocumentContext()
   const theme: Theme = useTheme()
   const chart = useRef<Chart | null>(null)
   const [lowTVA, highTVA, AE] = useThresholds()
   const classes = useStyles()
+  const invoices = _.isNull(documents)
+    ? null
+    : _.filter({type: 'invoice'}, documents)
 
-  function isNullOrEmpty(invoices: Invoice[] | null) {
+  function isNullOrEmpty(invoices: Document[] | null) {
     return _.pipe([
       _.filter({status: 'paid'}),
       _.overSome([_.isNull, _.isEmpty]),
@@ -75,8 +79,8 @@ export default function() {
     function byStatusAndCreatedAt(invoice: Invoice) {
       if (_.isNull(invoice.createdAt)) return false
       if (invoice.status !== 'paid') return false
-      if (invoice.createdAt < firstDayOfYear) return false
-      if (invoice.createdAt > lastDayOfYear) return false
+      if (DateTime.fromISO(invoice.createdAt) < firstDayOfYear) return false
+      if (DateTime.fromISO(invoice.createdAt) > lastDayOfYear) return false
 
       return true
     }
@@ -87,7 +91,7 @@ export default function() {
       }
 
       return {
-        month: invoice.createdAt.month,
+        month: DateTime.fromISO(invoice.createdAt).month,
         total: invoice.total,
       }
     }
@@ -121,16 +125,17 @@ export default function() {
   const theoricTurnovers = useMemo(() => {
     if (isNullOrEmpty(invoices)) return []
 
-    const currMonth = _.pipe([
+    const currCreatedAt = _.pipe([
       _.filter({status: 'paid'}),
       _.sortBy('createdAt'),
       _.first,
       _.get('createdAt'),
-      _.get('month'),
     ])(invoices)
 
+    const currMonth = DateTime.fromISO(currCreatedAt).month
+
     const prevMonth = Math.max(0, currMonth - 1)
-    const emptyTurnovers = _.fill(0)(prevMonth)(null)(Array(prevMonth))
+    const emptyTurnovers = _.fill(0, prevMonth, null, Array(prevMonth))
     const turnoversMean = _.pipe([_.compact, _.mean])(totals)
     const turnoversSum = _.range(0, 12 - prevMonth)
       .map(_.multiply(turnoversMean))

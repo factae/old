@@ -1,21 +1,23 @@
-import get from 'lodash/get'
+import _ from 'lodash/fp'
 
-import {Contract, emptyContract} from '../contract/model'
 import {User} from '../user/model'
+import {Document, DocumentBase, emptyDocumentBase} from '../document/model'
 
-export interface Invoice extends Contract {
+export type Invoice = DocumentBase & {
   type: 'invoice'
   status: 'draft' | 'pending' | 'paid'
-  number: string
   conditions: string | null
+}
+
+export function isInvoice(document: Document): document is Invoice {
+  return document.type === 'invoice'
 }
 
 export function emptyInvoice(user: User | null): Invoice {
   return {
-    ...emptyContract(user),
+    ...emptyDocumentBase(user),
     type: 'invoice',
     status: 'draft',
-    number: '-',
-    conditions: get(user, 'invoiceConditions', null),
+    conditions: _.getOr(null, 'invoiceConditions', user),
   }
 }

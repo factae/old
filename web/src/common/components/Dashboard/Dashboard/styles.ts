@@ -4,6 +4,7 @@ import makeStyles from '@material-ui/styles/makeStyles'
 export const useStyles = makeStyles((theme: Theme) => ({
   main: {
     marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 8,
   },
   paper: {
     height: '100%',

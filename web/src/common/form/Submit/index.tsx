@@ -8,9 +8,11 @@ import {useStyles} from './styles'
 
 type Props = {
   onClick?: () => void
+  disabled?: boolean
 }
 
 export default function(props: Props) {
+  const disabled = Boolean(props.disabled)
   const triggerClick = props.onClick || noop
   const classes = useStyles()
 
@@ -21,6 +23,7 @@ export default function(props: Props) {
         color="secondary"
         type="submit"
         onClick={triggerClick}
+        disabled={disabled}
       >
         <IconSave className={classes.icon} /> Sauvegarder
       </Button>

@@ -1,6 +1,6 @@
 import {Entity, Column, OneToMany} from 'typeorm'
 
-import {Contract} from '../contract/model'
+import {Document} from '../document/model'
 import {Client} from '../client/model'
 
 export enum RateUnit {
@@ -22,8 +22,8 @@ export class User {
   @OneToMany(() => Client, client => client.user)
   clients: Client[]
 
-  @OneToMany(() => Contract, contract => contract.user)
-  contracts: Contract[]
+  @OneToMany(() => Document, document => document.user)
+  documents: Document[]
 
   @Column({unique: true})
   email: string
@@ -43,8 +43,8 @@ export class User {
   @Column({type: 'varchar', nullable: true, default: null})
   address: string | null
 
-  @Column({type: 'int', nullable: true, default: null})
-  zip: number | null
+  @Column({type: 'varchar', nullable: true, default: null})
+  zip: string | null
 
   @Column({type: 'varchar', nullable: true, default: null})
   city: string | null
@@ -82,17 +82,14 @@ export class User {
   @Column({type: 'tinyint', nullable: true, default: null})
   taxRate: number | null
 
+  @Column({default: false})
+  documentAutoSend: boolean
+
   @Column({type: 'text', nullable: true, default: null})
   quotationConditions: string | null
 
-  @Column({default: false})
-  quotationAutoSend: boolean
-
   @Column({type: 'text', nullable: true, default: null})
   invoiceConditions: string | null
-
-  @Column({default: false})
-  invoiceAutoSend: boolean
 
   @Column({default: false})
   active: boolean

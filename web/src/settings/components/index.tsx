@@ -100,14 +100,7 @@ export default function() {
       onSubmit={updateUser}
       onSuccess={{goTo: 'dashboard', message: 'Paramètres mis à jour.'}}
     >
-      <Header
-        title="Paramètres"
-        onBack={() => goTo('dashboard')}
-        action={{
-          label: 'Sauvegarder',
-          icon: IconSave,
-        }}
-      />
+      <Header title="Paramètres" onBack={() => goTo('dashboard')} />
 
       <Section title="Premium">
         <Grid item xs={12}>
@@ -115,18 +108,10 @@ export default function() {
         </Grid>
       </Section>
 
-      <Section title="Devis">
+      <Section title="Documents">
         <Switch
-          name="quotationAutoSend"
-          label="Envoi automatique des devis au client"
-          onChange={checkPremium}
-        />
-      </Section>
-
-      <Section title="Facture">
-        <Switch
-          name="invoiceAutoSend"
-          label="Envoi automatique des factures au client"
+          name="documentAutoSend"
+          label="Envoi automatique des documents au client"
           onChange={checkPremium}
         />
       </Section>

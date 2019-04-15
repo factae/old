@@ -15,7 +15,7 @@ type Action = {
   onClick: () => void
 }
 
-interface Props {
+type Props = {
   title: React.ReactNode
   subtitle?: React.ReactNode
   action?: Action

@@ -1,9 +1,8 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {Context, useContext, useEffect, useRef, useState} from 'react'
 import ReactDOM from 'react-dom'
 import get from 'lodash/get'
 import uuid from 'uuid/v4'
 import isNil from 'lodash/isNil'
-import isNumber from 'lodash/isNumber'
 import noop from 'lodash/noop'
 import omit from 'lodash/omit'
 import Grid from '@material-ui/core/Grid'
@@ -24,7 +23,7 @@ export type SelectProps<T> = Pick<MuiSelectProps, SelectAttributes> & {
   children: any
 }
 
-export default function<T>(context: React.Context<FormContext<T>>) {
+export default function<T>(context: Context<FormContext<T>>) {
   return function Select(props: SelectProps<T>) {
     const id = uuid()
     const {name: key, label, disabled, required} = props

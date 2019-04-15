@@ -4,7 +4,7 @@ import getOr from 'lodash/fp/getOr'
 import {User} from './model'
 import useUserContext from './context'
 
-type Setting = 'quotationAutoSend' | 'invoiceAutoSend'
+type Setting = 'documentAutoSend'
 
 function hasPremium(user: User | null) {
   if (!user) return null

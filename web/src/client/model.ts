@@ -1,15 +1,23 @@
+import _ from 'lodash/fp'
+
+import {getUserName, getUserFullName} from '../user/model'
+
 export interface Client {
   id: number
   firstName: string
   lastName: string
   tradingName: string | null
   address: string
-  zip: number
+  zip: string
   city: string
+  country: string
   email: string
   phone: string
   siren: string | null
 }
+
+export {getUserName as getClientName}
+export {getUserFullName as getClientFullName}
 
 export const emptyClient: Client = {
   id: -1,
@@ -17,8 +25,9 @@ export const emptyClient: Client = {
   lastName: '',
   tradingName: null,
   address: '',
-  zip: 0,
+  zip: '',
   city: '',
+  country: 'France',
   email: '',
   phone: '',
   siren: null,

@@ -7,7 +7,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     marginTop: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 2,
-    borderBottom: `1px dashed ${theme.palette.grey.A100}`,
+    borderBottom: `1px dashed ${theme.palette.grey[300]}`,
   },
   icon: {
     margin: `0 ${theme.spacing.unit / 2}px 1px 0`,

@@ -4,8 +4,7 @@ import {handle} from './handler'
 import middlewares from './middlewares'
 import * as auth from './auth'
 import * as client from './client/controller'
-import * as quotation from './quotation/controller'
-import * as invoice from './invoice/controller'
+import * as document from './document/controller'
 import * as user from './user/controller'
 import * as payment from './payment/controller'
 import {authByCredentials} from './strategies/Local'
@@ -34,15 +33,11 @@ api.get('/client', authByCookie, handle(client.readAll))
 api.post('/client', authByCookie, handle(client.create))
 api.put('/client', authByCookie, handle(client.update))
 
-// Quotation
-api.get('/quotation', authByCookie, handle(quotation.readAll))
-api.post('/quotation', authByCookie, handle(quotation.create))
-api.put('/quotation', authByCookie, handle(quotation.update))
-
-// Invoice
-api.get('/invoice', authByCookie, handle(invoice.readAll))
-api.post('/invoice', authByCookie, handle(invoice.create))
-api.put('/invoice', authByCookie, handle(invoice.update))
+// Document
+api.get('/document', authByCookie, handle(document.readAll))
+api.post('/document', authByCookie, handle(document.create))
+api.put('/document', authByCookie, handle(document.update))
+api.delete('/document/:id', authByCookie, handle(document.delete))
 
 // User
 api.get('/user', authByCookie, handle(user.read))

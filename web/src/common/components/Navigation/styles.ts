@@ -1,15 +1,14 @@
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import makeStyles from '@material-ui/styles/makeStyles'
-import premium from '@material-ui/core/colors/orange'
+import premium from '@material-ui/core/colors/yellow'
 
 export const useStyles = makeStyles((theme: Theme) => ({
   navigation: {
     position: 'relative',
   },
   brand: {
+    display: 'flex',
     flexGrow: 1,
-    fontFamily: 'Quicksand, sans-serif',
-    fontWeight: 700,
   },
   title: {
     cursor: 'pointer',
@@ -29,6 +28,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
   },
   iconPremium: {
-    color: premium[400],
+    color: premium[300],
   },
 }))

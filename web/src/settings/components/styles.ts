@@ -13,6 +13,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
   },
   icon: {
     marginRight: theme.spacing.unit,
-    color: premium[400],
+    color: premium[300],
   },
 }))

@@ -12,10 +12,11 @@ export type FormComponents<T> = {
   DateField: FunctionComponent<DateFieldProps<T>>
   Select: FunctionComponent<SelectProps<T>>
   Switch: FunctionComponent<SwitchProps<T>>
+  submit: () => void
 }
 
 export default function<T>(defaultModel: T | null) {
-  const {FormContext, Form} = useForm<T>(defaultModel)
+  const {FormContext, Form, submit} = useForm<T>(defaultModel)
   const TextField = useTextField<T>(FormContext)
   const DateField = useDateField<T>(FormContext)
   const Select = useSelect<T>(FormContext)
@@ -27,6 +28,7 @@ export default function<T>(defaultModel: T | null) {
     DateField,
     Select,
     Switch,
+    submit,
   }
 
   const [components, setComponents] = useState(defaultComponents)

@@ -7,7 +7,7 @@ import useRouting from '../../common/hooks/routing'
 
 import {useStyles} from './styles'
 
-interface Props {
+type Props = {
   client: Client
 }
 
@@ -17,9 +17,13 @@ export default function(props: Props) {
   const classes = useStyles()
 
   return (
-    <TableRow className={classes.row} onClick={() => goTo('clientEdit', client.id)}>
+    <TableRow
+      className={classes.row}
+      onClick={() => goTo('clientEdit', client.id)}
+    >
       <TableCell>{client.firstName}</TableCell>
       <TableCell>{client.lastName}</TableCell>
+      <TableCell>{client.tradingName || '-'}</TableCell>
       <TableCell>{client.email}</TableCell>
       <TableCell>{client.phone}</TableCell>
     </TableRow>

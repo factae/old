@@ -61,9 +61,9 @@ restart the app once mysql is done.
 - [X] Set up module to send form to client (paid)
 - [X] Set up settings page
 - [X] Fix back button
-- [ ] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
-- [ ] Split dashboard tasks (Activité/Compte)
-- [ ] Set up module to copy contract (signed/paid)
+- [X] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
+- [X] Split dashboard tasks (Activité/Compte)
+- [X] Set up module to copy contract (signed/paid)
 - [ ] Set up contact page (help/support/feedback)
 - [ ] Improve SEO
 - [ ] Add privacy policy + cookie usage

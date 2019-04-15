@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "api",
-    "web"
+    "web",
+    "utils"
   ],
   "resolutions": {
     "ajv": "6.8.1"

@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState} from 'react'
+import React, {createContext, useEffect, useRef, useState} from 'react'
 import useDebounce from 'react-captain/useDebounce'
 import classNames from 'classnames'
 import {ReactNode} from 'react'
@@ -18,7 +18,7 @@ export type FormProps<T> = {
     notify?: boolean
     reset?: boolean
     message?: string
-    goTo?: Route
+    goTo?: Route | [Route, any]
   }
   onError?: {
     notify?: boolean
@@ -31,10 +31,7 @@ type FormEvent = React.FormEvent<HTMLFormElement>
 export default function<T>(defaultModel: T | null) {
   const defaultContext = createContext<Context<T>>([defaultModel, _.noop])
   const [FormContext, setFormContext] = useState(defaultContext)
-
-  useEffect(() => {
-    setFormContext(defaultContext)
-  }, [defaultModel])
+  const submitRef = useRef<HTMLButtonElement | null>(null)
 
   function Form(props: FormProps<T>) {
     const async = useAsyncContext()
@@ -67,7 +64,8 @@ export default function<T>(defaultModel: T | null) {
         await submit(model)
         if (successReset) setLocalModel(defaultModel)
         if (successNotify) async.stop(successMessage)
-        if (successGoTo) goTo(successGoTo)
+        if (_.isArray(successGoTo)) goTo(successGoTo[0], successGoTo[1])
+        else if (successGoTo) goTo(successGoTo)
       } catch (error) {
         const message =
           errorMessage || error.response ? error.response.data : error.message
@@ -85,10 +83,21 @@ export default function<T>(defaultModel: T | null) {
           ref={props.innerRef}
         >
           {props.children}
+          <button type="submit" ref={submitRef} style={{display: 'none'}} />
         </form>
       </FormContext.Provider>
     )
   }
 
-  return {FormContext, Form}
+  function submit() {
+    if (submitRef.current) {
+      submitRef.current.click()
+    }
+  }
+
+  useEffect(() => {
+    setFormContext(defaultContext)
+  }, [defaultModel])
+
+  return {FormContext, Form, submit}
 }

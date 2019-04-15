@@ -11,7 +11,6 @@ import MuiTextField from '@material-ui/core/TextField'
 import {TextFieldProps as AllMuiTextFieldProps} from '@material-ui/core/TextField'
 
 import FormContext from './Context'
-import useAsyncContext from '../../async/context'
 
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 
@@ -31,7 +30,6 @@ export type TextFieldProps<T> = Partial<MuiTextFieldProps> & {
 export default function<T>(context: React.Context<FormContext<T>>) {
   return function TextField(props: TextFieldProps<T>) {
     const debounce = useDebounce({persist: true})
-    const {loading} = useAsyncContext()
     const {name: key, label, required} = props
     const handleChangeParent = debounce(props.onChange || noop)
     const grid = props.grid || {xs: 12, sm: 6, md: 4, lg: 3}
@@ -78,7 +76,6 @@ export default function<T>(context: React.Context<FormContext<T>>) {
       <Grid item {...grid}>
         <MuiTextField
           inputProps={{step: 0.01}}
-          disabled={loading}
           fullWidth
           {...omit(props, 'name', 'label', 'grid', 'onChange')}
           required={isNil(required) ? true : required}
