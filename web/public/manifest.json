@@ -2,7 +2,7 @@
   "author": "Clément DOUIN",
   "name": "factAE",
   "short_name": "factAE",
-  "description": "Outil d'aide à la facturation pour auto-entrepreneurs",
+  "description": "L'outil de facturation au prix d'une baguette",
   "default_locale": "fr",
   "icons": [
     {
@@ -13,6 +13,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#fafafa",
+  "background_color": "#fafafa"
 }

@@ -5,17 +5,20 @@ type Props = {
   light: string
   dark: string
   width?: number
+  height?: number
   onClick?: () => void
 }
 
 export default function(props: Props) {
   const {light, dark} = props
   const width = `${props.width || 100}px`
+  const height = props.height ? `${props.height}px` : 'auto'
   const handleClick = props.onClick || _.noop
 
   return (
     <svg
       width={width}
+      height={height}
       viewBox="0 0 501 115"
       preserveAspectRatio="xMidYMid meet"
       onClick={handleClick}

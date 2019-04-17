@@ -66,6 +66,7 @@ export default function() {
             onClick={goTo(auth ? 'dashboard' : 'landing')}
             light={theme.palette.grey[200]}
             dark={theme.palette.grey[300]}
+            height={23}
           />
         </Typography>
 
