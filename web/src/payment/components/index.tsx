@@ -1,14 +1,21 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {StripeProvider, Elements} from 'react-stripe-elements'
 
 import InjectedCheckoutForm from './CheckoutForm'
 
 export default function() {
-  const [ready, setLocalReady] = useState(false)
+  const [ready, setReady] = useState(false)
 
-  function setReady() {
-    setLocalReady(true)
-  }
+  useEffect(() => {
+    const stripeElement = document.createElement('script')
+    stripeElement.onload = () => setReady(true)
+    document.body.appendChild(stripeElement)
+    stripeElement.src = 'https://js.stripe.com/v3/'
+
+    return () => {
+      document.body.removeChild(stripeElement)
+    }
+  }, [])
 
   return ready ? (
     <StripeProvider apiKey={String(process.env.REACT_APP_STRIPE_API_KEY)}>
@@ -16,7 +23,5 @@ export default function() {
         <InjectedCheckoutForm />
       </Elements>
     </StripeProvider>
-  ) : (
-    <script src="https://js.stripe.com/v3/" onLoad={setReady} />
-  )
+  ) : null
 }

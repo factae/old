@@ -10,7 +10,11 @@ import {useStyles} from './styles'
 
 const STEP_MAX = 4
 
-export default function() {
+type Props = {
+  onNext: () => void
+}
+
+export default function({onNext: next}: Props) {
   const {step, prevStep} = useStepperContext()
   const classes = useStyles()
 
@@ -23,7 +27,7 @@ export default function() {
       )}
 
       <div className={classes.next}>
-        <Button variant="contained" color="secondary" type="submit">
+        <Button variant="contained" color="secondary" onClick={next}>
           {step < STEP_MAX ? (
             <Fragment>
               Étape suivante <IconNext className={classes.iconNext} />

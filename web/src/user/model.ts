@@ -1,4 +1,3 @@
-import {DateTime} from 'luxon'
 import _ from 'lodash/fp'
 
 import {Client} from '../client/model'
@@ -38,7 +37,7 @@ export interface User {
   rate: number | null
   rateUnit: RateUnit | null
   activity: Activity | null
-  premium: DateTime | null
+  expiresAt: string | null
   step: number
   ready: boolean
 }

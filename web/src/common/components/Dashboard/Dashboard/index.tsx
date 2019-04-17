@@ -13,19 +13,13 @@ import IconSession from '@material-ui/icons/PowerSettingsNew'
 import IconLi from '@material-ui/icons/ArrowForward'
 
 import useAuthContext from '../../../../auth/context'
-import useUserContext from '../../../../user/context'
 import Header from '../../../form/Header'
-import Stepper from '../Stepper'
 
 import {useStyles} from './styles'
 
 export default function() {
   const auth = useAuthContext()
-  const [user] = useUserContext()
   const classes = useStyles()
-
-  if (!user) return null
-  if (!user.ready) return <Stepper />
 
   function logout(event: MouseEvent) {
     event.preventDefault()

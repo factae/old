@@ -13,7 +13,7 @@ import {useStyles} from './styles'
 export default function() {
   const [defaultUser, setUser] = useUserContext()
   const {nextStep} = useStepperContext()
-  const {Form, TextField} = useForm<User>(defaultUser)
+  const {Form, TextField, submit} = useForm<User>(defaultUser)
   const classes = useStyles()
 
   async function updateUser(nextUser: User) {
@@ -39,14 +39,12 @@ export default function() {
 
         <Section title="Adresse postale">
           <TextField name="address" label="Adresse" />
-          <TextField name="zip" label="Code postal" type="number" />
+          <TextField name="zip" label="Code postal" />
           <TextField name="city" label="Ville" />
         </Section>
-
-        <Section title="">
-          <Submit />
-        </Section>
       </Form>
+
+      <Submit onNext={submit} />
     </Fragment>
   )
 }

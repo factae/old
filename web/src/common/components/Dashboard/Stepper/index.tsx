@@ -40,7 +40,7 @@ export default function() {
   return (
     <StepperContext.Provider value={{step, prevStep, nextStep}}>
       <Typography className={classes.title} component="h1" variant="h2">
-        Bienvenue !
+        Bienvenue
       </Typography>
 
       <Typography variant="subtitle1">

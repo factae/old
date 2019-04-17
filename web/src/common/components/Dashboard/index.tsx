@@ -4,7 +4,6 @@ import {MuiPickersUtilsProvider} from 'material-ui-pickers'
 import LuxonUtils from '@date-io/luxon'
 
 import UserProvider from '../../../user/provider'
-import PaymentProvider from '../../../payment/provider'
 import ClientProvider from '../../../client/provider'
 import DocumentProvider from '../../../document/provider'
 import DashboardRoutes from './Routes'
@@ -22,9 +21,7 @@ export default function() {
             <DocumentProvider>
               <MuiPickersUtilsProvider locale="fr" utils={LuxonUtils}>
                 <UserProvider>
-                  <PaymentProvider>
                     <DashboardRoutes />
-                  </PaymentProvider>
                 </UserProvider>
               </MuiPickersUtilsProvider>
             </DocumentProvider>

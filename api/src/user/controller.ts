@@ -23,10 +23,10 @@ export async function update(req: Request, res: Response) {
   const isReady = Boolean(req.body.ready)
 
   if (!wasReady && isReady) {
-    req.user.premium = req.body.premium
+    req.user.expiresAt = req.body.expiresAt
   }
 
-  await $user.save({...req.user, ...omit(req.body, 'id', 'email', 'premium')})
+  await $user.save({...req.user, ...omit(req.body, 'id', 'email', 'expiresAt')})
 
   res.sendStatus(204)
 }

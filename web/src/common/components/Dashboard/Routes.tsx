@@ -1,8 +1,10 @@
 import React, {Fragment, useEffect} from 'react'
-import isNull from 'lodash/isNull'
 import every from 'lodash/every'
 import {Route} from 'react-router-dom'
+import {DateTime} from 'luxon'
+import isNull from 'lodash/isNull'
 
+import Payment from '../../../payment/components'
 import Document from '../../../document/components'
 import DocumentEdit from '../../../document/components/Edit'
 import Client from '../../../client/components'
@@ -15,6 +17,7 @@ import useUserContext from '../../../user/context'
 import useClientContext from '../../../client/context'
 import useDocumentContext from '../../../document/context'
 import Dashboard from './Dashboard'
+import Stepper from './Stepper'
 
 export default function() {
   const async = useAsyncContext()
@@ -32,6 +35,12 @@ export default function() {
       async.stop()
     }
   }, [resourcesReady])
+
+  if (!user) return null
+  if (!user.ready) return <Stepper />
+  if (!user.expiresAt || DateTime.fromISO(user.expiresAt) < DateTime.local()) {
+    return <Payment />
+  }
 
   return (
     <Fragment>

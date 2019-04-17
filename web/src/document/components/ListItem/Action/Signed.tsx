@@ -4,8 +4,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import IconDownload from '@material-ui/icons/SaveAlt'
 import IconTransform from '@material-ui/icons/Redo'
 
-import usePaymentContext from '../../../../payment/context'
-import {useUserPremium} from '../../../../user/hooks'
 import useRouting from '../../../../common/hooks/routing'
 import {Document} from '../../../model'
 import ActionCopy from './Copy'
@@ -19,27 +17,21 @@ type Props = {
 export default function(props: Props) {
   const {document} = props
   const {goTo} = useRouting()
-  const {openPaymentDialog} = usePaymentContext()
   const classes = useStyles()
-  const userHasPremium = useUserPremium()
 
   function transformToInvoice() {
-    if (userHasPremium) {
-      goTo('documentEdit', {
-        ...document,
+    goTo('documentEdit', {
+      ...document,
+      id: -1,
+      number: '-',
+      type: 'invoice',
+      status: 'draft',
+      items: document.items.map(item => ({
+        ...item,
         id: -1,
-        number: '-',
-        type: 'invoice',
-        status: 'draft',
-        items: document.items.map(item => ({
-          ...item,
-          id: -1,
-          document: null,
-        })),
-      })
-    } else {
-      openPaymentDialog()
-    }
+        document: null,
+      })),
+    })
   }
 
   return (

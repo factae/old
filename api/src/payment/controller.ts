@@ -11,14 +11,12 @@ const stripe = new Stripe(String(process.env.STRIPE_API_KEY))
 
 function getAmount(plan: number) {
   switch (plan) {
-    case 1:
-      return 200
     case 3:
-      return 500
+      return 300
     case 6:
-      return 1000
+      return 550
     case 12:
-      return 2000
+      return 1100
     default:
       throw new Error('invalid plan')
   }
@@ -39,10 +37,10 @@ export async function charge(req: Request, res: Response) {
   }
 
   const createdAt = DateTime.fromSeconds(transaction.created)
-  const {premium} = await $user.save({
+  const {expiresAt} = await $user.save({
     ...req.user,
-    premium: createdAt.plus({months: req.body.plan}).toISO(),
+    expiresAt: createdAt.plus({months: req.body.plan}).toISO(),
   })
 
-  res.status(200).send(premium)
+  res.status(200).send(expiresAt)
 }

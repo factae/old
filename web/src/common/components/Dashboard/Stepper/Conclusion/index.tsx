@@ -3,7 +3,6 @@ import {DateTime} from 'luxon'
 import Typography from '@material-ui/core/Typography'
 
 import useForm from '../../../../../common/form'
-import Section from '../../../../../common/form/Section'
 import Submit from '../Submit'
 import {User} from '../../../../../user/model'
 import useUserContext from '../../../../../user/context'
@@ -13,7 +12,7 @@ import {useStyles} from './styles'
 
 export default function() {
   const [user, setUser] = useUserContext()
-  const {Form} = useForm(null)
+  const {Form, submit} = useForm(null)
   const classes = useStyles()
 
   async function finish() {
@@ -22,7 +21,9 @@ export default function() {
     const nextUser: User = {
       ...user,
       ready: true,
-      premium: DateTime.local().plus({month: 1}),
+      expiresAt: DateTime.local()
+        .plus({month: 1})
+        .toISO(),
     }
 
     await $user.update(nextUser)
@@ -41,48 +42,27 @@ export default function() {
           Configuration terminée !
         </Typography>
 
-        <Typography gutterBottom>
-          Il ne vous reste plus qu'à créer votre premier client, et vous serez
-          prêt à générer des devis et des factures.
-        </Typography>
-
-        <Typography gutterBottom>
-          factAE est un outil gratuit (et open source). Cependant il possède un
-          mode Premium qui vous donne accès à de nombreuses fonctionalités
-          supplémentaires, telles que :
-        </Typography>
+        <Typography gutterBottom>Vos prochaines étapes :</Typography>
 
         <ul>
           <Typography component="li">
-            - Transformer un devis en facture
+            - Sélectionner les options qui vous intéressent dans l'onglet
+            "Paramètres"
+          </Typography>
+          <Typography component="li">- Ajouter votre premier client</Typography>
+          <Typography component="li">
+            - Créer vos documents (devis, facture, avoirs)
           </Typography>
           <Typography component="li">
-            - Créer un devis / une facture à partir d'un modèle
+            - Superviser votre activité avec l'onglet "Statistiques"
           </Typography>
           <Typography component="li">
-            - Envoyer automatiquement les devis et les factures aux clients
-          </Typography>
-          <Typography component="li">
-            - Envoyer des formulaires d'inscription à vos nouveaux clients
+            - Parrainer vos proches pour gagner des mois d'abonnement gratuit
           </Typography>
         </ul>
-
-        <Typography gutterBottom>
-          En vous abonnant, vous bénéficiez de toutes ces fonctionnalités, +
-          toutes les fonctionnalités à venir.
-        </Typography>
-
-        <br />
-
-        <Typography variant="h6" gutterBottom>
-          Une fois cliqué sur <em>Terminer</em>, vous recevrez 1 mois gratuit en
-          guise de bienvenue :)
-        </Typography>
-
-        <Section title="">
-          <Submit />
-        </Section>
       </Form>
+
+      <Submit onNext={submit} />
     </Fragment>
   )
 }

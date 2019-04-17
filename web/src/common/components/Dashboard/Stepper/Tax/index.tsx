@@ -14,7 +14,7 @@ import {useStyles} from './styles'
 export default function() {
   const [defaultUser, setUser] = useUserContext()
   const {nextStep} = useStepperContext()
-  const {Form, TextField, Select} = useForm<User>(defaultUser)
+  const {Form, TextField, submit} = useForm<User>(defaultUser)
   const classes = useStyles()
 
   async function updateUser(nextUser: User) {
@@ -43,11 +43,9 @@ export default function() {
             required={false}
           />
         </Section>
-
-        <Section title="">
-          <Submit />
-        </Section>
       </Form>
+
+      <Submit onNext={submit} />
     </Fragment>
   )
 }

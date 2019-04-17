@@ -1,7 +1,6 @@
 import React, {Fragment} from 'react'
-import keys from 'lodash/keys'
 
-import {User, Activity, RateUnit} from '../../../../../user/model'
+import {User} from '../../../../../user/model'
 import useUserContext from '../../../../../user/context'
 import * as $user from '../../../../../user/service'
 import useForm from '../../../../../common/form'
@@ -14,7 +13,7 @@ import {useStyles} from './styles'
 export default function() {
   const [defaultUser, setUser] = useUserContext()
   const {nextStep} = useStepperContext()
-  const {Form, TextField, Select} = useForm<User>(defaultUser)
+  const {Form, TextField, submit} = useForm<User>(defaultUser)
   const classes = useStyles()
 
   async function updateUser(nextUser: User) {
@@ -39,11 +38,9 @@ export default function() {
           <TextField name="iban" label="IBAN" required={false} />
           <TextField name="bic" label="BIC" required={false} />
         </Section>
-
-        <Section title="">
-          <Submit />
-        </Section>
       </Form>
+
+      <Submit onNext={submit} />
     </Fragment>
   )
 }

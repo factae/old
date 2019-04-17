@@ -1,6 +1,5 @@
 import {get, post} from '../common/utils/axios'
 
-import * as date from '../common/utils/date'
 import {User} from './model'
 
 // -------------------------------------------------------------------- # Read #
@@ -12,19 +11,13 @@ export async function read(): Promise<User> {
     throw new Error(res.statusText)
   }
 
-  return {
-    ...res.data,
-    premium: date.from(res.data.premium),
-  }
+  return res.data
 }
 
 // ------------------------------------------------------------------ # Update #
 
 export async function update(profile: User) {
-  const res = await post('/user', {
-    ...profile,
-    premium: date.to(profile.premium),
-  })
+  const res = await post('/user', profile)
 
   if (res.status !== 204) {
     throw new Error(res.statusText)

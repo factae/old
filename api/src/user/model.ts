@@ -95,7 +95,7 @@ export class User {
   active: boolean
 
   @Column({type: 'datetime', nullable: true, default: null})
-  premium: string | null
+  expiresAt: string | null
 
   @Column({type: 'tinyint', default: 0})
   step: number

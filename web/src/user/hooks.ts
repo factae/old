@@ -8,10 +8,10 @@ type Setting = 'documentAutoSend'
 
 function hasPremium(user: User | null) {
   if (!user) return null
-  if (!user.premium) return false
-  if (user.premium < DateTime.local()) return false
+  if (!user.expiresAt) return false
+  if (DateTime.fromISO(user.expiresAt) < DateTime.local()) return false
 
-  return user.premium
+  return DateTime.fromISO(user.expiresAt)
 }
 
 export function useUserPremium() {

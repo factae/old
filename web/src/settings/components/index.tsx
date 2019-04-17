@@ -1,13 +1,9 @@
 import React, {Fragment} from 'react'
 import isNull from 'lodash/isNull'
-import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-import IconSave from '@material-ui/icons/Save'
-import IconPremium from '@material-ui/icons/Star'
 
 import useRouting from '../../common/hooks/routing'
-import usePaymentContext from '../../payment/context'
 import {useUserPremium} from '../../user/hooks'
 import useUserContext from '../../user/context'
 import * as $user from '../../user/service'
@@ -22,8 +18,7 @@ import {useStyles} from './styles'
 export default function() {
   const {goTo} = useRouting()
   const [user, setUser] = useUserContext()
-  const premium = useUserPremium()
-  const {openPaymentDialog} = usePaymentContext()
+  const expiresAt = useUserPremium()
   const {Form, Switch} = useForm(user)
   const classes = useStyles()
 
@@ -32,19 +27,12 @@ export default function() {
     setUser(nextUser)
   }
 
-  function checkPremium() {
-    if (!premium) {
-      openPaymentDialog()
-      return false
-    }
-  }
-
   function renderPremium() {
-    if (isNull(premium)) {
+    if (isNull(expiresAt)) {
       return null
     }
 
-    if (!premium) {
+    if (!expiresAt) {
       return (
         <Grid container alignItems="center">
           <Grid item xs={12} md={6}>
@@ -74,12 +62,6 @@ export default function() {
               toutes les fonctionnalités à venir.
             </Typography>
           </Grid>
-          <Grid className={classes.subscribe} item xs={12} md={6}>
-            <Button variant="outlined" onClick={openPaymentDialog}>
-              <IconPremium className={classes.icon} />
-              Souscrire
-            </Button>
-          </Grid>
         </Grid>
       )
     }
@@ -88,8 +70,8 @@ export default function() {
       <Fragment>
         <Typography>Votre abonnement Premium est toujours actif.</Typography>
         <Typography>
-          Expire le {premium.toFormat(`dd/LL/yyyy 'à' HH'h'mm`)} (
-          {premium.toRelative({locale: 'fr'})}).
+          Expire le {expiresAt.toFormat(`dd/LL/yyyy 'à' HH'h'mm`)} (
+          {expiresAt.toRelative({locale: 'fr'})}).
         </Typography>
       </Fragment>
     )
@@ -112,7 +94,6 @@ export default function() {
         <Switch
           name="documentAutoSend"
           label="Envoi automatique des documents au client"
-          onChange={checkPremium}
         />
       </Section>
 
