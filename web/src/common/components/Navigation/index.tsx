@@ -6,21 +6,18 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
-import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
-import {useTheme} from '@material-ui/styles'
+import useTheme from '@material-ui/styles/useTheme'
 import IconMenu from '@material-ui/icons/Menu'
 import IconClient from '@material-ui/icons/People'
 import IconDocument from '@material-ui/icons/AssignmentOutlined'
 import IconProfile from '@material-ui/icons/Face'
 import IconSettings from '@material-ui/icons/Settings'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
-import IconPremium from '@material-ui/icons/Star'
 
 import useAuthContext from '../../../auth/context'
 import useAsyncContext from '../../../async/context'
-import {useUserPremium} from '../../../user/hooks'
 import useRouting, {Route} from '../../../common/hooks/routing'
 import Logo from '../../../Logo'
 
@@ -29,7 +26,6 @@ import {useStyles} from './styles'
 export default function() {
   const {auth, logout} = useAuthContext()
   const async = useAsyncContext()
-  const premium = useUserPremium()
   const routing = useRouting()
   const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
   const theme = useTheme<Theme>()
@@ -72,22 +68,6 @@ export default function() {
             dark={theme.palette.grey[300]}
           />
         </Typography>
-
-        {premium && (
-          <Tooltip
-            title={
-              <div className={classes.premium}>
-                Premium actif
-                <br />
-                Expire {premium.toRelative({locale: 'fr'})}
-              </div>
-            }
-          >
-            <IconButton onClick={goTo('settings')}>
-              <IconPremium className={classes.iconPremium} />
-            </IconButton>
-          </Tooltip>
-        )}
 
         {auth ? (
           <Fragment>

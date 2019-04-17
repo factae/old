@@ -65,6 +65,7 @@ restart the app once mysql is done.
 - [X] Split dashboard tasks (Activité/Compte)
 - [X] Set up module to copy contract (signed/paid)
 - [X] Set up contact links (help/support/feedback)
+- [X] Improve landing page (interface + perf)
 - [ ] Improve SEO
 - [ ] Add privacy policy + cookie usage
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import {BlobProvider, Document as PDF, Page} from '@react-pdf/renderer'
+import {BlobProvider, Document as PDF, Page, Font} from '@react-pdf/renderer'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 import {useTheme} from '@material-ui/styles'
 import _ from 'lodash/fp'
@@ -19,6 +19,20 @@ type Props = {
   onDownload: (pdf: string) => void
   onError: (error: Error) => void
 }
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Regular.ttf',
+  {
+    family: 'Quicksand',
+  },
+)
+
+Font.register(
+  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Bold.ttf',
+  {
+    family: 'Quicksand Bold',
+  },
+)
 
 export default function(props: Props) {
   const {document} = props

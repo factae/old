@@ -1,6 +1,10 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import Grid from '@material-ui/core/Grid'
+import {MuiPickersUtilsProvider} from 'material-ui-pickers'
+import LuxonUtils from '@date-io/luxon'
 
+import UserProvider from '../../../user/provider'
+import PaymentProvider from '../../../payment/provider'
 import ClientProvider from '../../../client/provider'
 import DocumentProvider from '../../../document/provider'
 import DashboardRoutes from './Routes'
@@ -11,14 +15,22 @@ export default function() {
   const classes = useStyles()
 
   return (
-    <Grid container justify="center" className={classes.container}>
-      <Grid item xs={12} md={10} lg={9} xl={8}>
-        <ClientProvider>
-          <DocumentProvider>
-            <DashboardRoutes />
-          </DocumentProvider>
-        </ClientProvider>
+    <Fragment>
+      <Grid container justify="center" className={classes.container}>
+        <Grid item xs={12} md={10} lg={9} xl={8}>
+          <ClientProvider>
+            <DocumentProvider>
+              <MuiPickersUtilsProvider locale="fr" utils={LuxonUtils}>
+                <UserProvider>
+                  <PaymentProvider>
+                    <DashboardRoutes />
+                  </PaymentProvider>
+                </UserProvider>
+              </MuiPickersUtilsProvider>
+            </DocumentProvider>
+          </ClientProvider>
+        </Grid>
       </Grid>
-    </Grid>
+    </Fragment>
   )
 }

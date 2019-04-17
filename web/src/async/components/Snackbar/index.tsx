@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
-import isEmpty from 'lodash/fp/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 

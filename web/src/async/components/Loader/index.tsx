@@ -3,17 +3,22 @@ import {useSpring, animated, config} from 'react-spring'
 
 import useAsyncContext from '../../context'
 
-export default function() {
-  const {loading} = useAsyncContext()
+type Props = {
+  loading?: true
+}
 
-  const props = useSpring({
+export default function(props: Props) {
+  const async = useAsyncContext()
+  const loading = props.loading || async.loading
+
+  const style = useSpring({
     opacity: Number(loading),
     pointerEvents: loading ? 'initial' : 'none',
     config: config.stiff,
   })
 
   return (
-    <animated.div className="loader" style={props}>
+    <animated.div className="loader" style={style}>
       <div className="lds-ellipsis">
         <div />
         <div />
