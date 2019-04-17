@@ -16,14 +16,26 @@ export const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'flex-end',
   },
   subTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 2,
   },
   screenshotContainer: {
     flex: 1,
   },
   screenshot: {
-    display: 'inline-block',
-    width: 'auto',
+    width: '100%',
+    maxWidth: 1024,
+  },
+  icon: {
+    width: theme.spacing.unit * 4,
+    marginLeft: theme.spacing.unit,
+  },
+  badge: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none',
+    },
   },
 }))

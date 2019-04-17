@@ -3,7 +3,8 @@ import React, {Fragment, useEffect} from 'react'
 import useAsyncContext from '../async/context'
 import Header from './Header'
 import Description from './Description'
-import Pricing from './Pricing'
+import Engagements from './Engagements'
+import Features from './Features'
 import Footer from './Footer'
 
 export default function() {
@@ -17,7 +18,8 @@ export default function() {
     <Fragment>
       <Header />
       <Description />
-      <Pricing />
+      <Engagements />
+      <Features />
       <Footer />
     </Fragment>
   )

@@ -1,6 +1,6 @@
 # [factAE](https://factae.fr)
 
-A simple billing help tool for french freelancers.
+A simple billing tool for french freelancers.
 
 ## Introduction
 
@@ -64,7 +64,7 @@ restart the app once mysql is done.
 - [X] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
 - [X] Split dashboard tasks (Activité/Compte)
 - [X] Set up module to copy contract (signed/paid)
-- [X] Set up contact page (help/support/feedback)
+- [X] Set up contact links (help/support/feedback)
 - [ ] Improve SEO
 - [ ] Add privacy policy + cookie usage
 
@@ -74,7 +74,7 @@ restart the app once mysql is done.
 - [ ] Set up prorata for new freelancers
 - [ ] Set up online sign system (Blockusign)
 - [ ] Set up custom theme colors (paid)
-- [ ] Change mails UX
+- [ ] Improve mails UX
 
 ## Credits
 

@@ -45,6 +45,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cache:clear": "sudo rm -rf node_modules/.cache/babel-loader"
+    "cache:clear": "sudo rm -rf node_modules/.cache/babel-loader",
+    "analyse": "source-map-explorer 'build/static/js/*.js'"
   }
 }

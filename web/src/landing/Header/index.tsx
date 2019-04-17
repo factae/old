@@ -1,12 +1,13 @@
 import React from 'react'
+import Badge from '@material-ui/core/Badge'
 import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import useTheme from '@material-ui/styles/useTheme'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import Logo from '../../Logo'
-import screenshot from './screenshot.jpeg'
+import bread from './bread.png'
+import screenshot from './screenshot.png'
 
 import {useStyles} from './styles'
 
@@ -16,7 +17,7 @@ export default function() {
 
   return (
     <section className={classes.container}>
-      <Grid container justify="center" className={classes.grid}>
+      <Grid className={classes.grid} container justify="center">
         <Grid item xs={12} md={10} lg={8} xl={6}>
           <Logo
             light={theme.palette.secondary.main}
@@ -24,14 +25,19 @@ export default function() {
             width={300}
           />
 
-          <Typography component="h1" variant="h5" className={classes.subTitle}>
-            Outil d'aide à la facturation pour les auto-entrepreneurs
+          <Typography className={classes.subTitle} component="h1" variant="h5">
+            L'outil de facturation au prix d'une baguette
+            <Badge
+              className={classes.badge}
+              color="secondary"
+              badgeContent="1€"
+            >
+              <img className={classes.icon} src={bread} />
+            </Badge>
           </Typography>
 
           <div className={classes.screenshotContainer}>
-            <Paper className={classes.screenshot} elevation={16}>
-              <img src={screenshot} width="100%" />
-            </Paper>
+            <img className={classes.screenshot} src={screenshot} />
           </div>
         </Grid>
       </Grid>
