@@ -1,6 +1,6 @@
 import {Request, Response} from 'express'
 import {DateTime} from 'luxon'
-import {getRepository, Between, In, Not} from 'typeorm'
+import {getRepository, Between, Not} from 'typeorm'
 import _ from 'lodash/fp'
 
 import * as mail from '../mail'
@@ -107,10 +107,14 @@ export async function update(req: Request, res: Response) {
   req.body.pdf = req.body.pdf ? Buffer.from(req.body.pdf) : null
 
   const document = await $document.save(req.body)
-
-  await $item.delete(
-    _.difference(_.map('id', prevItems), _.map('id', req.body.items)),
+  const itemsToDelete = _.difference(
+    _.map('id', prevItems),
+    _.map('id', req.body.items),
   )
+
+  if (!_.isEmpty(itemsToDelete)) {
+    await $item.delete(itemsToDelete)
+  }
 
   document.items = await $item.save(
     document.items.map((item: DocumentItem) => {
@@ -131,7 +135,7 @@ export async function update(req: Request, res: Response) {
       where: {id: req.body.client},
     })
 
-    await mail.send({
+    mail.send({
       subject: '[factAE] Document',
       to: client.email,
       bcc: req.user.email,

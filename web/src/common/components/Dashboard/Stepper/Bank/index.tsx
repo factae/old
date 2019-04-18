@@ -31,8 +31,8 @@ export default function() {
         onError={{message: "Erreur lors de l'enregistrement."}}
       >
         <Section
-          title="Coordonnées bancaires (optionnel)"
-          subtitle="Si vous les remplissez, elles s'afficheront en bas de vos devis et factures. "
+          title="RIB (optionnel)"
+          subtitle="Ces informations s'afficheront sur vos documents, pour faciliter le paiement de vos clients. "
         >
           <TextField name="rib" label="RIB" required={false} />
           <TextField name="iban" label="IBAN" required={false} />

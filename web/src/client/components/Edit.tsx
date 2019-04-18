@@ -35,16 +35,25 @@ export default function() {
     return null
   }
 
+  function goToDashboard() {
+    goTo('dashboard')
+  }
+
+  function goToClient() {
+    goTo('client')
+  }
+
   return (
     <Form
       onSubmit={createOrUpdateClient}
       onSuccess={{message: 'Client enregistré.', goTo: 'client'}}
       onError={{message: "Erreur lors de l'enregistrement du client !"}}
     >
-      <Header
-        title={id === -1 ? 'Ajouter un client' : 'Modifier un client'}
-        onBack={() => goTo('client')}
-      />
+      {id === -1 ? (
+        <Header title="Ajouter un client" onBack={goToDashboard} />
+      ) : (
+        <Header title="Modifier un client" onBack={goToClient} />
+      )}
 
       <Section title="Société">
         <TextField name="tradingName" label="Nom commercial" required={false} />

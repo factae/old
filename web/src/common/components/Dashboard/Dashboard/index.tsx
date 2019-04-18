@@ -1,5 +1,4 @@
 import React, {Fragment, MouseEvent} from 'react'
-import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
@@ -12,6 +11,7 @@ import IconSupport from '@material-ui/icons/ContactSupport'
 import IconSession from '@material-ui/icons/PowerSettingsNew'
 import IconLi from '@material-ui/icons/ArrowForward'
 
+import Link from '../../../../common/components/Link'
 import useAuthContext from '../../../../auth/context'
 import Header from '../../../form/Header'
 
@@ -156,29 +156,29 @@ export default function() {
               Support
             </Typography>
 
-            <a
+            <Link
               className={classes.link}
-              href="mailto:mail@soywod.me?subject=[factAE] - Proposer une amélioration"
+              to="mailto:mail@soywod.me?subject=[factAE] - Proposer une amélioration"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Proposer une amélioration</span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               className={classes.link}
-              href="mailto:mail@soywod.me?subject=[factAE] - Signaler un bug"
+              to="mailto:mail@soywod.me?subject=[factAE] - Signaler un bug"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Signaler un bug</span>
-            </a>
+            </Link>
 
-            <a
+            <Link
               className={classes.link}
-              href="mailto:mail@soywod.me?subject=[factAE] - Demander de l'aide"
+              to="mailto:mail@soywod.me?subject=[factAE] - Demander de l'aide"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Demander de l'aide</span>
-            </a>
+            </Link>
           </Paper>
         </Grid>
 
@@ -193,10 +193,10 @@ export default function() {
               Session
             </Typography>
 
-            <a className={classes.link} href="" onClick={logout}>
+            <Link className={classes.link} onClick={logout}>
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Se déconnecter</span>
-            </a>
+            </Link>
           </Paper>
         </Grid>
       </Grid>

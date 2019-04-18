@@ -34,7 +34,8 @@ export default function({onNext: next}: Props) {
             </Fragment>
           ) : (
             <Fragment>
-              Terminer <IconFinish className={classes.iconNext} />
+              Démarrer mon mois d'essai{' '}
+              <IconFinish className={classes.iconNext} />
             </Fragment>
           )}
         </Button>

@@ -19,7 +19,7 @@ const steps: Step[] = [
     component: lazy(() => import('./Tax')),
   },
   {
-    label: 'Coordonnées bancaires',
+    label: 'RIB',
     component: lazy(() => import('./Bank')),
   },
   {

@@ -1,18 +1,19 @@
 import React, {Fragment, FormEvent, useState} from 'react'
+import {DateTime} from 'luxon'
 import {CardElement, ReactStripeElements} from 'react-stripe-elements'
 import {injectStripe} from 'react-stripe-elements'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Typography from '@material-ui/core/Typography'
-import IconPay from '@material-ui/icons/EuroSymbol'
-import IconSponsor from '@material-ui/icons/Send'
+import IconSecure from '@material-ui/icons/Lock'
+import IconSafe from '@material-ui/icons/Security'
 import get from 'lodash/get'
 import isNil from 'lodash/isNil'
 
+import Link from '../../common/components/Link'
 import {post} from '../../common/utils/axios'
 import useAsyncContext from '../../async/context'
 import useUserContext from '../../user/context'
@@ -22,7 +23,7 @@ import {useStyles} from './styles'
 function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
   const [user, setUser] = useUserContext()
   const async = useAsyncContext()
-  const [plan, setLocalPlan] = useState('1')
+  const [plan, setLocalPlan] = useState('3')
   const classes = useStyles()
 
   function setPlan(_e: any, value: string) {
@@ -46,11 +47,16 @@ function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
         throw new Error(paymentRes.statusText)
       }
 
-      await setUser({...user, expiresAt: paymentRes.data})
-      async.stop('Paiement effectué. Merci pour votre achat !')
+      const expiresAt = DateTime.fromISO(paymentRes.data)
+      await setUser({...user, expiresAt: expiresAt.toISO()})
+      async.stop(
+        `Paiement effectué. Votre abonnement expire le ${expiresAt.toFormat(
+          "dd/LL/yyyy 'à' HH'h'mm",
+        )}.`,
+      )
     } catch (error) {
-      console.debug(error.toString())
-      async.stop('Erreur lors de paiement !')
+      console.debug(error.response.data)
+      async.stop(`Erreur : ${error.message}`)
     }
   }
 
@@ -75,7 +81,7 @@ function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
           <FormControlLabel
             value="6"
             control={<Radio />}
-            label="6 mois (5.5€)"
+            label="6 mois (5,50 €)"
           />
           <FormControlLabel
             value="12"
@@ -85,10 +91,10 @@ function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
         </RadioGroup>
 
         <Grid container spacing={16}>
-          <Grid item xs={9}>
-            <CardElement className={classes.input} />
+          <Grid item xs={12} sm={10}>
+            <CardElement className={classes.input} hidePostalCode />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={12} sm={2}>
             <Button
               type="submit"
               color="secondary"
@@ -96,51 +102,40 @@ function CheckoutForm({stripe}: ReactStripeElements.InjectedStripeProps) {
               onClick={charge}
               className={classes.pay}
             >
-              <IconPay className={classes.icon} /> Payer
+              <IconSecure className={classes.icon} fontSize="small" />
+              Payer
             </Button>
           </Grid>
         </Grid>
       </form>
 
-      <Typography gutterBottom component="h2" variant="h5">
-        Pourquoi je ne peux pas choisir un mois seulement ?
+      <Typography variant="body1">
+        <IconSafe fontSize="small" />
+        <em>
+          Le paiement est <strong>sécurisé</strong> et <strong>anonyme</strong>.
+        </em>
       </Typography>
 
       <Typography gutterBottom variant="body1">
-        Stripe, la solution de paiement en ligne utilisée par factAE, prélève
-        2.9% + 30 centimes par transaction réussie. De ce fait, il est
-        indispensable d'amortir les coûts.
+        <em>Aucune information liée à votre transaction n'est conservée.</em>
       </Typography>
 
       <br />
 
-      <Typography gutterBottom component="h2" variant="h5">
-        Vous pouvez également parrainer un proche
+      <Typography gutterBottom component="h2" variant="h6">
+        Pourquoi je ne peux pas choisir un mois seulement ?
       </Typography>
 
       <Typography gutterBottom variant="body1">
-        Pour chaque parrainage réussi, vous obtiendrez un mois gratuit :
+        <Link to="https://stripe.com/">Stripe</Link>, la solution de paiement en
+        ligne utilisée par factAE,{' '}
+        <Link to="https://stripe.com/fr-FR/pricing">
+          prélève 1,4% + 25 centimes
+        </Link>{' '}
+        par transaction réussie. Sur un paiement d'1 €, c'est plus de 25% de
+        perdu. factAE définit donc un minimum de 3 mois (3 €) pour limiter les
+        coûts liés aux transactions.
       </Typography>
-
-      <form className={classes.form}>
-        <Grid container spacing={16}>
-          <Grid item xs={9}>
-            <TextField label="Email" variant="outlined" fullWidth disabled />
-          </Grid>
-          <Grid item xs={3}>
-            <Button
-              type="submit"
-              color="primary"
-              variant="outlined"
-              onClick={charge}
-              className={classes.pay}
-              disabled
-            >
-              <IconSponsor className={classes.icon} /> Inviter (bientôt)
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
     </Fragment>
   )
 }
