@@ -4,7 +4,6 @@ import useReactRouter from 'use-react-router'
 
 type Routes = {[T in Route]: string | null}
 export type Route =
-  | 'landing'
   | 'register'
   | 'reset'
   | 'login'
@@ -17,17 +16,16 @@ export type Route =
   | 'settings'
 
 const routes: Routes = {
-  landing: '',
   register: '/register',
   reset: '/password/reset',
   login: '/login',
-  dashboard: '/dashboard',
-  document: '/dashboard/document',
-  documentEdit: '/dashboard/document/edit',
-  client: '/dashboard/client',
-  clientEdit: '/dashboard/client/edit',
-  profile: '/dashboard/profile',
-  settings: '/dashboard/settings',
+  dashboard: '/',
+  document: '/document',
+  documentEdit: '/document/edit',
+  client: '/client',
+  clientEdit: '/client/edit',
+  profile: '/profile',
+  settings: '/settings',
 }
 
 export default function useRouting<T>() {

@@ -1,4 +1,4 @@
-import './bootstrap'
+import './.common/bootstrap'
 
 import React from 'react'
 import ReactDOM from 'react-dom'

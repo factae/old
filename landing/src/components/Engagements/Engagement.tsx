@@ -16,7 +16,7 @@ export default function({title, subtitle, icon: Icon}: Props) {
   const classes = useStyles()
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
+    <Grid item xs={12} sm={6} md={4}>
       <Paper className={classes.paper}>
         <Typography className={classes.subtitle} component="h3" variant="h5">
           <Icon className={classes.icon} /> {title}

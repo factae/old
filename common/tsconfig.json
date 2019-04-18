@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig",
-  "include": ["src"],
+  "include": ["src", "../common"],
   "exclude": ["build", "node_modules"],
   "compilerOptions": {
     "allowJs": true,

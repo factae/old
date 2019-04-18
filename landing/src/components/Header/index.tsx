@@ -4,22 +4,19 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import useTheme from '@material-ui/styles/useTheme'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
+import Logo from 'common/components/Logo'
 
-import useAsyncContext from '../../async/context'
-import Logo from '../../Logo'
-import bread from './bread.png'
-import screenshot from './screenshot.png'
+// @ts-ignore
+import bread from '../../images/bread.png'
+
+// @ts-ignore
+import screenshot from '../../images/screenshot.png'
 
 import {useStyles} from './styles'
 
 export default function() {
-  const async = useAsyncContext()
   const theme = useTheme<Theme>()
   const classes = useStyles()
-
-  function stopLoading() {
-    async.stop()
-  }
 
   return (
     <section className={classes.container}>
@@ -38,7 +35,7 @@ export default function() {
               color="secondary"
               badgeContent="1€"
             >
-              <img className={classes.icon} src={bread} onLoad={stopLoading} />
+              <img className={classes.icon} src={bread} />
             </Badge>
           </Typography>
 

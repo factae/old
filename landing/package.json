@@ -1,0 +1,26 @@
+{
+  "name": "landing",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "@material-ui/styles": "^3.0.0-alpha.10",
+    "@types/material-ui": "^0.21.6",
+    "@types/react-helmet": "^5.0.8",
+    "gatsby": "^2.3.16",
+    "gatsby-plugin-manifest": "^2.0.29",
+    "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-typescript": "^2.0.12",
+    "gatsby-source-filesystem": "^2.0.29",
+    "react-helmet": "^5.2.0"
+  },
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+  }
+}

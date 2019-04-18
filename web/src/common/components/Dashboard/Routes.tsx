@@ -44,14 +44,14 @@ export default function() {
 
   return (
     <Fragment>
-      <Route exact path="/dashboard" component={Dashboard} />
-      <Route exact path="/dashboard/client" component={Client} />
-      <Route path="/dashboard/client/edit/:id?" component={ClientEdit} />
-      <Route exact path="/dashboard/profile" component={UserEdit} />
-      <Route exact path="/dashboard/stats" component={Stats} />
-      <Route exact path="/dashboard/settings" component={Settings} />
-      <Route exact path="/dashboard/document" component={Document} />
-      <Route path="/dashboard/document/edit/:id?" component={DocumentEdit} />
+      <Route exact path="/client" component={Client} />
+      <Route path="/client/edit/:id?" component={ClientEdit} />
+      <Route exact path="/profile" component={UserEdit} />
+      <Route exact path="/stats" component={Stats} />
+      <Route exact path="/settings" component={Settings} />
+      <Route exact path="/document" component={Document} />
+      <Route path="/document/edit/:id?" component={DocumentEdit} />
+      <Route path="/" component={Dashboard} />
     </Fragment>
   )
 }

@@ -16,10 +16,10 @@ import IconProfile from '@material-ui/icons/Face'
 import IconSettings from '@material-ui/icons/Settings'
 import IconLogout from '@material-ui/icons/PowerSettingsNew'
 
+import Logo from '../../../.common/components/Logo'
 import useAuthContext from '../../../auth/context'
 import useAsyncContext from '../../../async/context'
 import useRouting, {Route} from '../../../common/hooks/routing'
-import Logo from '../../../Logo'
 
 import {useStyles} from './styles'
 
@@ -63,7 +63,7 @@ export default function() {
       <Toolbar>
         <Typography variant="h5" color="inherit" className={classes.brand}>
           <Logo
-            onClick={goTo(auth ? 'dashboard' : 'landing')}
+            onClick={goTo('dashboard')}
             light={theme.palette.grey[200]}
             dark={theme.palette.grey[300]}
             height={23}

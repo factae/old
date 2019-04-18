@@ -1,13 +1,12 @@
 import React, {lazy} from 'react'
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import theme from 'common/theme'
 
 import AsyncProvider from './async/provider'
 import AuthProvider from './auth/provider'
 import Navigation from './common/components/Navigation'
-import Landing from './landing'
-import theme from './theme'
 
 const Register = lazy(() => import('./auth/components/Register'))
 const Login = lazy(() => import('./auth/components/Login'))
@@ -25,13 +24,11 @@ export default function() {
           <BrowserRouter>
             <Navigation />
             <Switch>
-              <Route exact path="/" component={Landing} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/password/reset" component={ResetPassword} />
               <Route exact path="/password/:token" component={SetPassword} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <Redirect to="/" />
+              <PrivateRoute path="/" component={Dashboard} />
             </Switch>
           </BrowserRouter>
         </AuthProvider>
