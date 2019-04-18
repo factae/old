@@ -14,7 +14,10 @@ export function cookieParserMiddleware() {
 }
 
 export function corsMiddleware() {
-  const origin = isProduction ? 'https://factae.fr' : 'http://localhost:3000'
+  const origin = isProduction
+    ? 'https://app.factae.fr'
+    : 'http://localhost:3000'
+
   return cors({origin, credentials: true})
 }
 
