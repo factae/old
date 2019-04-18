@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig",
   "include": ["src"],
-  "exclude": ["build", "node_modules"],
+  "exclude": ["public", ".cache", "node_modules"],
   "compilerOptions": {
     "allowJs": true,
     "isolatedModules": true,

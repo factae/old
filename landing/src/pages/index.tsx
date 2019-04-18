@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import {ThemeProvider} from '@material-ui/styles'
 
 import theme from 'common/theme'
+import Loader from '../components/Loader'
 import SEO from '../components/SEO'
 import Navigation from '../components/Navigation'
 import Header from '../components/Header'
@@ -17,6 +18,7 @@ export default function() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Loader />
       <SEO />
       <Navigation />
       <Header />

@@ -27,8 +27,6 @@ export default function() {
           className={classes.button}
           variant="text"
           href="https://app.factae.fr/register"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Créer un compte
         </Button>
@@ -36,8 +34,6 @@ export default function() {
           className={classes.button}
           variant="text"
           href="https://app.factae.fr/login"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Se connecter
         </Button>
