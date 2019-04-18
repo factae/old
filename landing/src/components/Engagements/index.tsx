@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import Grid from '@material-ui/core/Grid'
+import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import IconSecure from '@material-ui/icons/Https'
 import IconPrivacy from '@material-ui/icons/VerifiedUser'
@@ -38,14 +39,14 @@ export default function() {
               subtitle={
                 <Fragment>
                   Connexion HTTPS, paiement sécurisé par carte bancaire avec{' '}
-                  <a
+                  <Link
                     href="https://stripe.com"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {' '}
                     Stripe
-                  </a>
+                  </Link>
                   .
                 </Fragment>
               }
@@ -76,13 +77,13 @@ export default function() {
                 <Fragment>
                   Mises à jour fréquentes de l'outil, vérification journalière
                   du serveur (hébergé chez{' '}
-                  <a
+                  <Link
                     href="https://www.ovh.com/fr/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     OVH
-                  </a>
+                  </Link>
                   ).
                 </Fragment>
               }
@@ -94,14 +95,14 @@ export default function() {
               subtitle={
                 <Fragment>
                   Le code source est disponible en ligne, sur{' '}
-                  <a
+                  <Link
                     href="https://github.com/soywod/factae"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     {' '}
                     GitHub
-                  </a>
+                  </Link>
                   .
                 </Fragment>
               }

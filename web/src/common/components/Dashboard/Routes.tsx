@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect} from 'react'
-import every from 'lodash/every'
-import {Route} from 'react-router-dom'
+import {Route, Redirect} from 'react-router-dom'
 import {DateTime} from 'luxon'
+import every from 'lodash/every'
 import isNull from 'lodash/isNull'
 
 import Payment from '../../../payment/components'
@@ -44,14 +44,14 @@ export default function() {
 
   return (
     <Fragment>
+      <Route exact path="/" component={Dashboard} />
       <Route exact path="/client" component={Client} />
-      <Route path="/client/edit/:id?" component={ClientEdit} />
+      <Route exact path="/client/edit/:id?" component={ClientEdit} />
       <Route exact path="/profile" component={UserEdit} />
       <Route exact path="/stats" component={Stats} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/document" component={Document} />
-      <Route path="/document/edit/:id?" component={DocumentEdit} />
-      <Route path="/" component={Dashboard} />
+      <Route exact path="/document/edit/:id?" component={DocumentEdit} />
     </Fragment>
   )
 }

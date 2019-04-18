@@ -36,36 +36,8 @@ restart the app once mysql is done.
 
 ## TODO
 
-### pre-alpha
-
-- [X] Confirm: improve email design
-- [X] Confirm: prevent mail to be considered as SPAM
-- [X] Contract: hide item list if empty
-- [X] Contract: set up badge for status
-- [X] Contract: set up fixed size cols list
-- [X] Contract: add date
-- [X] Dashboard: show graph even if no data
-- [X] Dashboard: show thresholds
-- [X] Navigation: replace profile by menu with quotation, invoice, client,
-  profile, logout, contact
-
 ### alpha
 
-- [X] Set up landing page
-- [X] Set up payment
-- [X] Make logout from backend (to remove cookies)
-- [X] Refactor contexts
-- [X] Improve auth process (via service)
-- [X] Delete line in contract
-- [X] Set up module to auto send contracts (paid)
-- [X] Set up module to send form to client (paid)
-- [X] Set up settings page
-- [X] Fix back button
-- [X] Rename Contract to Document and put in common Documents (quotation/invoice/credit)
-- [X] Split dashboard tasks (Activité/Compte)
-- [X] Set up module to copy contract (signed/paid)
-- [X] Set up contact links (help/support/feedback)
-- [X] Improve landing page (interface + perf)
 - [ ] Improve SEO
 - [ ] Add privacy policy + cookie usage
 

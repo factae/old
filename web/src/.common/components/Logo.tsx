@@ -20,6 +20,7 @@ export default function(props: Props) {
       width={width}
       height={height}
       onClick={handleClick}
+      style={{cursor: props.onClick ? 'pointer' : 'inherit'}}
       viewBox="0 0 501 115"
       preserveAspectRatio="xMidYMid meet"
     >

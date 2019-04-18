@@ -42,3 +42,13 @@ services:
       - MYSQL_USER=factae
       - MYSQL_PASSWORD=factae
       - MYSQL_DATABASE=factae
+
+  landing:
+    image: node:11.8.0-alpine
+    container_name: factae-landing
+    command: yarn start
+    working_dir: /home/node/landing
+    ports:
+      - 3003:8000
+    volumes:
+      - .:/home/node

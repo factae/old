@@ -47,12 +47,12 @@ export default function() {
               Clients
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/client/edit">
+            <Link className={classes.link} to="/client/edit">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Ajouter un nouveau client</span>
             </Link>
 
-            <Link className={classes.link} to="/dashboard/client">
+            <Link className={classes.link} to="/client">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Lister les clients</span>
             </Link>
@@ -70,12 +70,12 @@ export default function() {
               Documents
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/document/edit">
+            <Link className={classes.link} to="/document/edit">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Créer un devis, facture ou avoir</span>
             </Link>
 
-            <Link className={classes.link} to="/dashboard/document">
+            <Link className={classes.link} to="/document">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Lister les documents</span>
             </Link>
@@ -93,7 +93,7 @@ export default function() {
               Statistiques
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/stats">
+            <Link className={classes.link} to="/stats">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Chiffre d'affaire en temps réel</span>
             </Link>
@@ -111,7 +111,7 @@ export default function() {
               Profil
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/profile">
+            <Link className={classes.link} to="/profile">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Mettre à jour son profil</span>
             </Link>
@@ -138,7 +138,7 @@ export default function() {
               Paramètres
             </Typography>
 
-            <Link className={classes.link} to="/dashboard/settings">
+            <Link className={classes.link} to="/settings">
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Modifier ses paramètres</span>
             </Link>
