@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {StripeProvider, Elements} from 'react-stripe-elements'
+import {Elements, StripeProvider} from 'react-stripe-elements'
 
 import InjectedCheckoutForm from './CheckoutForm'
 

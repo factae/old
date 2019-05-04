@@ -1,11 +1,11 @@
-import {Request, Response, CookieOptions} from 'express'
-import {getRepository} from 'typeorm'
-import {DateTime} from 'luxon'
 import bcrypt from 'bcryptjs'
-import uuid from 'uuid/v4'
+import {CookieOptions, Request, Response} from 'express'
 import jwt from 'jsonwebtoken'
-import isEmail from 'validator/lib/isEmail'
+import {DateTime} from 'luxon'
+import {getRepository} from 'typeorm'
+import uuid from 'uuid/v4'
 import isByteLength from 'validator/lib/isByteLength'
+import isEmail from 'validator/lib/isEmail'
 
 import * as mail from './mail'
 import {User} from './user/model'
@@ -30,8 +30,8 @@ export async function register(req: Request, res: Response) {
     await $user.insert({
       email,
       token,
-      quotationConditions: '- Type de paiement : virement bancaire',
       invoiceConditions: '- Paiement comptant à réception de la facture',
+      quotationConditions: '- Type de paiement : virement bancaire',
     })
   } catch (error) {
     switch (error.code) {

@@ -10,12 +10,8 @@ export const useStyles = makeStyles((theme: Theme) => ({
     marginRight: theme.spacing.unit,
   },
   form: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-  },
-  plan: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 4,
+    marginBottom: theme.spacing.unit * 4,
   },
   input: {
     padding: '18.5px 14px',
