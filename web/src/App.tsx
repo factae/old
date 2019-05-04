@@ -1,8 +1,9 @@
 import React, {lazy} from 'react'
-import {BrowserRouter, Switch, Route} from 'react-router-dom'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import theme from 'common/theme'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 import AsyncProvider from './async/provider'
 import AuthProvider from './auth/provider'

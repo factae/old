@@ -6,11 +6,6 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "plugins": [{
-      "name": "typescript-tslint-plugin",
-      "ignoreDefinitionFiles": true,
-      "configFile": "./tslint.json"
-    }],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
