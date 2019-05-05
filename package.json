@@ -12,7 +12,7 @@
   "devDependencies": {
     "prettier": "^1.16.1",
     "source-map-explorer": "^1.8.0",
-    "soywod-tslint-rules": "^1.0.8",
+    "soywod-tslint-rules": "^2.0.2",
     "ts-node-dev": "^1.0.0-pre.32",
     "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",
@@ -49,6 +49,7 @@
   },
   "scripts": {
     "prestart": "docker-compose stop -t 0",
-    "start": "docker-compose up --build"
+    "start": "docker-compose up --build",
+    "cache:clear": "yarn workspace web cache:clear && yarn workspace landing cache:clear"
   }
 }

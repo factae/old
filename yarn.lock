@@ -13231,10 +13231,12 @@ source-map@~0.1.30:
   dependencies:
     amdefine ">=0.0.4"
 
-soywod-tslint-rules@^1.0.8:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/soywod-tslint-rules/-/soywod-tslint-rules-1.0.9.tgz#1dff790b3a5d1fc7472a27b9cef156dfd54b5bc5"
-  integrity sha512-M4FxV9p0HqZkYPfFwCgbiLvuwLrpdxKIVvuGjVVvZnldit6NkAku1TRQZ/XLvd8wafBGnAcfX2FwRjN/7OmF0A==
+soywod-tslint-rules@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/soywod-tslint-rules/-/soywod-tslint-rules-2.0.2.tgz#4b35e486b57c0546e978eea8e7233bf87423ae1d"
+  integrity sha512-I7Vvl2KcuhxGeHi/qYzJnHAbO3Ue5K/zc3I4PiC0MGlgLM1NAsgqDyVqI1/ddK0OuUl85ue03kp19LAW97sPzw==
+  dependencies:
+    tslint-config-airbnb "^5.11.1"
 
 spdx-correct@^3.0.0:
   version "3.1.0"
