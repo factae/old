@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `factAE`,
-    description: `L'outil de facturation au prix d'une baguette`,
+    title: `L'outil de facturation au prix d'une baguette`,
+    description: `factAE est un outil d'aide à la facturation pour micro-entreprises à 1 € par mois.`,
     author: `Clément DOUIN`,
   },
   plugins: [

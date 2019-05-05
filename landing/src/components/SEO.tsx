@@ -1,14 +1,8 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import {useStaticQuery, graphql} from 'gatsby'
+import {graphql, useStaticQuery} from 'gatsby'
 
 export default function() {
-  const description = ''
-  const lang = 'fr'
-  const meta: HTMLMetaElement[] = []
-  const keywords: string[] = []
-  const title = 'factAE'
-
   const {site} = useStaticQuery(
     graphql`
       query {
@@ -23,7 +17,20 @@ export default function() {
     `,
   )
 
-  const metaDescription = description || site.siteMetadata.description
+  const title = `factAE`
+  const metaDescription = site.siteMetadata.description
+  const keywords = [
+    'factae',
+    'micro-entreprise',
+    'outil',
+    'facturation',
+    'facture',
+    'devis',
+    'avoir',
+    'auto-entrepreneur',
+    'simple',
+    '1 € par mois',
+  ]
 
   return (
     <Helmet
@@ -33,11 +40,9 @@ export default function() {
           href: 'https://fonts.googleapis.com/css?family=Quicksand:400,700',
         },
       ]}
-      htmlAttributes={{
-        lang,
-      }}
-      title={site.siteMetadata.title}
-      titleTemplate={`%s | Accueil`}
+      htmlAttributes={{lang: 'fr'}}
+      title={title}
+      titleTemplate={`%s - ${site.siteMetadata.title}`}
       meta={[
         {
           name: `description`,
@@ -71,16 +76,14 @@ export default function() {
           name: `twitter:description`,
           content: metaDescription,
         },
-      ]
-        .concat(
-          keywords.length > 0
-            ? {
-                name: `keywords`,
-                content: keywords.join(`, `),
-              }
-            : [],
-        )
-        .concat(meta)}
+      ].concat(
+        keywords.length > 0
+          ? {
+              name: `keywords`,
+              content: keywords.join(`, `),
+            }
+          : [],
+      )}
     />
   )
 }
