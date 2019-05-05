@@ -158,7 +158,7 @@ export default function() {
 
             <Link
               className={classes.link}
-              to="mailto:mail@soywod.me?subject=[factAE] - Proposer une amélioration"
+              to="mailto:clement.douin@posteo.net?subject=[factAE] - Proposition d'amélioration"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Proposer une amélioration</span>
@@ -166,7 +166,7 @@ export default function() {
 
             <Link
               className={classes.link}
-              to="mailto:mail@soywod.me?subject=[factAE] - Signaler un bug"
+              to="mailto:clement.douin@posteo.net?subject=[factAE] - Potentiel bug"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Signaler un bug</span>
@@ -174,7 +174,7 @@ export default function() {
 
             <Link
               className={classes.link}
-              to="mailto:mail@soywod.me?subject=[factAE] - Demander de l'aide"
+              to="mailto:clement.douin@posteo.net?subject=[factAE] - Besoin d'aide"
             >
               <IconLi className={classes.iconLink} fontSize="small" />
               <span>Demander de l'aide</span>

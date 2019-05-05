@@ -1,5 +1,6 @@
 {
   "private": true,
+  "author": "Clément DOUIN <soywod@users.noreply.github.com>",
   "workspaces": [
     "api",
     "web",
