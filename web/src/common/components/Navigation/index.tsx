@@ -76,6 +76,7 @@ export default function() {
               aria-owns={anchorEl ? 'menu' : undefined}
               color="inherit"
               onClick={setAnchorEl}
+              disabled={async.loading}
             >
               <IconMenu />
             </IconButton>
@@ -109,6 +110,7 @@ export default function() {
               className={classes.button}
               variant="text"
               onClick={goTo('register')}
+              disabled={async.loading}
             >
               Créer un compte
             </Button>
@@ -116,6 +118,7 @@ export default function() {
               className={classes.button}
               variant="text"
               onClick={goTo('login')}
+              disabled={async.loading}
             >
               Se connecter
             </Button>

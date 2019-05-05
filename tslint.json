@@ -1,4 +1,6 @@
 {
   "extends": "soywod-tslint-rules",
-  "rules": {}
+  "rules": {
+    "space-before-function-paren": false
+  }
 }
