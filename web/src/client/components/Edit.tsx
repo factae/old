@@ -56,12 +56,17 @@ export default function() {
       )}
 
       <Section title="Société">
-        <TextField name="tradingName" label="Nom commercial" required={false} />
+        <TextField
+          name="tradingName"
+          label="Nom commercial"
+          required={false}
+          autoFocus
+        />
         <TextField name="siret" label="SIRET" required={false} />
       </Section>
 
       <Section title="Contact">
-        <TextField name="firstName" label="Prénom" autoFocus />
+        <TextField name="firstName" label="Prénom" />
         <TextField name="lastName" label="Nom" />
         <TextField name="email" label="Email" type="email" />
         <TextField name="phone" label="Téléphone" />
