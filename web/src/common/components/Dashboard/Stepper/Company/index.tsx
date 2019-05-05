@@ -32,7 +32,7 @@ export default function() {
         onError={{message: "Erreur lors de l'enregistrement."}}
       >
         <Section title="Identité">
-          <TextField name="siren" label="Siren" />
+          <TextField name="siret" label="SIRET" />
           <Select name="activity" label="Type d'activité">
             {keys(Activity)
               .filter(activity => !isNaN(Number(activity)))

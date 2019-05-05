@@ -37,7 +37,7 @@ export default function({theme, user}: Props) {
       <Text>{user.email}</Text>
 
       <View style={styles.identification}>
-        <Text>Siren : {user.siren}</Text>
+        <Text>SIRET : {user.siret}</Text>
         {renderTax()}
       </View>
     </View>

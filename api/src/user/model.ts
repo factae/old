@@ -61,8 +61,8 @@ export class User {
   @Column({type: 'varchar', nullable: true, default: null})
   bic: string | null
 
-  @Column({type: 'varchar', nullable: true, default: null})
-  siren: string | null
+  @Column({type: 'varchar', length: 14, nullable: true, default: null})
+  siret: string | null
 
   @Column({type: 'int', nullable: true, default: null})
   rate: number | null

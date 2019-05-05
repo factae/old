@@ -57,7 +57,7 @@ export default function() {
 
       <Section title="Société">
         <TextField name="tradingName" label="Nom commercial" required={false} />
-        <TextField name="siren" label="Siren" required={false} />
+        <TextField name="siret" label="SIRET" required={false} />
       </Section>
 
       <Section title="Contact">

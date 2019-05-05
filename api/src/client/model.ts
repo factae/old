@@ -1,4 +1,4 @@
-import {Entity, Column, ManyToOne, OneToMany} from 'typeorm'
+import {Column, Entity, ManyToOne, OneToMany} from 'typeorm'
 
 import {User} from '../user/model'
 import {Document} from '../document/model'
@@ -41,6 +41,6 @@ export class Client {
   @Column()
   phone: string
 
-  @Column({nullable: true, default: null})
-  siren?: string
+  @Column({type: 'varchar', length: 14, nullable: true, default: null})
+  siret?: string
 }

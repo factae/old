@@ -27,7 +27,7 @@ export interface User {
   rib: string
   iban: string
   bic: string
-  siren: string
+  siret: string
   apeCode: string
   taxId: string | null
   taxRate: number | null
@@ -75,9 +75,8 @@ export function getUserFullName(user: User | Client) {
   if (user.tradingName) {
     const tradingName = formatTradingName(user.tradingName)
     return `${tradingName} (${fullName})`
-  } else {
-    return fullName
   }
+  return fullName
 }
 
 export function emptyUser(): PartialUser {

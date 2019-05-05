@@ -28,11 +28,11 @@ export default function({theme, document, client}: Props) {
     return null
   }
 
-  function renderSiren() {
+  function renderSiret() {
     if (_.isNull(client)) return null
-    if (_.isNull(client.siren)) return null
+    if (_.isNull(client.siret)) return null
 
-    return <Text style={styles.identification}>Siren: {client.siren}</Text>
+    return <Text style={styles.identification}>SIRET: {client.siret}</Text>
   }
 
   return (
@@ -47,7 +47,7 @@ export default function({theme, document, client}: Props) {
       <Text>{client.email}</Text>
       <Text>{client.phone}</Text>
 
-      {renderSiren()}
+      {renderSiret()}
     </View>
   )
 }

@@ -64,7 +64,7 @@ export default function() {
       </Section>
 
       <Section title="Auto-entreprise">
-        <TextField name="siren" label="Siren" />
+        <TextField name="siret" label="SIRET" />
         <Select name="activity" label="Type d'activité">
           {keys(Activity)
             .filter(activity => !isNaN(Number(activity)))
