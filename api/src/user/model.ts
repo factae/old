@@ -1,7 +1,7 @@
-import {Entity, Column, OneToMany} from 'typeorm'
+import {Column, Entity, OneToMany} from 'typeorm'
 
-import {Document} from '../document/model'
 import {Client} from '../client/model'
+import {Document} from '../document/model'
 
 export enum RateUnit {
   hour = 1,
@@ -93,6 +93,9 @@ export class User {
 
   @Column({default: false})
   active: boolean
+
+  @Column({type: 'datetime'})
+  createdAt: string
 
   @Column({type: 'datetime', nullable: true, default: null})
   expiresAt: string | null

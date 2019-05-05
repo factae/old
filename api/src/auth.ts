@@ -30,6 +30,7 @@ export async function register(req: Request, res: Response) {
     await $user.insert({
       email,
       token,
+      createdAt: DateTime.local().toSQL(),
       invoiceConditions: '- Paiement comptant à réception de la facture',
       quotationConditions: '- Type de paiement : virement bancaire',
     })

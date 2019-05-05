@@ -26,7 +26,10 @@ export async function update(req: Request, res: Response) {
     req.user.expiresAt = req.body.expiresAt
   }
 
-  await $user.save({...req.user, ...omit(req.body, 'id', 'email', 'expiresAt')})
+  await $user.save({
+    ...req.user,
+    ...omit(req.body, 'id', 'email', 'createdAt', 'expiresAt'),
+  })
 
   res.sendStatus(204)
 }
