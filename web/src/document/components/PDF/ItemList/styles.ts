@@ -22,6 +22,7 @@ export default function(theme: Theme) {
     },
     td: {
       display: 'flex',
+      alignItems: 'center',
       flex: 1,
       borderWidth: 0,
       paddingHorizontal: 12,

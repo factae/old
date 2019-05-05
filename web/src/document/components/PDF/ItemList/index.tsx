@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react'
 import isNull from 'lodash/isNull'
-import {View, Text} from '@react-pdf/renderer'
+import {Text, View} from '@react-pdf/renderer'
 import {Theme} from '@material-ui/core/styles/createMuiTheme'
 
 import {toEuro} from '../../../../common/utils/currency'
@@ -45,10 +45,24 @@ export default function({theme, document}: Props) {
               ...styles.textMuted,
             }}
           >
-            TVA
+            Taux TVA
           </Text>
           <Text style={{...styles.td, ...styles.textMuted}}>
             {document.taxRate} %
+          </Text>
+        </View>
+        <View style={styles.tr}>
+          <Text
+            style={{
+              ...styles.td,
+              ...styles.subTotal,
+              ...styles.textMuted,
+            }}
+          >
+            Montant TVA
+          </Text>
+          <Text style={{...styles.td, ...styles.textMuted}}>
+            {toEuro(document.total * document.taxRate * 0.01)}
           </Text>
         </View>
       </Fragment>
