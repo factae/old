@@ -1,6 +1,6 @@
 import {Request, Response} from 'express'
 import {DateTime} from 'luxon'
-import {getRepository, Between, Not} from 'typeorm'
+import {Between, Not, getRepository} from 'typeorm'
 import _ from 'lodash/fp'
 
 import * as mail from '../mail'
@@ -50,7 +50,6 @@ export async function create(req: Request, res: Response) {
   req.body.number = '-'
   req.body.user = req.user.id
   req.body.client = req.body.clientId
-  req.body.createdAt = DateTime.local().toISO()
 
   const document = await $document.save(req.body)
   document.items = await $item.save(
@@ -100,6 +99,8 @@ export async function update(req: Request, res: Response) {
       type: req.body.type,
       count: documents.length,
     })
+
+    req.body.createdAt = now.toISO()
   }
 
   req.body.user = req.user.id

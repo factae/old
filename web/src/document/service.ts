@@ -25,7 +25,6 @@ export async function create(document: Document) {
   }
 
   document.id = res.data.id
-  document.createdAt = res.data.createdAt
   document.items = res.data.items
 
   return document
@@ -41,6 +40,7 @@ export async function update(document: Document) {
   }
 
   document.number = res.data.number
+  document.createdAt = res.data.createdAt
   document.items = res.data.items
 
   return document
