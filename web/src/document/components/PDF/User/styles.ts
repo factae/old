@@ -8,6 +8,7 @@ export default function(theme: Theme) {
     },
     name: {
       fontSize: 14,
+      fontFamily: 'Helvetica Bold',
     },
     identification: {
       fontSize: 9,

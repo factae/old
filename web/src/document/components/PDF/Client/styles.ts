@@ -9,7 +9,7 @@ export default function(theme: Theme) {
     },
     title: {
       color: theme.palette.primary.main,
-      marginBottom: theme.spacing.unit / 4,
+      marginBottom: theme.spacing.unit / 2,
     },
     identification: {
       fontSize: 9,

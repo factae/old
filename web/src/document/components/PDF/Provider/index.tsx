@@ -21,18 +21,25 @@ type Props = {
 }
 
 Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Regular.ttf',
+  `${process.env.REACT_APP_APP_URL}/fonts/HelveticaNeueLight.ttf`,
   {
-    family: 'Quicksand',
+    family: 'Helvetica',
   },
 )
 
 Font.register(
-  'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Bold.ttf',
+  `${process.env.REACT_APP_APP_URL}/fonts/HelveticaNeueMedium.ttf`,
   {
-    family: 'Quicksand Bold',
+    family: 'Helvetica Bold',
   },
 )
+
+/* Font.register( */
+/*   'https://raw.githubusercontent.com/google/fonts/master/ofl/quicksand/Quicksand-Bold.ttf', */
+/*   { */
+/*     family: 'Quicksand Bold', */
+/*   }, */
+/* ) */
 
 export default function(props: Props) {
   const {document} = props

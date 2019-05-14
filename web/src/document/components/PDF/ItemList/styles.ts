@@ -45,17 +45,17 @@ export default function(theme: Theme) {
       color: theme.palette.grey[400],
     },
     subTotal: {
-      fontFamily: 'Quicksand',
+      fontFamily: 'Helvetica',
       flex: 4,
     },
     totalLabel: {
       flex: 4,
       fontSize: 11,
-      fontFamily: 'Quicksand Bold',
+      fontFamily: 'Helvetica Bold',
     },
     totalAmount: {
       fontSize: 11,
-      fontFamily: 'Quicksand Bold',
+      fontFamily: 'Helvetica Bold',
     },
   })
 }

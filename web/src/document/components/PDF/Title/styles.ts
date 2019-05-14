@@ -6,10 +6,9 @@ export default function() {
       flex: 1,
     },
     title: {
-      fontFamily: 'Quicksand',
+      fontFamily: 'Helvetica',
       fontSize: 36,
       textTransform: 'uppercase',
-      letterSpacing: -0.5,
     },
   })
 }

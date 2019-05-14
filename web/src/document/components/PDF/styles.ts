@@ -5,7 +5,7 @@ export default function(theme: Theme) {
   return StyleSheet.create({
     page: {
       color: theme.palette.text.secondary,
-      fontFamily: 'Quicksand',
+      fontFamily: 'Helvetica',
       fontSize: 12,
       padding: theme.spacing.unit * 4,
     },
