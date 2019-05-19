@@ -1,9 +1,5 @@
 import React, {Fragment, MouseEvent} from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import IconDelete from '@material-ui/icons/Clear'
-import IconSave from '@material-ui/icons/Save'
-import IconSaveAndSend from '@material-ui/icons/Send'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import useAsyncContext from '../../../../async/context'
 import {Document} from '../../../../document/model'
@@ -11,14 +7,12 @@ import useDocumentContext from '../../../../document/context'
 import * as $document from '../../../../document/service'
 import {useUserSetting} from '../../../../user/hooks'
 
-import {useStyles} from './styles'
-
 type Props = {
   document: Document
+  onClick: () => void
 }
 
-export default function({document}: Props) {
-  const classes = useStyles()
+export default function({document, onClick: closeMenu}: Props) {
   const userHasAutoSend = useUserSetting('documentAutoSend')
   const async = useAsyncContext()
   const {dispatch, download} = useDocumentContext()
@@ -26,6 +20,7 @@ export default function({document}: Props) {
 
   async function remove(event: MouseEvent) {
     event.stopPropagation()
+    closeMenu()
 
     try {
       async.start()
@@ -40,13 +35,14 @@ export default function({document}: Props) {
 
   async function save(event: MouseEvent) {
     event.stopPropagation()
+    closeMenu()
 
     try {
       async.start()
       document.status = 'pending'
       await $document.update(document)
       document.pdf = await download(document)
-      dispatch({type: 'update', document})
+      dispatch({document, type: 'update'})
       await $document.update(document)
       async.stop()
     } catch (error) {
@@ -57,20 +53,8 @@ export default function({document}: Props) {
 
   return (
     <Fragment>
-      <Tooltip placement="bottom" title={title}>
-        <span className={classes.icon}>
-          <IconButton onClick={save}>
-            {userHasAutoSend ? <IconSaveAndSend /> : <IconSave />}
-          </IconButton>
-        </span>
-      </Tooltip>
-      <Tooltip placement="bottom" title="Supprimer">
-        <span className={classes.icon}>
-          <IconButton onClick={remove}>
-            <IconDelete />
-          </IconButton>
-        </span>
-      </Tooltip>
+      <MenuItem onClick={save}>{title}</MenuItem>
+      <MenuItem onClick={remove}>Supprimer</MenuItem>
     </Fragment>
   )
 }

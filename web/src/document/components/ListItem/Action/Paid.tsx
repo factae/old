@@ -6,15 +6,14 @@ import {Document} from '../../../model'
 
 type Props = {
   document: Document
+  onClick: () => void
 }
 
-export default function(props: Props) {
-  const {document} = props
-
+export default function({document, onClick}: Props) {
   return (
     <Fragment>
       <ActionCopy document={document} />
-      <ActionDownload document={document} />
+      <ActionDownload document={document} onClick={onClick} />
     </Fragment>
   )
 }

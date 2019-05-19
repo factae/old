@@ -11,15 +11,25 @@ import ActionDownload from './Download'
 
 type Props = {
   document: Document
+  onClick: () => void
 }
 
-export default function({document}: Props) {
+export default function({document, onClick}: Props) {
   return (
     <Fragment>
-      {isQuotation(document) && <ActionSign quotation={document} />}
-      {isInvoice(document) && <ActionPay invoice={document} />}
-      {isCredit(document) && <ActionRefund credit={document} />}
-      <ActionDownload document={document} />
+      {isQuotation(document) && (
+        <ActionSign quotation={document} onClick={onClick} />
+      )}
+
+      {isInvoice(document) && (
+        <ActionPay invoice={document} onClick={onClick} />
+      )}
+
+      {isCredit(document) && (
+        <ActionRefund credit={document} onClick={onClick} />
+      )}
+
+      <ActionDownload document={document} onClick={onClick} />
     </Fragment>
   )
 }

@@ -1,23 +1,18 @@
 import React, {Fragment} from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import IconDownload from '@material-ui/icons/SaveAlt'
-import IconTransform from '@material-ui/icons/Redo'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import useRouting from '../../../../common/hooks/routing'
 import {Document} from '../../../model'
 import ActionCopy from './Copy'
-
-import {useStyles} from './styles'
+import ActionDownload from './Download'
 
 type Props = {
   document: Document
+  onClick: () => void
 }
 
-export default function(props: Props) {
-  const {document} = props
+export default function({document, onClick}: Props) {
   const {goTo} = useRouting()
-  const classes = useStyles()
 
   function transformToInvoice() {
     goTo('documentEdit', {
@@ -36,27 +31,9 @@ export default function(props: Props) {
 
   return (
     <Fragment>
-      <Tooltip placement="bottom" title="Transformer en facture">
-        <span className={classes.icon}>
-          <IconButton onClick={transformToInvoice}>
-            <IconTransform />
-          </IconButton>
-        </span>
-      </Tooltip>
-
+      <MenuItem onClick={transformToInvoice}>Transformer en facture</MenuItem>
       <ActionCopy document={document} />
-
-      <Tooltip placement="bottom" title="Télécharger">
-        <span className={classes.icon}>
-          <IconButton
-            href={String(document.pdf)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <IconDownload />
-          </IconButton>
-        </span>
-      </Tooltip>
+      <ActionDownload document={document} onClick={onClick} />
     </Fragment>
   )
 }

@@ -1,8 +1,11 @@
-import React, {Suspense, lazy} from 'react'
+import React, {MouseEvent, useEffect, useRef, useState} from 'react'
 import classNames from 'classnames'
 import {DateTime} from 'luxon'
 import TableCell from '@material-ui/core/TableCell'
+import IconButton from '@material-ui/core/IconButton'
+import IconAction from '@material-ui/icons/ExpandMore'
 import TableRow from '@material-ui/core/TableRow'
+import Menu from '@material-ui/core/Menu'
 import _ from 'lodash/fp'
 
 import Date from './Date'
@@ -23,18 +26,38 @@ export default function({document}: Props) {
   const classes = useStyles()
   const {goTo} = useRouting()
   const [clients] = useClientContext()
+  const [anchorEl, setLocalAnchorEl] = useState<HTMLElement | null>(null)
+  const Action = useRef<any>(null)
+
+  async function fetchActions() {
+    const module = await import(`./Action/${_.capitalize(document.status)}`)
+    Action.current = module.default
+  }
+
+  useEffect(() => {
+    fetchActions()
+  }, [document.status])
 
   if (_.isNull(clients)) {
     return null
   }
 
+  function setAnchorEl(event: MouseEvent) {
+    event.stopPropagation()
+    setLocalAnchorEl(event.currentTarget as HTMLElement)
+  }
+
+  function closeMenu(event: MouseEvent) {
+    _.invoke('stopPropagation', event)
+    setLocalAnchorEl(null)
+  }
+
   function buildClientName() {
     const client = _.find({id: document.clientId}, clients)
     if (_.isNil(client)) return '-'
+
     return getClientName(client)
   }
-
-  const Action = lazy(() => import(`./Action/${_.capitalize(document.status)}`))
 
   const isEditable = !['signed', 'paid'].includes(document.status)
   const className = classNames({[classes.editable]: isEditable})
@@ -50,9 +73,24 @@ export default function({document}: Props) {
       <Status value={document.status} />
       <TableCell align="right">{toEuro(document.total)}</TableCell>
       <TableCell align="right">
-        <Suspense fallback={null}>
-          <Action document={document} />
-        </Suspense>
+        <IconButton
+          aria-owns={anchorEl ? `document-${document.id}` : undefined}
+          aria-haspopup="true"
+          color="inherit"
+          onClick={setAnchorEl}
+        >
+          <IconAction />
+        </IconButton>
+        {Action.current && (
+          <Menu
+            id={`document-${document.id}`}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={closeMenu}
+          >
+            <Action.current onClick={closeMenu} document={document} />
+          </Menu>
+        )}
       </TableCell>
     </TableRow>
   )
