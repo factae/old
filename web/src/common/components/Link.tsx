@@ -1,4 +1,4 @@
-import React, {ReactNode, MouseEvent} from 'react'
+import React, {MouseEvent, ReactNode} from 'react'
 import Link from '@material-ui/core/Link'
 import {Link as RouterLink} from 'react-router-dom'
 import _ from 'lodash/fp'
@@ -8,7 +8,7 @@ type Props = {
   onClick?: (e: MouseEvent) => void
   color?: 'primary' | 'secondary'
   className?: string
-  children: ReactNode
+  children?: ReactNode
 }
 
 export default function(props: Props) {
@@ -39,7 +39,7 @@ export default function(props: Props) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      {children}
+      {children || to}
     </Link>
   )
 }

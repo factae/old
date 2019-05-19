@@ -1,7 +1,6 @@
 import React from 'react'
-import keys from 'lodash/keys'
-import isNaN from 'lodash/isNaN'
-import IconSave from '@material-ui/icons/Save'
+import keys from 'lodash/fp/keys'
+import isNaN from 'lodash/fp/isNaN'
 
 import useRouting from '../../common/hooks/routing'
 import useForm from '../../common/form'
@@ -10,7 +9,7 @@ import Section from '../../common/form/Section'
 import Submit from '../../common/form/Submit'
 import * as $user from '../service'
 import useUserContext from '../context'
-import {User, RateUnit, Activity} from '../model'
+import {Activity, RateUnit, User} from '../model'
 
 export default function() {
   const [defaultUser, setUser] = useUserContext()
@@ -63,7 +62,7 @@ export default function() {
         <TextField name="city" label="Ville" />
       </Section>
 
-      <Section title="Auto-entreprise">
+      <Section title="Micro-entreprise">
         <TextField name="siret" label="SIRET" />
         <Select name="activity" label="Type d'activité">
           {keys(Activity)
@@ -74,23 +73,14 @@ export default function() {
               </option>
             ))}
         </Select>
-        <TextField
-          name="tradingName"
-          label="Nom commercial (optionnel)"
-          required={false}
-        />
+        <TextField name="tradingName" label="Nom commercial (optionnel)" required={false} />
       </Section>
 
       <Section
         title="Tarification par défaut"
         subtitle="Correspond au taux horaire / journalier / forfaitaire qui s'affichera par défaut sur vos devis."
       >
-        <TextField
-          name="rate"
-          label="Montant (€)"
-          type="number"
-          required={false}
-        />
+        <TextField name="rate" label="Montant (€)" type="number" required={false} />
         <Select name="rateUnit" label="Unité" required={false}>
           {keys(RateUnit)
             .filter(unit => !isNaN(Number(unit)))
@@ -105,20 +95,8 @@ export default function() {
         title="Conditions"
         subtitle="Correspond aux conditions (de paiement, de livraison, d'exécution etc) qui s'afficheront par défaut sur vos documents. Champs libres."
       >
-        <TextField
-          name="quotationConditions"
-          label="Devis"
-          multiline
-          rows={4}
-          grid={{xs: 12}}
-        />
-        <TextField
-          name="invoiceConditions"
-          label="Factures"
-          multiline
-          rows={4}
-          grid={{xs: 12}}
-        />
+        <TextField name="quotationConditions" label="Devis" multiline rows={4} grid={{xs: 12}} />
+        <TextField name="invoiceConditions" label="Factures" multiline rows={4} grid={{xs: 12}} />
       </Section>
 
       <Section
@@ -126,17 +104,12 @@ export default function() {
         subtitle="Renseignez uniquement si vous êtes assujetti à la TVA."
       >
         <TextField name="taxId" label="Numéro de TVA" required={false} />
-        <TextField
-          name="taxRate"
-          label="Taux de TVA (%)"
-          type="number"
-          required={false}
-        />
+        <TextField name="taxRate" label="Taux de TVA (%)" type="number" required={false} />
       </Section>
 
       <Section
         title="RIB (optionnel)"
-        subtitle="Ces informations s'afficheront sur vos documents, pour faciliter le paiement de vos clients. "
+        subtitle="Ces informations s'afficheront sur vos documents, pour faciliter le paiement de vos clients."
       >
         <TextField name="rib" label="RIB" required={false} />
         <TextField name="iban" label="IBAN" required={false} />
