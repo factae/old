@@ -1,3 +1,5 @@
+⚠️ *Project archived, due to lack of interest.*
+
 # [factAE](https://factae.fr)
 
 A simple billing tool for french freelancers.
